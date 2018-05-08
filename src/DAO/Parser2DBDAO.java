@@ -26,7 +26,7 @@ public class Parser2DBDAO {
     DB write line per line... called from parser class, not passed all records to no wast too mem
      */
     private java.sql.Connection conn;
-    private String insertPropertiesPath="configs/insert/an  .properties"; //todo diff performance filamentonthefly
+    private String insertPropertiesPath="configs/insert_prepared.properties"; //todo diff performance filamentonthefly
     //private String insertPropertiesPath="configs/insert_prepared.properties";
     private Properties insertProp;
 
@@ -245,8 +245,8 @@ public class Parser2DBDAO {
 
             }
          else if (name.equals(Parser2DB.FILAMENT)){
-             this.writeFilamentBlockOnTheFly(records);        //to check diff of performace...
-            //this.writeFilament(records);
+             //this.writeFilamentBlockOnTheFly(records);        //to check diff of performace...
+            this.writeFilament(records);
             }
         else if (name.equals(Parser2DB.SKELETONPOINT) && nameStr!=null){
             this.writeSkeleton(records,nameStr);

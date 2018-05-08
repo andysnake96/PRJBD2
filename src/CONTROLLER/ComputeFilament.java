@@ -24,11 +24,5 @@ public class ComputeFilament {
         return id;
     }
 
-    public static void main(String args[]) {
-        ComputeFilament cf = new ComputeFilament("name");
-        ComputeFilament cf2 = new ComputeFilament(55);
-        System.out.println(cf.getName() +" "+ cf.getId());
-        System.out.println(cf2.getId()+" "+ cf2.getName());
 
-    }
 }

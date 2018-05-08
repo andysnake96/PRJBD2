@@ -1,0 +1,9 @@
+STAR,CSV/stelle_Herschel.csv
+#H
+FILAMENT,CSV/filamenti_Herschel.csv
+OUTLINE,CSV/contorni_filamenti_Herschel.csv
+SKELETON,CSV/scheletro_filamenti_Herschel.csv
+#S
+FILAMENT,CSV/filamenti_Spitzer.csv
+OUTLINE,CSV/contorni_filamenti_Spitzer.csv
+SKELETON,CSV/scheletro_filamenti_Spitzer_CORRETTO.csv

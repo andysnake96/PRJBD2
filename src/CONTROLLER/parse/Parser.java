@@ -1,0 +1,381 @@
+package CONTROLLER.parse;
+
+import DAO.Connection;
+import DAO.Parser2DBDAO;
+
+import java.io.*;
+
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.sql.SQLException;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+//TODO STATIC CONSTANT FIELDS MOVED TO INTERFACE IMPLEMENTED... ACCESIBLE FROM OUT AND INNERITED AS ATTRIBUTES
+public class Parser implements Parser2DB {
+    /*
+    parse set of CSVs files...
+    parsed records will be written to db with //TODO CALL
+    //TODO block write ?
+    parse a set of files related to ..==> see comunication strings (final static) in interface...
+    in constructor called private metod to init PATHs... from initPaths.txt
+     needed to load CSVs only by set name...
+    :)
+     */
+    private final int BLOCKRECORDS=30;
+    private final String SPLIT_CHAR=",";
+    private List<String[]> hershelPaths;
+    private List<String[]> spitzerPaths;
+    /*
+    file will be parserd and sent to db in line or block of line
+    in the same order of initPaths file...
+     */
+
+    private String[] starPath;
+    private final String initPath="configs/initPaths.txt";
+    private String instrumentInUse;
+
+    public Parser() throws IOException {
+        hershelPaths=new ArrayList<>();
+        spitzerPaths=new ArrayList<>();
+        this.setUpFilesPath();
+    }
+    public  void parseSatelliteInfo(String path) throws Exception {
+        /*
+        static because do
+         */
+        List<String> file = Files.readAllLines(Paths.get(path));
+
+        String[] line = null;
+        List<List<String>> satelliteRecords = new ArrayList<>();
+        for (int l = 1; l < file.size(); l++) { //FIRST LINE IS HEADER
+            line = file.get(l).split(",");
+//            line[0]=quoteField(line[0]);
+//            line[1]=LocalDate.parse(line[1]).toString();
+//            line[2]=quoteField(line[2]);
+//            line[3]=LocalDate.parse(line[3]).toString();
+            satelliteRecords.add(Arrays.asList(line));
+
+        }
+        Connection conn=Connection.getIstance();
+        java.sql.Connection connection=conn.getConn();
+        Parser2DBDAO parser2DBDAO= new Parser2DBDAO(connection);
+        parser2DBDAO.insertSatellite(satelliteRecords);
+    }
+    public void parseExternFile(String path,String kindCSV,String nameStr ) throws Exception {
+        /*
+        wrap parse standard and "blocked" call for an extern CSV not in initPaths
+        only STAR AND FILAMENT NOT NEED INSTRUMENT TO BE SPECIFIED!
+         */
+        //if(nameStr!=null)
+            //TODO LIVIO CHECK PASSED INSTRUMENT IS IN DB...
+            //RB for filament and star has to be null...
+        //else             throw new IllegalArgumentException("INVALID KIND....");
+        if (kindCSV.equals(FILAMENT)) {
+            parseBlock(path, kindCSV);
+
+        } else if (kindCSV.equals(STAR)) {
+            parseBlock(path, kindCSV);
+
+        } else if (kindCSV.equals(OUTLINE)) {
+            this.instrumentInUse = nameStr;   //setted instrument in use for the file
+            parseBlock(path, kindCSV);
+            }
+
+         else if ((kindCSV.equals(SKELETONPOINT))){
+             this.instrumentInUse = nameStr;   //setted instrument in use for the file
+             parseBlock(path,kindCSV);
+
+            }
+
+        else
+            throw new IllegalArgumentException("INVALID KIND....");
+
+    }
+    private void setUpFilesPath() throws IOException {
+        /*
+        init default set of CSV set from file
+        paths will be written in hershelpaths and in spizerpaths KIND,PATHCSV
+         */
+        String line;
+        List<String[]> destList = this.spitzerPaths;
+        List<String> fileList= Files.readAllLines(Paths.get(initPath));
+        //System.out.println(Arrays.toString(fileList.toArray())); //debug lines...
+        //first line star path
+        line=fileList.get(0);
+        starPath=line.split(SPLIT_CHAR);
+        for (int i=1;i< fileList.size();i++){ //first line already passed
+            line=fileList.get(i);
+            if (line.equals("#H"))      //START OF HESHERL PATHS
+                destList=this.hershelPaths;
+
+            else if (line.equals("#S")) //STAR OF SPITZER PATHS
+                destList=this.spitzerPaths;
+            else{
+                destList.add(line.split(SPLIT_CHAR));
+
+            }
+
+            }
+        System.out.println("PATHS:\n STAR"+starPath+"\nSPIZ"+spitzerPaths+"\nHERS"+hershelPaths);
+
+        }
+
+    public static String quoteField(String strUnquoted){
+        //add single quote to a string witch will be passed to dao witch will write in a simpler way
+        return "'"+strUnquoted+"'";
+    }
+    public void parseBlock(String path, String kindCSV) throws Exception {
+
+        /* to NO WAST TOO MEMORY ACHIVED BY iterating among lines
+            lines ( or block of lines will be written to DB with a call named //TODO CALL
+            HP CSV file in path has  at least header line
+
+
+            ==>parsed records will be written in DB with
+
+         */
+        //TODO BOUNDARY HAS TO CHECK WITH EXCEPT TROWN IF FILE NOT EXIST AND WITH KINDLIST IN INTERFACE IF
+        //KIND IS CORRECT...
+
+        Connection connClint = Connection.getIstance();
+        java.sql.Connection connection=connClint.getConn();
+        //getted connection to send write call for eatch line to DB...
+        Parser2DBDAO parser2DBDAO = new Parser2DBDAO(connection);
+        //retrived DAOWRITE istance
+        //List<String[]> lines= new ArrayList<>(); // DEBUG TODO REMOVE
+        FileReader fileReader= new FileReader(path);
+        BufferedReader bufferedReader= new BufferedReader(fileReader);
+        String line ;
+        line= bufferedReader.readLine(); // HEADER IN FIRST LINE...
+        String[] CSVColumns= line.split(this.SPLIT_CHAR);   //header csv
+        List<List<String>> blockOfRecords=new ArrayList<>();
+        List<String> fields=null;
+        int i=0;
+        //RETRIVING STRING INDEX IN RECORDS IN CSV, matching kindOfCsv to indexes in interface.
+        int[] strIndx;
+        //filament has to ignore 1 column...
+        if(kindCSV.equals(FILAMENT)) {
+            strIndx = filamentStrIndx;
+
+        }
+        else if (kindCSV.equals(STAR))
+            strIndx= starStrIndx;
+        else
+            strIndx=null;   //other CSV not contains strings...
+        do {
+
+            line=bufferedReader.readLine();
+            if(line != null) {                  //MAYBE CSV FILE WITH NO RECORDS...
+                String[] fieldsParsed = line.split(this.SPLIT_CHAR);
+                fields = Arrays.asList(fieldsParsed);
+                if (fieldsParsed.length != CSVColumns.length) {
+                    //TODO FLIPPED LINE ==> SKIPPED
+                    //flipped line check= wrong # of items..
+
+                    System.err.println("error in file\t:" + path +
+                            "\nwrong Number of fields in line :" + i +
+                            "fields...\t" +
+                            Arrays.toString(fieldsParsed) +
+                            "but header size is: " + CSVColumns.length +
+                            "with columns:\t" + Arrays.toString(CSVColumns));   //WRONG LINE NUM
+                    continue;
+                } else {          //NOT FLIPPED LINE...
+                    if (strIndx != null) { //(only some)CSV in parsing has strings to be quoted
+                        for (int x = 0; x < strIndx.length; x++) {
+                            String quotedField = this.quoteField(fields.get(strIndx[x]));
+                            fields.set(strIndx[x], quotedField);
+                            //quoting strings fields..
+                            //todo check
+                        }
+                        if (kindCSV.equals(FILAMENT)) {
+                            int delCol = filamentDelColIndx[0];
+                            fields.set(delCol, null);  //db does not need a column in filament CSV
+                        }
+                        blockOfRecords.add(fields);    //adding a record (as fixed list) in a block of reco
+                        //lines.add(fieldsParsed);      //TODO DEBUG THIS WAST A LOT OF MEM...
+
+                    }
+                }
+                i++;    //write in blocks...
+                if (i % BLOCKRECORDS == 0) {
+                    parser2DBDAO.initDBFromCSVBlock(kindCSV, blockOfRecords, this.instrumentInUse); //write block of lines to DB !!!!!!!!!!!!
+                    blockOfRecords = new ArrayList<>();        //TODO NEEDED TO BE EMPTYED TO NEXT BLOCK
+                }
+            }
+
+
+
+        }
+        while (line != null);
+
+        if(blockOfRecords.size()>0)
+            parser2DBDAO.initDBFromCSVBlock(kindCSV,blockOfRecords,this.instrumentInUse);    //empty the block( case CSV #LINES%BLOCKSIZE!=0
+
+        connClint.closeConn(connection);
+        fileReader.close();
+    }
+    //old parser... write 1 line for time...
+    @Deprecated
+    public void parseStandard(String path, String kindCSV) throws Exception {
+
+        /* to NO WAST TOO MEMORY ACHIVED BY iterating among lines
+            lines ( or block of lines will be written to DB with a call named //TODO CALL
+            HP CSV file in path has  at least header line
+
+
+            ==>parsed records will be written in DB with
+
+         */
+        //TODO BOUNDARY HAS TO CHECK WITH EXCEPT TROWN IF FILE NOT EXIST AND WITH KINDLIST IN INTERFACE IF
+        //KIND IS CORRECT...
+        java.sql.Connection connection = Connection.getIstance().getConn();
+        //getted connection to send write call for eatch line to DB...
+        Parser2DBDAO parser2DBDAO = new Parser2DBDAO(connection);
+        //retrived DAOWRITE istance
+        //List<String[]> lines= new ArrayList<>(); // DEBUG TODO REMOVE
+        BufferedReader bufferedReader= new BufferedReader(new FileReader(path));
+        String line ;
+
+        line= bufferedReader.readLine(); // HEADER IN FIRST LINE...
+        String[] CSVColumns= line.split(this.SPLIT_CHAR);   //header csv
+        int i=1;
+        //RETRIVING STRING INDEX IN RECORDS IN CSV, matching kindOfCsv to indexes in interface.
+        int[] strIndx;
+        //filament has to ignore 1 column...
+        if(kindCSV.equals(FILAMENT)) {
+            strIndx = filamentStrIndx;
+
+        }
+        else if (kindCSV.equals(STAR))
+            strIndx= starStrIndx;
+        else
+            strIndx=null;   //other CSV not contains strings...
+        do {
+            //NB
+            line=bufferedReader.readLine();
+            if(line != null) {                  //MAYBE CSV FILE WITH NO RECORDS...
+                String[] fieldsParsed = line.split(this.SPLIT_CHAR);
+                List<String> fields=Arrays.asList(fieldsParsed);
+                if (fieldsParsed.length!=CSVColumns.length){
+                    //TODO FLIPPED LINE ==> SKIPPED
+                    //flipped line check= wrong # of items..
+
+                    System.err.println("error in file\t:" + path+
+                            "\nwrong Number of fields in line :"+i+
+                            "fields...\t"+
+                            Arrays.toString(fieldsParsed)+
+                            "but header size is: "+CSVColumns.length+
+                            "with columns:\t"+Arrays.toString(CSVColumns));   //WRONG LINE NUM
+                    continue;
+                }
+                else{
+                    if (strIndx!=null) { //(only some)CSV in parsing has strings to be quoted
+                        for (int x=0;x<strIndx.length;x++){
+                            String quotedField=this.quoteField(fields.get(strIndx[x]));
+                            fields.set(strIndx[x],quotedField);
+                            //quoting strings fields..
+                            //todo check
+                        }
+                        if (kindCSV.equals(FILAMENT)) {
+                            int delCol=filamentDelColIndx[0];
+                            fields.set(delCol,null);  //db does not need a column in filament CSV
+                        }
+                        //lines.add(fieldsParsed);      //TODO DEBUG THIS WAST A LOT OF MEM...
+
+                    }
+                    //!! deletted
+                    //parser2DBDAO.initDBFromCSV(kindCSV,fields,this.instrumentInUse); //write line to DB !!!!!!!!!!!!
+
+                }
+
+                i++;    //  may write in blocks...
+            }
+
+        }
+        while (line != null);
+        try {
+            connection.close(); //TODO HANDLE BETTER ?
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        //return lines;   //todo remove only for debbuging
+
+
+    }
+
+    public void readCSV(String name, String nameInstrument) throws Exception {
+        //TODO return List<List<String[]>> only for debbuging...
+
+        List<List<String[]>> output= new ArrayList<>();
+        /*
+
+        read a set of file associated with name ( it must be same of public final string (FK ENM)
+        in the same order of initPaths.txt
+        hershel ==> filament, outline, skeleton CSVs loaded...
+        spitzer ==> filament, outline, skeleton CSVs loaded...
+        star    ==> star csv loaded (  1
+
+         */
+        boolean deflt=false;
+        if(nameInstrument==null)
+            deflt=true;             //if instrument not passed used default interpretation of hershel&Spitzer in CSVs
+            //TODO LIVIO check passed instrument is in DB.instruments
+        if (name.equals(Parser2DB.HERSCHEL)) {
+            for (int j = 0; j < this.hershelPaths.size(); j++) {
+                if (deflt)
+                    this.instrumentInUse="Herschel-PACS";
+                else
+                    this.instrumentInUse=nameInstrument;
+                String[] pathTuple = this.hershelPaths.get(j);
+                String path=pathTuple[1];
+                String kindOfCSV = pathTuple[0];
+                //output.add (this.parseStandard(path,kindOfCSV));    //TODO REMOVE THIS LINE OUTPUT OBJ ONLY 4 DEBUG
+
+            }
+        } else if (name.equals(Parser2DB.SPITZER)){
+            for (int j = 0; j < this.spitzerPaths.size(); j++) {
+                if (deflt)
+                    this.instrumentInUse="Spitzer-MIPS";
+                else
+                    this.instrumentInUse=nameInstrument;
+                //set instrument used in CSV spitzer... ONLY MIPS USED
+                String[] pathTuple = this.spitzerPaths.get(j);
+                String path=pathTuple[1];
+                String kindOfCSV = pathTuple[0];
+                //output.add (this.parseStandard(path,kindOfCSV));
+
+            }
+        } else if (name.equals(Parser2DB.STAR)){
+            String[] pathTuple = this.starPath;
+            String path=pathTuple[1];
+            String kindOfCSV = pathTuple[0];
+            //output.add (this.parseStandard(path,kindOfCSV));
+
+    }
+        else
+            throw new IllegalArgumentException("invalid (set of) files to parse...\n called with" + name);
+            //caller may catch this exeption and retry with other name of set of csv files to load...
+
+    //return output;
+    }
+
+    public static void main(String[] args) throws Exception {
+
+        Parser parser = new Parser();
+//        parser.readCSV(Parser2DB.HERSCHEL);
+
+        //TODO remove these dubug lists... wast a lot of mem
+//        List<List<String[]>> listHershel = parser.readCSV(Parser2DB.HERSCHEL);
+//        List<List<String[]>> listSpitzer = parser.readCSV(Parser2DB.SPITZER);
+//        List<List<String[]>> listStars = parser.readCSV(Parser2DB.STAR);
+//        System.out.println(listHershel.size()+listSpitzer.size()+listStars.size());
+
+        // TODO end remove..
+        //nb all files togeter size ~170 MB...
+        parser.parseBlock("CSV/filamenti_Herschel.csv",Parser2DB.FILAMENT);
+        //TODO IMPORT TEST CASE... LINE IN DB==LINE IN CSV... 11451-1( the header one);
+        //parser.parseSatelliteInfo("configs/satellite.txt");
+    }
+}

@@ -1,0 +1,5 @@
+     name      , satellite ,band       #FIRST LINE HAS TO BE SKIPPED
+Herschel-PACS  , Herschel  , {70,160}
+Herschel-SPIRE , Herschel  , {250,350,500}
+Spitzer-IRAC   , Spitzer   , {3.6,4.5,5.8,8}
+Spitzer-MIPS   , Spitzer   , {24}

@@ -1,0 +1,3 @@
+name   , startdate  , type  ,  enddate   
+Herschel,2009-07-10,ended,2013-06-17
+Spitzer ,2003-12-18,ended,2009-05-15

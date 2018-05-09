@@ -15,9 +15,10 @@ public class Connection {
     private static String DB_URL;
     private static String DRIVER;
 
-    private final String fileConfig = "config.properties";
+    private final String fileConfig = "configs/config.properties";
+    private final String sqlFile = "configs/sqlFile.properties";
 
-    public static Connection getIstance() throws IOException {
+    public static synchronized Connection getIstance()  {
         if(istance == null) {
             istance = new Connection();
             return istance;
@@ -27,12 +28,12 @@ public class Connection {
         }
     }
 
-    private Connection() throws IOException {
+    private Connection()  {
 
         this.getConfig();
     }
 
-    private void getConfig() throws IOException {  // take a configuration info of database from file
+    private void getConfig()  {  // take a configuration info of database from file
         Properties properties = null;
         FileInputStream fis = null;
         try {
@@ -49,9 +50,13 @@ public class Connection {
             e.printStackTrace();
         }
         finally {
-            properties.clone();
-            fis.close();
-            this.prova();
+
+            try {
+                fis.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
         }
 
     }
@@ -60,7 +65,7 @@ public class Connection {
         java.sql.Connection conn = null;
         // aggiungere controllo se la connessione è gia aperta o metterlo come valore di ritorno(coon) ?
         try {
-
+            System.out.println(DRIVER);
             Class.forName(DRIVER);
             conn = DriverManager.getConnection(DB_URL, USER, PASS);
 
@@ -85,11 +90,39 @@ public class Connection {
         } catch (SQLException se) {
             se.printStackTrace();
         }
+
+
     }
 
-    private void prova() {
-        System.out.println(PASS + " " + DRIVER + " " + USER + " " + DB_URL);
+    public String getSqlString(String idQuery)  {
+        Properties properties = null;
+        FileInputStream fis = null;
+        String query = null;
+        try {
+            fis = new FileInputStream(this.sqlFile);
+            properties = new Properties();
+            properties.load(fis);
+            query = properties.getProperty(idQuery);
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        finally {
+
+            try {
+                fis.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+        }
+        return query;
     }
 
 
-}
+
+
+    }
+

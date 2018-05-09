@@ -1,14 +1,14 @@
 package ENTITY;
 
 public class Point {
-    private int lat;
-    private int glon;
+    private double lat;
+    private double glon;
 
-    public int getLat() {
+    public double getLat() {
         return lat;
     }
 
-    public int getGlon() {
+    public double getGlon() {
         return glon;
     }
 }

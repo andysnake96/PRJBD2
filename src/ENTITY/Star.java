@@ -3,8 +3,8 @@ package ENTITY;
 public class Star {
     private int id;
     private String name;
-    private int glon;
-    private int glat;
+    private double glon;
+    private double glat;
     private double flux;
     private String type;
     private Satellite satellite;
@@ -17,11 +17,11 @@ public class Star {
         return name;
     }
 
-    public int getGlon() {
+    public double getGlon() {
         return glon;
     }
 
-    public int getGlat() {
+    public double getGlat() {
         return glat;
     }
 

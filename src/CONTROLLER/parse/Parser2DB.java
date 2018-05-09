@@ -19,6 +19,5 @@ public interface Parser2DB {
     //reused star as communication string...
     public void readCSV(String name, String nameInstrument) throws Exception;
     public void parseStandard(String path, String kindCSV) throws Exception ;
-
-
-}
+    public  void parseSatelliteInfo(String path) throws Exception ;
+    public void parseExternFile(String path,String kindCSV,String nameStr ) throws Exception ;

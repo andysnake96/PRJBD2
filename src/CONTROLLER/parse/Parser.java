@@ -182,13 +182,14 @@ public class Parser implements Parser2DB {
                             "with columns:\t" + Arrays.toString(CSVColumns));   //WRONG LINE NUM
                     continue;
                 } else {          //NOT FLIPPED LINE...
-                    if (strIndx != null) { //(only some)CSV in parsing has strings to be quoted
-                        for (int x = 0; x < strIndx.length; x++) {
-                            String quotedField = this.quoteField(fields.get(strIndx[x]));
-                            fields.set(strIndx[x], quotedField);
-                            //quoting strings fields..
-                            //todo check
-                        }
+//                    if (strIndx != null) { //(only some)CSV in parsing has strings to be quoted
+//                        for (int x = 0; x < strIndx.length; x++) {
+//                            String quotedField = this.quoteField(fields.get(strIndx[x]));
+//                            fields.set(strIndx[x], quotedField);
+//                            //quoting strings fields..
+//                            //TODO QUOTING NEEDED ONLY FOR SQL ON THE FLY
+//                        }
+
                         if (kindCSV.equals(FILAMENT)) {
                             int delCol = filamentDelColIndx[0];
                             fields.set(delCol, null);  //db does not need a column in filament CSV
@@ -203,7 +204,7 @@ public class Parser implements Parser2DB {
                     parser2DBDAO.initDBFromCSVBlock(kindCSV, blockOfRecords, this.instrumentInUse); //write block of lines to DB !!!!!!!!!!!!
                     blockOfRecords = new ArrayList<>();        //TODO NEEDED TO BE EMPTYED TO NEXT BLOCK
                 }
-            }
+
 
 
 
@@ -325,25 +326,28 @@ public class Parser implements Parser2DB {
         if (name.equals(Parser2DB.HERSCHEL)) {
             for (int j = 0; j < this.hershelPaths.size(); j++) {
                 if (deflt)
-                    this.instrumentInUse="Herschel-PACS";
+                    this.instrumentInUse="SPIRE";
                 else
                     this.instrumentInUse=nameInstrument;
                 String[] pathTuple = this.hershelPaths.get(j);
                 String path=pathTuple[1];
                 String kindOfCSV = pathTuple[0];
+                this.parseBlock(path,kindOfCSV);
                 //output.add (this.parseStandard(path,kindOfCSV));    //TODO REMOVE THIS LINE OUTPUT OBJ ONLY 4 DEBUG
 
             }
         } else if (name.equals(Parser2DB.SPITZER)){
             for (int j = 0; j < this.spitzerPaths.size(); j++) {
                 if (deflt)
-                    this.instrumentInUse="Spitzer-MIPS";
+                    this.instrumentInUse="MIPS";
                 else
                     this.instrumentInUse=nameInstrument;
                 //set instrument used in CSV spitzer... ONLY MIPS USED
                 String[] pathTuple = this.spitzerPaths.get(j);
                 String path=pathTuple[1];
                 String kindOfCSV = pathTuple[0];
+                this.parseBlock(path,kindOfCSV);
+
                 //output.add (this.parseStandard(path,kindOfCSV));
 
             }
@@ -351,6 +355,8 @@ public class Parser implements Parser2DB {
             String[] pathTuple = this.starPath;
             String path=pathTuple[1];
             String kindOfCSV = pathTuple[0];
+            this.parseBlock(path,kindOfCSV);
+
             //output.add (this.parseStandard(path,kindOfCSV));
 
     }
@@ -373,8 +379,9 @@ public class Parser implements Parser2DB {
 //        System.out.println(listHershel.size()+listSpitzer.size()+listStars.size());
 
         // TODO end remove..
-        //nb all files togeter size ~170 MB...
-        parser.parseBlock("CSV/filamenti_Herschel.csv",Parser2DB.FILAMENT);
+        //nb all files togeter size ~
+        parser.readCSV(HERSCHEL,null);
+        //parser.parseBlock("CSV/scheletro_filamenti_Herschel.csv",Parser2DB.SKELETONPOINT);
         //TODO IMPORT TEST CASE... LINE IN DB==LINE IN CSV... 11451-1( the header one);
         //parser.parseSatelliteInfo("configs/satellite.txt");
     }

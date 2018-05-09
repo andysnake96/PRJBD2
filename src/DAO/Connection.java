@@ -91,9 +91,5 @@ public class Connection {
         System.out.println(PASS + " " + DRIVER + " " + USER + " " + DB_URL);
     }
 
-    public static void main(String args[]) throws IOException {
-        Connection c = new Connection();
 
-
-    }
 }

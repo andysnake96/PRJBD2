@@ -6,8 +6,8 @@ CREATE TABLE public.star
 (
   id integer NOT NULL,
   name character varying(64),
-  glon integer NOT NULL,
-  glat integer NOT NULL,
+  glon double precision NOT NULL,
+  glat double precision NOT NULL,
   flux double precision,
   type character varying(64),
   satellite character varying(64),

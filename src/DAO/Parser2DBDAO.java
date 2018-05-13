@@ -119,6 +119,7 @@ public class Parser2DBDAO {
         Statement stmtt=null;
         try {
             stmtt = conn.createStatement();
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -139,7 +140,7 @@ public class Parser2DBDAO {
 
     private void writeOutline(List<List<String>> records,String nameStr) throws SQLException {
         //TODO LIVIO BEFORE WRITE CHECK BUISNESS RULE... QUERY_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_--_---_----___----__-___-
-
+        this.checkOutline(records);
         String sql = insertProp.getProperty("insertOutlineP");
         PreparedStatement prepS = this.conn.prepareStatement(sql);
         List<String> record=null;
@@ -159,6 +160,14 @@ public class Parser2DBDAO {
                 System.err.println("errore nell esecuzione del batch posizione "+i);
         }
         //prepS.executeLargeBatch()
+    }
+
+    private void checkOutline(List<List<String>> records) {
+        int lenght = records.get(1).size();
+        for(int i = 0; i < lenght; i++) {
+            System.out.println(records.get(1).get(i));
+        }
+
     }
 
     private void writeFilament(List<List<String>> records) throws SQLException {

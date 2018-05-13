@@ -8,11 +8,11 @@ CREATE TABLE public.skeletonpoint
   n integer NOT NULL,
   flux double precision,
   type character(1),
-  glon integer NOT NULL,
-  glat integer NOT NULL,
+  glon double precision NOT NULL,
+  glat double precision NOT NULL,
   idfil integer NOT NULL,
   namestr character varying(64) NOT NULL,
-  CONSTRAINT skeletonpoint_pkey PRIMARY KEY (idseg, n),
+  CONSTRAINT skeletonpoint_pkey PRIMARY KEY (idseg, n, namestr),
   CONSTRAINT skeletonpoint_idfil_fkey FOREIGN KEY (idfil, namestr)
       REFERENCES public.filament (id, namestr) MATCH SIMPLE
       ON UPDATE CASCADE ON DELETE CASCADE,

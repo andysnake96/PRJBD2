@@ -3,21 +3,12 @@ package DAO;
 
 
 import CONTROLLER.parse.Parser2DB;
-import org.postgresql.util.PSQLException;
-import org.xml.sax.Parser;
 
 import java.io.FileInputStream;
-import java.io.IOException;
-import java.sql.*;
 import java.sql.Connection;
-import java.time.LocalDate;
-import java.time.Year;
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.sql.*;
 import java.util.List;
 import java.util.Properties;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
 public class Parser2DBDAO {
     /*
 
@@ -138,9 +129,9 @@ public class Parser2DBDAO {
 
     }
 
-    private void writeOutline(List<List<String>> records,String nameStr) throws SQLException {
+    private void writeOutline(List<List<String>> records,String nameStr) throws SQLException, MyException {
         //TODO LIVIO BEFORE WRITE CHECK BUISNESS RULE... QUERY_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_--_---_----___----__-___-
-        this.checkOutline(records);
+        //this.checkOutline(records, nameStr);
         String sql = insertProp.getProperty("insertOutlineP");
         PreparedStatement prepS = this.conn.prepareStatement(sql);
         List<String> record=null;
@@ -159,15 +150,38 @@ public class Parser2DBDAO {
             if(out[i]<0)
                 System.err.println("errore nell esecuzione del batch posizione "+i);
         }
+       // this.checkOutline(nameStr);
         //prepS.executeLargeBatch()
     }
 
-    private void checkOutline(List<List<String>> records) {
-        int lenght = records.get(1).size();
-        for(int i = 0; i < lenght; i++) {
-            System.out.println(records.get(1).get(i));
-        }
+    private void checkOutline(List<List<String>> records, String nameStr) throws SQLException, MyException {
+        DAO.Connection connection = DAO.Connection.getIstance();
+        String sql = connection.getSqlString("queryconstraintoutline");
+        PreparedStatement stmt =  this.conn.prepareStatement(sql);
+            for(int i = 0; i < records.size(); i++) {
 
+                    stmt.setInt(1, Integer.parseInt(records.get(i).get(0)));  //idFil
+                    stmt.setString(2, nameStr);
+                    stmt.setDouble(3, Double.parseDouble(records.get(i).get(2))); //glat
+                    stmt.setDouble(4, Double.parseDouble(records.get(i).get(1))); //glon
+                    ResultSet rs = stmt.executeQuery();
+                    if(rs.next())
+                        throw new MyException();
+
+                }
+        System.out.println("block finisher");
+            }
+
+    private void checkOutline( String nameStr) throws SQLException, MyException {
+        DAO.Connection connection = DAO.Connection.getIstance();
+        String sql = connection.getSqlString("queryconstraintoutlinebis");
+        PreparedStatement stmt =  this.conn.prepareStatement(sql);
+        stmt.setString(1, nameStr);
+        ResultSet rs = stmt.executeQuery();
+        if(rs.next()) {
+            throw new MyException();
+        }
+        System.out.println("block finisher");
     }
 
     private void writeFilament(List<List<String>> records) throws SQLException {
@@ -220,7 +234,7 @@ public class Parser2DBDAO {
         }
         //prepS.executeLargeBatch()
     }
-    private void writeStar(List<List<String>> records) throws SQLException {
+    private void writeStar(List<List<String>> records,String satellite) throws SQLException {
         String sql = insertProp.getProperty("insertStar");
         PreparedStatement prepS = this.conn.prepareStatement(sql);
         List<String> record=null;
@@ -232,7 +246,7 @@ public class Parser2DBDAO {
             prepS.setDouble(4,Double.parseDouble(record.get(3)));   //glat
             prepS.setDouble(5,Double.parseDouble(record.get(4)));   //flux
             prepS.setString(6,record.get(5));                       //type
-            prepS.setString(7,record.get(6));                       //satellite
+            prepS.setString(7,satellite);                       //satellite
 
             prepS.addBatch();
             prepS.clearParameters();        //ADDED TO BATCH AND CLEARED INSERTED PARAMETERS...
@@ -246,7 +260,7 @@ public class Parser2DBDAO {
     }
 
 
-    public void initDBFromCSVBlock(String name,List<List<String>>records,String nameStr) throws SQLException {
+    public void initDBFromCSVBlock(String name,List<List<String>>records,String nameStr,String nameSat) throws SQLException, MyException {
         // wrap write in db based on the kind of the CSV parsed in records...
         //nameStr for the added column... only filament &Star accept nameStr==null
         if (name.equals(Parser2DB.OUTLINE) && nameStr!=null) {
@@ -259,15 +273,43 @@ public class Parser2DBDAO {
             }
         else if (name.equals(Parser2DB.SKELETONPOINT) && nameStr!=null){
             this.writeSkeleton(records,nameStr);
+
         }
         else if (name.equals(Parser2DB.STAR)){
-            this.writeStar(records);
+            this.writeStar(records,nameSat);
         }
         else
             throw new IllegalArgumentException("invalid inputs");
         //caller may catch this exeption and retry with other name of set of csv files to load...
 
+
     }
+
+    public void updatenSeg() throws SQLException {
+        DAO.Connection connection = DAO.Connection.getIstance();
+        String sql = connection.getSqlString("querynseg");
+        PreparedStatement stmt =  this.conn.prepareStatement(sql);
+        stmt.executeUpdate();
+    }
+
+    public void checkConstraints(String nameStr) throws MyException, SQLException {
+        DAO.Connection connection = DAO.Connection.getIstance();
+        String sql = connection.getSqlString("queryconstraintoutlinebis");
+        PreparedStatement stmt =  this.conn.prepareStatement(sql);
+        stmt.setString(1, nameStr);
+        ResultSet rs = stmt.executeQuery();
+        if(rs.next()) {
+            throw new MyException();
+        }
+        String sql2 = connection.getSqlString("queryconstraintskeleton");
+        PreparedStatement stmt2 = this.conn.prepareStatement(sql2);
+        ResultSet rs2 = stmt2.executeQuery();
+        if(rs2.next()) {
+            throw new MyException();
+        }
+
+    }
+
 
     public void insertSatellite(List<List<String>> records) throws Exception {
 

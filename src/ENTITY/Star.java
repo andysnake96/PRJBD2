@@ -36,4 +36,32 @@ public class Star {
     public Satellite getSatellite() {
         return satellite;
     }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setGlon(double glon) {
+        this.glon = glon;
+    }
+
+    public void setGlat(double glat) {
+        this.glat = glat;
+    }
+
+    public void setFlux(double flux) {
+        this.flux = flux;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public void setSatellite(Satellite satellite) {
+        this.satellite = satellite;
+    }
 }

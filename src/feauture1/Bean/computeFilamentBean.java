@@ -4,7 +4,7 @@ public class computeFilamentBean {
     private String name;
     private int id;
     private String nameStr;
-    private int type;
+    private int type;  // se 0 ho il nome del filamento se è 1 hol'id e il nome strumento
 
     public computeFilamentBean(String name) {
         this.name = name;

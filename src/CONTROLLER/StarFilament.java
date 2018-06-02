@@ -3,73 +3,128 @@ package CONTROLLER;
 import BEAN.BeanRF9;
 import CONTROLLER.parse.Parser;
 import CONTROLLER.parse.Parser2DB;
+import DAO.DAOFilament;
+import DAO.DAOPoint;
+import DAO.DAOStar;
 import ENTITY.Filament;
 import ENTITY.Outline;
 import ENTITY.Point;
 import ENTITY.Star;
+import feauture1.Bean.computeFilamentBean;
+
 import java.lang.Math;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 public class StarFilament {
 
-    private List<Star> star;
-    private List<Filament> filaments;   //initialized from constructor
-    private HashMap<String,Integer> counters;
-    private HashMap<Filament,List<Star >> bindings; //for future extensions of functional requirements
-    private final double  INPAR=0.01;
+    private List<Star> stars;
+    private Filament filament;   //initialized from constructor
+    private HashMap<String, Integer> counters;
+    private HashMap<Filament, List<Star>> bindings; //for future extensions of functional requirements
+    private final double INPAR = 0.01;
 
-    public BeanRF9 starsInFilament(){
-        Filament filament = new Filament();
-        List<Star> stars = new ArrayList<>();
-        Outline outline = filament.getOutline();
-        //TODO simulazione senza DAO
-        List<Point> ps = outline.getPoints();
-        for(int s=0;s<stars.size();s++){
-            double sum=0;
-            Star star = stars.get(s);
-            for(int p=0;p<ps.size()-1;p++){
+    public StarFilament() {
+        this.stars = null;
+        this.filament = null;
+        this.counters = new HashMap<>();
+        this.bindings = new HashMap<>();
+    }
+
+    private String takeStarFilament(computeFilamentBean bean)  {
+
+        try {
+            this.stars = DAOStar.takeAllStars();
+            this.filament = searchFilament(bean);
+            if (this.filament == null) {
+                return "Filament don't exist";
+            }
+            Outline outline = DAOPoint.takeOutline(this.filament.getId(), this.filament.getInstrument().getName());
+            this.filament.setOutline(outline);
+        }
+        catch (SQLException se) {
+
+                se.printStackTrace();
+                return "database fault";
+
+        }
+        return null;
+    }
+
+
+    public BeanRF9 starsInFilament(computeFilamentBean bean) {
+        String message = takeStarFilament(bean);
+        List<Point> ps = this.filament.getOutline().getPoints();
+        if(message != null) {
+            //TODO mettere il messaggio nel bean e ritornarlo.
+            System.err.println("c'e stato un errore");
+            return null;
+        }
+        for (int s = 0; s < this.stars.size(); s++) {
+            double sum = 0;
+            Star star = this.stars.get(s);
+            for (int p = 0; p < ps.size() - 1; p++) {
                 Point point0 = ps.get(p);
-                Point point1 = ps.get(p+1);
-                double cli= point0.getLat();
+                Point point1 = ps.get(p + 1);
+                double cli = point0.getLat();
                 double cbi = point0.getGlon();
                 double cli1 = point1.getLat();
                 double cbi1 = point1.getGlon();
                 double stl = star.getGlat();
                 double stb = star.getGlon();
-                double num= ((cli-stl)*(cbi1-stb)-(cbi-stb)*(cli1-stl));
-                double den=(cli-stl)*(cli1-stl)+(cbi-stb)*(cbi1-stb);
-                sum+=Math.atan(num/den);
+                double num = ((cli - stl) * (cbi1 - stb) - (cbi - stb) * (cli1 - stl));
+                double den = (cli - stl) * (cli1 - stl) + (cbi - stb) * (cbi1 - stb);
+                sum += Math.atan(num / den);
 
             }
             sum = Math.abs(sum);
-            if (sum>=INPAR) {
-                updateMap(stars.get(s));
-                bindStar(stars.get(s),filament);  //bind filament (only 1 in this metod) -> star
+            if (sum >= INPAR) {
+                updateMap(this.stars.get(s));
+                //bindStar(this.stars.get(s), this.filament);  //bind filament (only 1 in this metod) -> star
             }
         }
-        BeanRF9 beanRF9= new BeanRF9(this.counters);
+        BeanRF9 beanRF9 = new BeanRF9(this.counters);
 
         return beanRF9;
 
     }
 
     private void bindStar(Star star, Filament filament) {
-        List<Star> starsOfFilament= this.bindings.get(filament);
+        List<Star> starsOfFilament = this.bindings.get(filament);
         starsOfFilament.add(star);
     }
 
     private void updateMap(Star star) {
         String starType = star.getType();
-        if ( this.counters.containsKey(starType)  )
-            this.counters.put(starType,this.counters.get(starType)+1);//increment counter
+        if (this.counters.containsKey(starType))
+            this.counters.put(starType, this.counters.get(starType) + 1);//increment counter
         else
-            this.counters.put(starType,1);
+            this.counters.put(starType, 1);
 
 
-        }
     }
+
+
+    private Filament searchFilament(computeFilamentBean bean) throws SQLException {
+        if (bean.getType() == 0)
+            return DAOFilament.searchFilamentByName(bean.getName());
+        else
+            return DAOFilament.searchFilamentById(bean.getId(), bean.getNameStr());
+
+
+    }
+
+    public static void main(String args[]) {
+        computeFilamentBean bean = new computeFilamentBean("HiGALFil005.0050+0.1499");
+        StarFilament starFilament  = new StarFilament();
+        BeanRF9 beanRF9 =  starFilament.starsInFilament(bean);
+        System.out.println(beanRF9);
+    }
+}
+
+
 
 

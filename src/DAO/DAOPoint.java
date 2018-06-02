@@ -1,17 +1,21 @@
 package DAO;
 
 import ENTITY.Filament;
+import ENTITY.Outline;
 import ENTITY.Point;
 
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class DAOPoint {
 
     private static final String computeCentroide = "computecentroide";
     private static final String computeExstension = "computeexstension";
+    private static final String takeOutline = "takeoutline";
 
     public static Point computeCentroide(int idFil, String nameStr) throws SQLException {
         PreparedStatement stmt = null;
@@ -62,7 +66,30 @@ public class DAOPoint {
         return points;
 
     }
+
+    public static Outline takeOutline(int idFil, String nameStr) throws SQLException { //ritorna tutta la lista di punti del controno di un determinato filamento
+        PreparedStatement stmt = null;
+        DAO.Connection connection = DAO.Connection.getIstance();
+        java.sql.Connection conn = connection.getConn();
+        String sql = connection.getSqlString(takeOutline);
+
+        stmt = conn.prepareStatement(sql);
+        stmt.setInt(1, idFil);
+        stmt.setString(2, nameStr);
+        ResultSet resultSet =  stmt.executeQuery();
+
+        List<Point> outline = new ArrayList<>();
+        while(resultSet.next()) {
+            Point point = new Point();
+            point.setGlon(resultSet.getDouble("glon"));
+            point.setLat(resultSet.getDouble("glat"));
+            outline.add(point);
+        }
+        stmt.close();
+        resultSet.close();
+        return new Outline(outline);
     }
+}
 
 
 

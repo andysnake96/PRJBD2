@@ -8,4 +8,11 @@ public class BeanRF9 {
     public BeanRF9(HashMap<String, Integer> counters) {
         this.counters = counters;
     }
+
+    @Override
+    public String toString() {
+        return "BeanRF9{" +
+                "counters=" + counters +
+                '}';
+    }
 }

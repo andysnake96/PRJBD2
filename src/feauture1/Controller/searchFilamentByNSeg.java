@@ -1,7 +1,7 @@
 package feauture1.Controller;
 
 import ENTITY.Filament;
-import feauture1.Bean.BeanFilament;
+import feauture1.Bean.InfoFilament;
 import feauture1.Bean.rangeNSeg;
 
 import java.sql.SQLException;
@@ -16,12 +16,12 @@ public class searchFilamentByNSeg {
         this.filaments = new ArrayList<>();
     }
 
-    public List<BeanFilament> executeSearch(rangeNSeg range) {
-        List<BeanFilament> beans = new ArrayList<>();
+    public List<InfoFilament> executeSearch(rangeNSeg range) {
+        List<InfoFilament> beans = new ArrayList<>();
         try {
             this.filaments =  DAO.DAOFilament.searchByRangeNSeg(range.getnSegMin(), range.getnSegMax());
             for(Filament filament : this.filaments) {
-                BeanFilament bean = new BeanFilament();
+                InfoFilament bean = new InfoFilament();
                 bean.setId(filament.getId());
                 bean.setContrast(filament.getContrast());
                 bean.setDensAvg(filament.getDensAvg());
@@ -35,7 +35,7 @@ public class searchFilamentByNSeg {
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            BeanFilament bean = new BeanFilament();
+            InfoFilament bean = new InfoFilament();
             bean.setErrorMessage("databse fault");
             beans.add(bean);
         }
@@ -48,11 +48,11 @@ public class searchFilamentByNSeg {
     public static void main(String args[]) {
        rangeNSeg bean = new rangeNSeg(22, 35);
        searchFilamentByNSeg s = new searchFilamentByNSeg();
-       List<BeanFilament> beans;
+       List<InfoFilament> beans;
        beans = s.executeSearch(bean);
        System.out.println(beans.size());
-       for(BeanFilament beanFilament : beans) {
-           System.out.println(beanFilament);
+       for(InfoFilament infoFilament : beans) {
+           System.out.println(infoFilament);
        }
 
 

@@ -1,10 +1,8 @@
 package DAO;
 
-import ENTITY.Filament;
 import ENTITY.Outline;
 import ENTITY.Point;
 
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -16,6 +14,8 @@ public class DAOPoint {
     private static final String computeCentroide = "computecentroide";
     private static final String computeExstension = "computeexstension";
     private static final String takeOutline = "takeoutline";
+    private static final String queryVertexUpper = "queryvertexupper";
+    private static final String queryVertexLower = "queryvertexlower";
 
     public static Point computeCentroide(int idFil, String nameStr) throws SQLException {
         PreparedStatement stmt = null;
@@ -89,6 +89,62 @@ public class DAOPoint {
         resultSet.close();
         return new Outline(outline);
     }
+
+    public static Point takeVertexUpper(int idFil, String nameStr) throws SQLException {  //torna i vertici del filamento
+        PreparedStatement stmt;
+        DAO.Connection connection = DAO.Connection.getIstance();
+        java.sql.Connection conn = connection.getConn();
+
+        Point pointNMax = new Point();  //points[0] -> point with n max points[1] -> point with n min
+
+        String sql = connection.getSqlString(queryVertexUpper);
+
+        stmt = conn.prepareStatement(sql);
+        stmt.setInt(1, idFil);
+        stmt.setString(2, nameStr);
+        ResultSet rs = stmt.executeQuery();
+        if(!rs.next()) {
+            return null;
+        }
+
+        pointNMax.setGlon(rs.getDouble("glon"));
+        pointNMax.setLat(rs.getDouble("glat"));
+
+        connection.closeConn(conn);
+        stmt.close();
+        rs.close();
+        return pointNMax;
+
+    }
+
+    public static Point takeVertexLower(int idFil, String nameStr) throws SQLException {  //torna i vertici del filamento
+        PreparedStatement stmt;
+        DAO.Connection connection = DAO.Connection.getIstance();
+        java.sql.Connection conn = connection.getConn();
+
+        Point pointNMin = new Point();  //points[0] -> point with n max points[1] -> point with n min
+
+        String sql = connection.getSqlString(queryVertexLower);
+
+        stmt = conn.prepareStatement(sql);
+        stmt.setInt(1, idFil);
+        stmt.setString(2, nameStr);
+        ResultSet rs = stmt.executeQuery();
+        if(!rs.next()) {
+            return null;
+        }
+
+        pointNMin.setGlon(rs.getDouble("glon"));
+        pointNMin.setLat(rs.getDouble("glat"));
+
+        connection.closeConn(conn);
+        stmt.close();
+        rs.close();
+        return pointNMin;
+
+    }
+
+
 }
 
 

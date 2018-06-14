@@ -66,6 +66,7 @@ public class StarFilament {
     public BeanRF9 starsInFilament() {
         //String message = takeStarFilament(bean);
         List<Point> ps = this.filament.getOutline().getPoints();
+        List<Star> starsInFilament = new ArrayList<>();
         if(this.messageError != null) {
             return new BeanRF9(this.messageError);
         }
@@ -88,11 +89,12 @@ public class StarFilament {
             }
             sum = Math.abs(sum);
             if (sum >= INPAR) {
-                updateMap(this.stars.get(s));
-                //bindStar(this.stars.get(s), this.filament);  //bind filament (only 1 in this metod) -> star
+                updateMap(star);
+               // bindStar(this.stars.get(s), this.filament);  //bind filament (only 1 in this metod) -> star
+                starsInFilament.add(star);
             }
         }
-        BeanRF9 beanRF9 = new BeanRF9(this.counters);
+        BeanRF9 beanRF9 = new BeanRF9(this.counters, starsInFilament);
 
         return beanRF9;
 

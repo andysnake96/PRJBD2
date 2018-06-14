@@ -6,6 +6,7 @@ import ENTITY.Instrument;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,6 +15,7 @@ public class DAOFilament {
     private static final String searchFilamentByName = "searchfilamentbyname";
     private static final String searchFilamentById = "searchfilamentbyid";
     private static final String searchFilamentByRangeNSeg = "searchfilamentbyrangenseg";
+    private static final String takeFilaments = "takefilaments";
 
     public static Filament searchFilamentByName(String name) throws SQLException {
         DAO.Connection connection = DAO.Connection.getIstance();
@@ -87,5 +89,32 @@ public class DAOFilament {
         return filaments;
     }
 
+    public static List<Filament> takeAllFilaments() throws SQLException {
+        DAO.Connection connection = DAO.Connection.getIstance();
+        java.sql.Connection conn = connection.getConn();
+        String sql = connection.getSqlString(takeFilaments);
+        Statement stmt = conn.createStatement();
+
+        ResultSet rs = stmt.executeQuery(sql);
+
+        List<Filament> filaments = new ArrayList<>();
+        while (rs.next()) {
+            Filament filament = new Filament();
+            filament.setName(rs.getString("name"));
+            filament.setId(rs.getInt("id"));
+            filament.setInstrument(new Instrument(rs.getString("nameStr")));
+            filament.setnSeg(rs.getInt("nseg"));
+            filament.setContrast(rs.getDouble("contrast"));
+            filament.setDensAvg(rs.getDouble("densavg"));
+            filament.setTempAvg(rs.getDouble("tempavg"));
+            filament.setEllipticity(rs.getDouble("ellipticty"));
+            filament.setFluxTot(rs.getDouble("fluxtot"));
+            filaments.add(filament);
+        }
+        stmt.close();
+        connection.closeConn(conn);
+        rs.close();
+        return filaments;
+    }
 
 }

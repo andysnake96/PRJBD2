@@ -16,7 +16,7 @@ import java.util.List;
 public class DAOStar {
 
     private static final String takeStars = "takestars";
-    private static final String takeStarsInRectangle = "starinrectangle"
+    private static final String takeStarsInRectangle = "starinrectangle";
 
     public static List<Star> takeAllStars() throws SQLException {
 
@@ -53,19 +53,19 @@ public class DAOStar {
     rettangolo. Tra l'altro conta anche il numero di stelle per ogni tipo
      */
 
-    public static StarAndType takeStarInRectangle(double glatLeft, double glatRight, double glonDown, double glonUp) { //resituisce le stelle all'interno di un rettangol
+    public static StarAndType takeStarInRectangle(double glonLeft, double glonRight, double glatDown, double glatUp) throws SQLException { //resituisce le stelle all'interno di un rettangol
         DAO.Connection connection = DAO.Connection.getIstance();
         java.sql.Connection conn = connection.getConn();
         String sql = connection.getSqlString(takeStarsInRectangle);
         PreparedStatement stmt = conn.prepareStatement(sql);
-        stmt.setDouble(1, glatLeft);
-        stmt.setDouble(2, glatRight);
-        stmt.setDouble(3, glonDown);
-        stmt.setDouble((4, glonUp));
+        stmt.setDouble(1, glonLeft);
+        stmt.setDouble(2, glonRight);
+        stmt.setDouble(3, glatDown);
+        stmt.setDouble(4, glatUp);
         ResultSet rs = stmt.executeQuery();
 
         List<Star> stars = new ArrayList<>();
-        HashMap<String, Integer> counters = new HashMap<>()
+        HashMap<String, Integer> counters = new HashMap<>();
         while(rs.next()) {
             Star star = new Star();
             star.setId(rs.getInt("id"));
@@ -79,7 +79,7 @@ public class DAOStar {
             if (counters.containsKey(starType))
                 counters.put(starType, counters.get(starType) + 1);//increment counter
             else
-                this.counters.put(starType, 1);
+                counters.put(starType, 1);
             stars.add(star);
         }
         StarAndType starAndType = new StarAndType(stars, counters);

@@ -33,4 +33,11 @@ public class StarAndType {
     public void setCounters(HashMap<String, Integer> counters) {
         this.counters = counters;
     }
+
+    /*
+    metodo per eliminare alcune stelle che già si sa che stanno nel contorno di un filamento
+     */
+    public void removeStars(List<Star> stars) {
+        this.stars.removeAll(stars);
+    }
 }

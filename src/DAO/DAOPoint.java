@@ -85,6 +85,7 @@ public class DAOPoint {
             point.setLat(resultSet.getDouble("glat"));
             outline.add(point);
         }
+        conn.close();
         stmt.close();
         resultSet.close();
         return new Outline(outline);

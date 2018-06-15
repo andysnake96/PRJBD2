@@ -1,5 +1,10 @@
 package feauture1.Bean;
 
+
+/*
+classe bean che utilizzo per trasportare infromazioni del filamento che l'utente ha scelto. L'utente può scegliere
+il nome o l'id con il relativo strumento.
+ */
 public class computeFilamentBean {
     private String name;
     private int id;

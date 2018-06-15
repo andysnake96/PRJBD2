@@ -66,8 +66,11 @@ public class DAOPoint {
         return points;
 
     }
+    /*
+    questa funzione esegue una query per prendere tutti i punti del contorno del filamento.
+     */
 
-    public static Outline takeOutline(int idFil, String nameStr) throws SQLException { //ritorna tutta la lista di punti del controno di un determinato filamento
+    public static Outline takeOutline(int idFil, String nameStr) throws SQLException {
         PreparedStatement stmt = null;
         DAO.Connection connection = DAO.Connection.getIstance();
         java.sql.Connection conn = connection.getConn();
@@ -85,18 +88,22 @@ public class DAOPoint {
             point.setLat(resultSet.getDouble("glat"));
             outline.add(point);
         }
-        conn.close();
+        connection.closeConn(conn);
         stmt.close();
         resultSet.close();
         return new Outline(outline);
     }
+
+    /*
+    prende il punto del segmente con numero progressivo più alto.
+     */
 
     public static Point takeVertexUpper(int idFil, String nameStr) throws SQLException {  //torna i vertici del filamento
         PreparedStatement stmt;
         DAO.Connection connection = DAO.Connection.getIstance();
         java.sql.Connection conn = connection.getConn();
 
-        Point pointNMax = new Point();  //points[0] -> point with n max points[1] -> point with n min
+        Point pointNMax = new Point();
 
         String sql = connection.getSqlString(queryVertexUpper);
 
@@ -118,12 +125,16 @@ public class DAOPoint {
 
     }
 
-    public static Point takeVertexLower(int idFil, String nameStr) throws SQLException {  //torna i vertici del filamento
+    /*
+    prende il punto del segmento del filamento considerato con il numero progressivo più basso
+     */
+
+    public static Point takeVertexLower(int idFil, String nameStr) throws SQLException {
         PreparedStatement stmt;
         DAO.Connection connection = DAO.Connection.getIstance();
         java.sql.Connection conn = connection.getConn();
 
-        Point pointNMin = new Point();  //points[0] -> point with n max points[1] -> point with n min
+        Point pointNMin = new Point();
 
         String sql = connection.getSqlString(queryVertexLower);
 

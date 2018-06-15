@@ -60,6 +60,10 @@ public class DAOFilament {
         return filament;
     }
 
+    /*
+    esegue la query che torna tutti i filamenti che hanno un numero di segmenti compresi in quel intervallo
+     */
+
     public static List<Filament> searchByRangeNSeg(int nSegMin, int nSegMax) throws SQLException {
         DAO.Connection connection = DAO.Connection.getIstance();
         java.sql.Connection conn = connection.getConn();

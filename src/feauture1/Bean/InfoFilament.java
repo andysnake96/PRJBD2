@@ -1,4 +1,8 @@
 package feauture1.Bean;
+/*
+questa class contiene tutte le informazioni del filamento per l'utente.
+
+ */
 
 public class InfoFilament {  //questa class econtiene tutte le informazioni del filamente per l'utente
 

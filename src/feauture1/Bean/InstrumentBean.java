@@ -1,6 +1,8 @@
 package feauture1.Bean;
 
-
+/*
+classe bean utilizzata per trasportare le informazioni di un nuovo strumento da inserire nel DB
+ */
 
 public class InstrumentBean {
     private String name;

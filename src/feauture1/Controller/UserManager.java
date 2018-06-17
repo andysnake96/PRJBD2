@@ -19,6 +19,9 @@ public class UserManager {  //relativo al requisito 3, può farlo solo l'amminis
         return msx;
     }
 
+    /*
+    questa funzione controlla i vincoli sull'username e password
+     */
     private String dataControl(String username, String password) {
         if(password.length() < 6 && username.length() < 6) {
             return "password and username not valid, they must have at least 6 chars";
@@ -33,6 +36,10 @@ public class UserManager {  //relativo al requisito 3, può farlo solo l'amminis
             return null;
         }
     }
+
+    /*
+    Funzione per inserire un satellite
+     */
 
     public String addSatellite(SatelliteBean satelliteBean) {
         String msx = SatelliteDao.addSatellite(satelliteBean);
@@ -50,6 +57,9 @@ public class UserManager {  //relativo al requisito 3, può farlo solo l'amminis
         System.out.println(um.addInstrument(ib));
     }
 
+    /*
+    funzione per inserire un nuovo strumento nel DB
+     */
     private String addInstrument(InstrumentBean ib) {
         String msx = InstrumentDao.addInstrument(ib);
         return msx;

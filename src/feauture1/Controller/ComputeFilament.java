@@ -11,13 +11,20 @@ import java.sql.SQLException;
 
 import static java.lang.Math.abs;
 
+/*
+questa classe svolge le specifiche del requisito 5
+ */
 
 public class ComputeFilament {
 
-    private Filament filament; //not static
+    private Filament filament; //questo attributo si riferisce al filamento inserito dall'utente
 
 
-    public  InfoFilament computeFilament(computeFilamentBean bean) { //it's not a constructor
+    /*
+    ottengo tutte le informazioni richieste e l'inserisco nel bean infofilament per riportarle alla grafica
+     */
+
+    public  InfoFilament computeFilament(computeFilamentBean bean) {
         InfoFilament infoFilament = new InfoFilament();
         try {
             this.filament = searchFilament(bean);
@@ -26,15 +33,19 @@ public class ComputeFilament {
                 return infoFilament;
             }
             Point centroide = DAOPoint.computeCentroide(this.filament.getId(), this.filament.getInstrument().getName());
+            if(centroide == null) {
+                infoFilament.setErrorMessage("Error, impossible compute centroide!!!");
+                return infoFilament;
+            }
             infoFilament.setGlatCentroide(centroide.getLat());
             infoFilament.setGlonCentroide(centroide.getGlon());
             this.computeExstension(infoFilament);
             infoFilament.setnSeg(this.filament.getnSeg());
         }
-        catch (SQLException se) {
+        catch (Exception se) {
 
             se.printStackTrace();
-            infoFilament.setErrorMessage("databse fault");
+            infoFilament.setErrorMessage("database fault");
 
         }
         finally {
@@ -43,10 +54,21 @@ public class ComputeFilament {
 
     }
 
+    /*
+    calcolo la 	distanzatra	il	minimo	e massimo	delle	posizioni	longitudinali,	e	tra	il	minimo	e	massimo
+    delle	posizioni latitudinali, eseguendo una query al databse per le posizioni minime e massime
+     */
+
     private void computeExstension(InfoFilament infoFilament) throws SQLException {
         Point point[] = DAOPoint.searchPointMaxMin(filament.getId(), filament.getInstrument().getName());
+        if(point == null) {
+            infoFilament.setErrorMessage("error, impossible compute exstension!!!");
+            return;
+        }
         Point point1 = point[0];
         Point point2 = point[1];
+        System.out.println(point);
+
         Double distLon = abs(point1.getGlon() - point2.getGlon());
         Double distLat = abs(point1.getLat() - point2.getLat());
         infoFilament.setDistLat(distLat);
@@ -54,6 +76,10 @@ public class ComputeFilament {
 
 
     }
+
+    /*
+    l'utente può ricercare il filamento o tramite il nome o tramite l'id.
+     */
 
 
     private Filament searchFilament(computeFilamentBean bean) throws SQLException {
@@ -68,7 +94,7 @@ public class ComputeFilament {
 
     public static void main(String args[]) {
         ComputeFilament f = new ComputeFilament();
-        computeFilamentBean bean = new computeFilamentBean(45, "SPIRE");
+        computeFilamentBean bean = new computeFilamentBean(15636, "IRAC");
         System.out.println(f.computeFilament(bean));
     }
 }

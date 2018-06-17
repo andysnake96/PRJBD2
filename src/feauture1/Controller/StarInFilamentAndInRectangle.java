@@ -11,6 +11,7 @@ import feauture1.Bean.InfoStarInFilamentAndRectangle;
 import feauture1.Bean.Rectangle;
 import feauture1.StarAndType;
 
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -18,9 +19,10 @@ import java.util.List;
 import java.util.Set;
 
 public class StarInFilamentAndInRectangle {
-    private List<Filament> filaments;
+    private List<Filament> filaments;  //tutti i filamenti contenuti nel database
     private StarAndType starsInRectangle;
     private  HashMap<String, Integer> counters;  // per ogni tipo il numero di stelle nel filamento
+    private static final String takeOutline = "takeoutline";
 
     public StarInFilamentAndInRectangle() {
         this.counters = new HashMap<>();
@@ -31,18 +33,35 @@ public class StarInFilamentAndInRectangle {
            this.filaments = DAOFilament.takeAllFilaments();
 
            this.starsInRectangle = takeStarInRectangle(rectangle);
-
+           //Instauro una connessione con il database per ottenere i contorni dei filamenti.
+           DAO.Connection connection = DAO.Connection.getIstance();
+           java.sql.Connection conn = connection.getConn();
+           String sql = connection.getSqlString(takeOutline);
+           PreparedStatement stmt = conn.prepareStatement(sql);
+            /*
+            Vedo le stelle che sono sono all'nterno dei filamenti utilizzando la classe starFilament.
+             */
 
            for (Filament f : this.filaments) {
-               f.setOutline(DAOPoint.takeOutline(f.getId(),f.getInstrument().getName()));  //prendo il contorno dei filamenti
+               stmt.setInt(1, f.getId());
+               stmt.setString(2, f.getInstrument().getName());
+               f.setOutline(DAOPoint.takeOutline(stmt));
+               //f.setOutline(DAOPoint.takeOutline(f.getId(),f.getInstrument().getName()));  //prendo il contorno dei filamenti
+
                StarFilament starFilament = new StarFilament(this.starsInRectangle.getStars(), f);
                BeanRF9 beanRF9 = starFilament.starsInFilament();
                updateCounters(beanRF9);
+               /*
+               le stelle che già sono state trovate all'interno di un filamento vengono scartate, se tutte le stelle sono
+               all'interno di un filamento posso uscire dal ciclo.
+                */
                this.starsInRectangle.removeStars(beanRF9.getStarsInFilament());
                if (this.starsInRectangle.getStars().isEmpty()) {
                    break;
                }
            }
+           connection.closeConn(conn);
+           stmt.close();
        } catch (SQLException e) {
            return new InfoStarInFilamentAndRectangle("database fault");
        }
@@ -50,8 +69,22 @@ public class StarInFilamentAndInRectangle {
 
     }
 
+    private void findOutline(Filament f) throws SQLException {
+        PreparedStatement stmt = null;
+        DAO.Connection connection = DAO.Connection.getIstance();
+        java.sql.Connection conn = connection.getConn();
+        String sql = connection.getSqlString(takeOutline);
+
+        stmt = conn.prepareStatement(sql);
+        stmt.setInt(1, f.getId());
+        stmt.setString(2, f.getInstrument().getName());
+        f.setOutline(DAOPoint.takeOutline(stmt));
+        connection.closeConn(conn);
+        stmt.close();
+    }
+
     /*
-    questo metodo calcola il numero di stelle dentro la regione del rettangolo per ogni tipo, che non sono all'interno
+    questo metodo calcola il numero di stelle dentro la regione del rettangolo, per ogni tipo, che non sono all'interno
     del contorno di un filamento.
      */
 
@@ -93,6 +126,12 @@ public class StarInFilamentAndInRectangle {
         }
     }
 
+    /*
+    questa funzone calcola l'intervallo dello spazio in cui le stelle devono stare per essere all'interno del rettangolo,
+    la latitudine non deve essere distante dal centroide più dell'altezza del rettangolo diviso due. e la latitudine non
+    deve essere distante dal centroide più della metà del lato del rettangolo.
+     */
+
     private StarAndType takeStarInRectangle(Rectangle rectangle) throws SQLException {
         double h = rectangle.getH();
         double l = rectangle.getL();
@@ -107,10 +146,10 @@ public class StarInFilamentAndInRectangle {
 
     public static void main(String args[]) {
         Rectangle r = new Rectangle();
-        r.setGlat(0);
-        r.setGlon(0);
-        r.setH(10);
-        r.setL(100);
+        r.setGlat(-3000);
+        r.setGlon(-3000);
+        r.setH(10000);
+        r.setL(10000);
         StarInFilamentAndInRectangle s = new StarInFilamentAndInRectangle();
         InfoStarInFilamentAndRectangle i = s.execute(r);
         System.out.println(i);

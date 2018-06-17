@@ -11,7 +11,9 @@ public class UserDao {
     private final static String finduser = "finduser";
     private final static String adduser = "adduser";
 
-
+    /*
+    funzione esegue una query per controllare le credenziali d'accesso
+     */
     public static User findUser(String username, String password) {
 
         PreparedStatement stmt = null;
@@ -53,6 +55,10 @@ public class UserDao {
         return user;
 
     }
+
+    /*
+    questa funzione esegue un update per inserire un nuovo utente
+     */
 
     public static String addUser(UserBean user) {
         Statement stmt = null;

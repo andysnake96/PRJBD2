@@ -332,6 +332,7 @@ public class Parser implements Parser2DB {
         star    ==> star csv loaded (  1
 
          */
+
         boolean deflt=false;
         if(nameInstrument==null)
             deflt=true;             //if instrument not passed used default interpretation of hershel&Spitzer in CSVs
@@ -362,6 +363,7 @@ public class Parser implements Parser2DB {
                 String[] pathTuple = this.spitzerPaths.get(j);
                 String path=pathTuple[1];
                 String kindOfCSV = pathTuple[0];
+                this.parseBlock(path,kindOfCSV);
                 this.parseBlock(starPath[1],starPath[0]);
 
                 //output.add (this.parseStandard(path,kindOfCSV));

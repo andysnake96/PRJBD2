@@ -2,6 +2,11 @@ package feauture1.Bean;
 
 import java.util.HashMap;
 
+/*
+questa classe contiene le informazioni necesarie all'utente cioè il numero di stelle in una regione che sono all'interno
+di un filamento e non, per ogni tipo di stella.
+ */
+
 public class InfoStarInFilamentAndRectangle {
      private String errorMessage;
      HashMap<String, Integer> starsNotInFilament;

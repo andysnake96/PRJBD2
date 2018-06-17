@@ -3,6 +3,9 @@ package feauture1.Controller;
 import DAO.UserDao;
 import ENTITY.User;
 
+/*
+classe per effetture il login
+ */
 public class LoginManager {
 
 

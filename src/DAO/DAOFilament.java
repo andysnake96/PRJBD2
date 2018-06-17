@@ -93,6 +93,10 @@ public class DAOFilament {
         return filaments;
     }
 
+    /*
+    questa funzione esegue una query che restituisce tutti i filamenti.
+     */
+
     public static List<Filament> takeAllFilaments() throws SQLException {
         DAO.Connection connection = DAO.Connection.getIstance();
         java.sql.Connection conn = connection.getConn();

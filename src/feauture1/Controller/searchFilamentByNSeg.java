@@ -42,7 +42,7 @@ public class searchFilamentByNSeg {
         } catch (SQLException e) {
             e.printStackTrace();
             InfoFilament bean = new InfoFilament();
-            bean.setErrorMessage("databse fault");
+            bean.setErrorMessage("database fault");
             beans.add(bean);
         }
         finally {

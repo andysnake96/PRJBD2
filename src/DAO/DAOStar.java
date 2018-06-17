@@ -75,7 +75,7 @@ public class DAOStar {
             star.setGlon(rs.getDouble(("glon")));
             String starType = rs.getString("type");
             star.setType(starType);
-
+            //conto per ogni tipo di stelle quante sono all'interno del rettangolo
             if (counters.containsKey(starType))
                 counters.put(starType, counters.get(starType) + 1);//increment counter
             else
@@ -84,7 +84,7 @@ public class DAOStar {
         }
         StarAndType starAndType = new StarAndType(stars, counters);
 
-        conn.close();
+        connection.closeConn(conn);
         stmt.close();
         rs.close();
         return starAndType;

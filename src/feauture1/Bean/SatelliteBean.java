@@ -2,6 +2,9 @@ package feauture1.Bean;
 
 import java.time.LocalDate;
 
+/*
+classe bean per le informazioni del satellite da inserire nel DB imesse dall'utente
+ */
 public class SatelliteBean {
     private String name;
     private LocalDate startDate;

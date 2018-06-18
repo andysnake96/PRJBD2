@@ -65,7 +65,7 @@ public class Connection {
         java.sql.Connection conn = null;
         // aggiungere controllo se la connessione è gia aperta o metterlo come valore di ritorno(coon) ?
         try {
-            System.out.println(DRIVER);
+
             Class.forName(DRIVER);
             conn = DriverManager.getConnection(DB_URL, USER, PASS);
 

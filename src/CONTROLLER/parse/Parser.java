@@ -1,3 +1,5 @@
+//andysnake
+
 package CONTROLLER.parse;
 
 import DAO.Connection;
@@ -9,19 +11,15 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.sql.SQLException;
-import java.sql.Time;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Timer;
 
 //TODO STATIC CONSTANT FIELDS MOVED TO INTERFACE IMPLEMENTED... ACCESIBLE FROM OUT AND INNERITED AS ATTRIBUTES
-public class Parser implements Parser2DB {
+public class Parser implements Import2DB {
     /*
     parse set of CSVs files...
-    parsed records will be written to db with //TODO CALL
-    //TODO block write ?
+    parsed records will be written to db with methods in Parser2DBDAO
     parse a set of files related to ..==> see comunication strings (final static) in interface...
     in constructor called private metod to init PATHs... from initPaths.txt
      needed to load CSVs only by set name...
@@ -69,29 +67,33 @@ public class Parser implements Parser2DB {
         parser2DBDAO.insertSatellite(satelliteRecords);
     }
 
-    public void parseExternFile(String path,String kindCSV,String nameStr ) throws Exception {
+    public String parseExternFile(String path,String kindCSV,String nameStr) throws Exception {
         /*
-        wrap parse standard and "blocked" call for an extern CSV not in initPaths
+        RF4 parse an extern file located in path; of kind specified in kindCSV (compatible with db tables
+                                                                                (filament,star,outline,skeleton)
+        compulsory namestr (Instrument in CSV) for every kind except star
+
         */
+
         if (kindCSV.equals(FILAMENT)) {
-            parseBlock(path, kindCSV);
+            return parseBlock(path, kindCSV);
 
         } else if (kindCSV.equals(STAR)) {
-            parseBlock(path, kindCSV);
+            return parseBlock(path, kindCSV);
 
         } else if (kindCSV.equals(OUTLINE)) {
             this.instrumentInUse = nameStr;   //setted instrument in use for the file
-            parseBlock(path, kindCSV);
+            return parseBlock(path, kindCSV);
             }
 
          else if ((kindCSV.equals(SKELETONPOINT))){
              this.instrumentInUse = nameStr;   //setted instrument in use for the file
-             parseBlock(path,kindCSV);
+            return parseBlock(path,kindCSV);
 
             }
 
         else
-            throw new IllegalArgumentException("INVALID KIND....");
+            return "INVALID Dest Table";
 
     }
     private void setUpFilesPath() throws IOException {
@@ -122,7 +124,7 @@ public class Parser implements Parser2DB {
             }
 
             }
-        System.out.println("PATHS:\n STAR"+starPath+"\nSPIZ"+spitzerPaths+"\nHERS"+hershelPaths);
+
 
         }
 
@@ -130,7 +132,7 @@ public class Parser implements Parser2DB {
         //add single quote to a string witch will be passed to dao witch will write in a simpler way
         return "'"+strUnquoted+"'";
     }
-    public void parseBlock(String path, String kindCSV) throws Exception {
+    public String parseBlock(String path, String kindCSV) throws Exception {
 
         /* to NO WAST TOO MEMORY ACHIVED BY iterating among lines
             lines ( or block of lines will be written to DB with a call named //TODO CALL
@@ -140,11 +142,13 @@ public class Parser implements Parser2DB {
             ==>parsed records will be written in DB with
 
          */
-        //TODO BOUNDARY HAS TO CHECK WITH EXCEPT TROWN IF FILE NOT EXIST AND WITH KINDLIST IN INTERFACE IF
+
         //KIND IS CORRECT...
+        String result="OK";
+        System.out.println("parsing...:\t"+path);
         Connection connClint = Connection.getIstance();
         java.sql.Connection connection = connClint.getConn();
-        try {
+
 
             connection.setAutoCommit(false);  //se nn va bene un vincolo annuliamo tutto
             //getted connection to send write call for eatch line to DB...
@@ -159,8 +163,9 @@ public class Parser implements Parser2DB {
             List<List<String>> blockOfRecords = new ArrayList<>();
             List<String> fields = null;
             int i = 0;
+
             //RETRIVING STRING INDEX IN RECORDS IN CSV, matching kindOfCsv to indexes in interface.
-            int[] strIndx;
+            /*int[] strIndx;
             //filament has to ignore 1 column...
             if (kindCSV.equals(FILAMENT)) {
                 strIndx = filamentStrIndx;
@@ -168,7 +173,7 @@ public class Parser implements Parser2DB {
             } else if (kindCSV.equals(STAR))
                 strIndx = starStrIndx;
             else
-                strIndx = null;   //other CSV not contains strings...
+                strIndx = null;   //other CSV not contains strings...*/
             do {
 
                 line = bufferedReader.readLine();
@@ -200,34 +205,37 @@ public class Parser implements Parser2DB {
                             fields.set(delCol, null);  //db does not need a column in filament CSV
                         }
                         blockOfRecords.add(fields);    //adding a record (as fixed list) in a block of reco
-                        //lines.add(fieldsParsed);      //TODO DEBUG THIS WAST A LOT OF MEM...
+
 
                     }
                 }
                 i++;    //write in blocks...
                 if (i % BLOCKRECORDS == 0) {
                     parser2DBDAO.initDBFromCSVBlock(kindCSV, blockOfRecords, this.instrumentInUse,this.satelliteInUse); //write block of lines to DB !!!!!!!!!!!!
-                    blockOfRecords = new ArrayList<>();        //TODO NEEDED TO BE EMPTYED TO NEXT BLOCK
+                    blockOfRecords = new ArrayList<>();        // NEEDED TO BE EMPTYED 4 NEXT BLOCK
                 }
 
 
             }
             while (line != null);
-            parser2DBDAO.checkConstraints(instrumentInUse); //TODO move in controleer class
-            parser2DBDAO.updatenSeg(); //TODO move in controller class
             if (blockOfRecords.size() > 0)
                 parser2DBDAO.initDBFromCSVBlock(kindCSV, blockOfRecords, this.instrumentInUse,this.satelliteInUse);    //empty the block( case CSV #LINES%BLOCKSIZE!=0
+        try {
+            parser2DBDAO.checkConstraints(instrumentInUse); //TODO not work with spitzer... :(
+            parser2DBDAO.updatenSeg(); //TODO move in controller class
             connection.commit();
             connection.setAutoCommit(true);
             connClint.closeConn(connection);
             fileReader.close();
         } catch (MyException e) {
+            result="BUISNESS RULE VIOLATION! CORRECTED ELIMINATING FILAMENTS UNCOMPLETE ";
             connection.rollback();
             e.printStackTrace();
             connection.setAutoCommit(true);
             connClint.closeConn(connection);
-        }
 
+        }
+    return result;
     }
     //old parser... write 1 line for time...
     @Deprecated
@@ -337,7 +345,8 @@ public class Parser implements Parser2DB {
         if(nameInstrument==null)
             deflt=true;             //if instrument not passed used default interpretation of hershel&Spitzer in CSVs
             //TODO LIVIO check passed instrument is in DB.instruments
-        if (name.equals(Parser2DB.HERSCHEL)) {
+        if (name.equals(Import2DB.HERSCHEL)) {
+            this.parseBlock(starPath[1],starPath[0]);
             this.satelliteInUse="Herschel";
             for (int j = 0; j < this.hershelPaths.size(); j++) {
                 if (deflt)
@@ -350,13 +359,13 @@ public class Parser implements Parser2DB {
                 this.parseBlock(path,kindOfCSV);
                 this.parseBlock(starPath[1],starPath[0]);
 
-                //output.add (this.parseStandard(path,kindOfCSV));    //TODO REMOVE THIS LINE OUTPUT OBJ ONLY 4 DEBUG
 
             }
-        } else if (name.equals(Parser2DB.SPITZER)){
+        } else if (name.equals(Import2DB.SPITZER)){
+            this.parseBlock(starPath[1],starPath[0]);
             for (int j = 0; j < this.spitzerPaths.size(); j++) {
                 if (deflt)
-                    this.instrumentInUse="MIPS";
+                    this.instrumentInUse="IRAC";
                 else
                     this.instrumentInUse=nameInstrument;
                 //set instrument used in CSV spitzer... ONLY MIPS USED
@@ -364,12 +373,9 @@ public class Parser implements Parser2DB {
                 String path=pathTuple[1];
                 String kindOfCSV = pathTuple[0];
                 this.parseBlock(path,kindOfCSV);
-                this.parseBlock(starPath[1],starPath[0]);
-
-                //output.add (this.parseStandard(path,kindOfCSV));
 
             }
-        } else if (name.equals(Parser2DB.STAR)){
+        } else if (name.equals(Import2DB.STAR)){
             String[] pathTuple = this.starPath;
             String path=pathTuple[1];
             String kindOfCSV = pathTuple[0];
@@ -388,22 +394,23 @@ public class Parser implements Parser2DB {
     public static void main(String[] args) throws Exception {
 
         Parser parser = new Parser();
-//        parser.readCSV(Parser2DB.HERSCHEL);
+//        parser.readCSV(Import2DB.HERSCHEL);
 
         //TODO remove these dubug lists... wast a lot of mem
-//        List<List<String[]>> listHershel = parser.readCSV(Parser2DB.HERSCHEL);
-//        List<List<String[]>> listSpitzer = parser.readCSV(Parser2DB.SPITZER);
-//        List<List<String[]>> listStars = parser.readCSV(Parser2DB.STAR);
+//        List<List<String[]>> listHershel = parser.readCSV(Import2DB.HERSCHEL);
+//        List<List<String[]>> listSpitzer = parser.readCSV(Import2DB.SPITZER);
+//        List<List<String[]>> listStars = parser.readCSV(Import2DB.STAR);
 //        System.out.println(listHershel.size()+listSpitzer.size()+listStars.size());
 
         // TODO end remove..
         //nb all files togeter size ~
-
+        ParserTest parserTest= new ParserTest();
+        parserTest.cleanDBWrap();
         long inizio = System.currentTimeMillis();
-        parser.readCSV(HERSCHEL,null);
+        parser.readCSV(SPITZER,null);
         long fine = System.currentTimeMillis();
         System.out.println((fine-inizio)/60000.0);
-        //parser.parseBlock("CSV/scheletro_filamenti_Herschel.csv",Parser2DB.SKELETONPOINT);
+        //parser.parseBlock("CSV/scheletro_filamenti_Herschel.csv",Import2DB.SKELETONPOINT);
         //TODO IMPORT TEST CASE... LINE IN DB==LINE IN CSV... 11451-1( the header one);
         //parser.parseSatelliteInfo("configs/satellite.txt");
     }

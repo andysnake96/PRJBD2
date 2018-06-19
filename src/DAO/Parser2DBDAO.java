@@ -299,14 +299,24 @@ public class Parser2DBDAO {
         stmt.setString(1, nameStr);
         ResultSet rs = stmt.executeQuery();
         if(rs.next()) {
+            rs.close();
+            stmt.close();
             throw new MyException();
         }
+        rs.close();
+        stmt.close();
+       /*
         String sql2 = connection.getSqlString("queryconstraintskeleton");
-        PreparedStatement stmt2 = this.conn.prepareStatement(sql2);
-        ResultSet rs2 = stmt2.executeQuery();
-        if(rs2.next()) {
+         stmt = this.conn.prepareStatement(sql2);
+         rs = stmt.executeQuery();
+        if(rs.next()) {
+            stmt.close();
+            rs.close();
             throw new MyException();
         }
+        stmt.close();
+        rs.close();
+    */
 
     }
 

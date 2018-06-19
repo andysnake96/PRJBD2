@@ -1,27 +1,33 @@
 package feauture1.Controller;
 
 import ENTITY.Filament;
-import feauture1.Bean.BeanFilament;
+import feauture1.Bean.InfoFilament;
 import feauture1.Bean.rangeNSeg;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+/*
+questa classe controller esegue il requisito 7.
+ */
+
 public class searchFilamentByNSeg {
 
-    private List<Filament> filaments;
+    private List<Filament> filaments; //filamenti che rispettano la specifica sul numero di segmenti
 
-    public searchFilamentByNSeg() {
-        this.filaments = new ArrayList<>();
-    }
+   /*
+   questa funzione dopo aver torvato i filamenti richiesti ritornerà una lista di bean che conterranno tutte le
+   informazioni utili per l'utente.
+    */
 
-    public List<BeanFilament> executeSearch(rangeNSeg range) {
-        List<BeanFilament> beans = new ArrayList<>();
+
+    public List<InfoFilament> executeSearch(rangeNSeg range) {
+        List<InfoFilament> beans = new ArrayList<>();
         try {
             this.filaments =  DAO.DAOFilament.searchByRangeNSeg(range.getnSegMin(), range.getnSegMax());
             for(Filament filament : this.filaments) {
-                BeanFilament bean = new BeanFilament();
+                InfoFilament bean = new InfoFilament();
                 bean.setId(filament.getId());
                 bean.setContrast(filament.getContrast());
                 bean.setDensAvg(filament.getDensAvg());
@@ -35,8 +41,8 @@ public class searchFilamentByNSeg {
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            BeanFilament bean = new BeanFilament();
-            bean.setErrorMessage("databse fault");
+            InfoFilament bean = new InfoFilament();
+            bean.setErrorMessage("database fault");
             beans.add(bean);
         }
         finally {
@@ -46,13 +52,13 @@ public class searchFilamentByNSeg {
     }
 
     public static void main(String args[]) {
-       rangeNSeg bean = new rangeNSeg(22, 35);
+       rangeNSeg bean = new rangeNSeg(2, 2);
        searchFilamentByNSeg s = new searchFilamentByNSeg();
-       List<BeanFilament> beans;
+       List<InfoFilament> beans;
        beans = s.executeSearch(bean);
        System.out.println(beans.size());
-       for(BeanFilament beanFilament : beans) {
-           System.out.println(beanFilament);
+       for(InfoFilament infoFilament : beans) {
+           System.out.println(infoFilament);
        }
 
 

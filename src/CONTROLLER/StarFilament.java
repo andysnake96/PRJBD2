@@ -1,8 +1,6 @@
 package CONTROLLER;
 
 import BEAN.BeanRF9;
-import CONTROLLER.parse.Parser;
-import CONTROLLER.parse.Parser2DB;
 import DAO.DAOFilament;
 import DAO.DAOPoint;
 import DAO.DAOStar;
@@ -26,10 +24,18 @@ public class StarFilament {
     private HashMap<String, Integer> counters;
     private HashMap<Filament, List<Star>> bindings; //for future extensions of functional requirements
     private final double INPAR = 0.01;
+    private String messageError;
 
-    public StarFilament() {
-        this.stars = null;
-        this.filament = null;
+    public StarFilament(computeFilamentBean bean) {
+
+        this.counters = new HashMap<>();
+        this.bindings = new HashMap<>();
+        this.messageError = takeStarFilament(bean);
+    }
+
+    public StarFilament(List<Star> stars, Filament filament) {
+        this.stars = stars;
+        this.filament = filament;
         this.counters = new HashMap<>();
         this.bindings = new HashMap<>();
     }
@@ -55,13 +61,12 @@ public class StarFilament {
     }
 
 
-    public BeanRF9 starsInFilament(computeFilamentBean bean) {
-        String message = takeStarFilament(bean);
+    public BeanRF9 starsInFilament() {
+        //String message = takeStarFilament(bean);
         List<Point> ps = this.filament.getOutline().getPoints();
-        if(message != null) {
-            //TODO mettere il messaggio nel bean e ritornarlo.
-            System.err.println("c'e stato un errore");
-            return null;
+        List<Star> starsInFilament = new ArrayList<>();
+        if(this.messageError != null) {
+            return new BeanRF9(this.messageError);
         }
         for (int s = 0; s < this.stars.size(); s++) {
             double sum = 0;
@@ -82,17 +87,18 @@ public class StarFilament {
             }
             sum = Math.abs(sum);
             if (sum >= INPAR) {
-                updateMap(this.stars.get(s));
-                //bindStar(this.stars.get(s), this.filament);  //bind filament (only 1 in this metod) -> star
+                updateMap(star);
+               // bindStar(this.stars.get(s), this.filament);  //bind filament (only 1 in this metod) -> star
+                starsInFilament.add(star);
             }
         }
-        BeanRF9 beanRF9 = new BeanRF9(this.counters);
+        BeanRF9 beanRF9 = new BeanRF9(this.counters, starsInFilament);
 
         return beanRF9;
 
     }
 
-    private void bindStar(Star star, Filament filament) {
+    private void bindStar(Star star, Filament filament) {  //TODO per ora lo tolto ma potrebbe servire
         List<Star> starsOfFilament = this.bindings.get(filament);
         starsOfFilament.add(star);
     }
@@ -119,8 +125,8 @@ public class StarFilament {
 
     public static void main(String args[]) {
         computeFilamentBean bean = new computeFilamentBean("HiGALFil005.0050+0.1499");
-        StarFilament starFilament  = new StarFilament();
-        BeanRF9 beanRF9 =  starFilament.starsInFilament(bean);
+        StarFilament starFilament  = new StarFilament(bean);
+        BeanRF9 beanRF9 =  starFilament.starsInFilament();
         System.out.println(beanRF9);
     }
 }

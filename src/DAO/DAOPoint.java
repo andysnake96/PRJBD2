@@ -1,10 +1,8 @@
 package DAO;
 
-import ENTITY.Filament;
 import ENTITY.Outline;
 import ENTITY.Point;
 
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -16,6 +14,13 @@ public class DAOPoint {
     private static final String computeCentroide = "computecentroide";
     private static final String computeExstension = "computeexstension";
     private static final String takeOutline = "takeoutline";
+    private static final String queryVertexUpper = "queryvertexupper";
+    private static final String queryVertexLower = "queryvertexlower";
+
+    /*
+            questa funziona esegue una query in cui ritorna un punto che ha come cordiate la media delle latitutidini e
+            longitudini di tutti punti del contorno del filamento
+     */
 
     public static Point computeCentroide(int idFil, String nameStr) throws SQLException {
         PreparedStatement stmt = null;
@@ -27,16 +32,22 @@ public class DAOPoint {
         stmt.setInt(1, idFil);
         stmt.setString(2, nameStr);
         ResultSet rs = stmt.executeQuery();
-        if(!rs.next()) {
-            return centroide;
+        if(rs.next()) {
+            return null;
         }
         centroide.setLat(rs.getDouble(1));
         centroide.setGlon(rs.getDouble(2));
         stmt.close();
+        connection.closeConn(conn);
         rs.close();
         return centroide;
 
     }
+
+    /*
+    questa funzione esegue una query dove ottiene le posizioni massime e minime longitudinali e latitudinali
+
+     */
 
     public static Point[] searchPointMaxMin(int idFil, String nameStr) throws SQLException {
         PreparedStatement stmt = null;
@@ -51,7 +62,7 @@ public class DAOPoint {
         stmt.setInt(1, idFil);
         stmt.setString(2, nameStr);
         ResultSet rs = stmt.executeQuery();
-        if(!rs.next()) {
+        if(rs.next()) {
             return null;
         }
 
@@ -62,12 +73,17 @@ public class DAOPoint {
         points[0] = pointMax;
         points[1] = pointMin;
         stmt.close();
+        connection.closeConn(conn);
         rs.close();
+
         return points;
 
     }
+    /*
+    questa funzione esegue una query per prendere tutti i punti del contorno del filamento.
+     */
 
-    public static Outline takeOutline(int idFil, String nameStr) throws SQLException { //ritorna tutta la lista di punti del controno di un determinato filamento
+    public static Outline takeOutline(int idFil, String nameStr) throws SQLException {
         PreparedStatement stmt = null;
         DAO.Connection connection = DAO.Connection.getIstance();
         java.sql.Connection conn = connection.getConn();
@@ -76,6 +92,14 @@ public class DAOPoint {
         stmt = conn.prepareStatement(sql);
         stmt.setInt(1, idFil);
         stmt.setString(2, nameStr);
+        Outline outline = takeOutline(stmt);
+        connection.closeConn(conn);
+        stmt.close();
+
+        return outline;
+    }
+
+    public static Outline takeOutline(PreparedStatement stmt) throws SQLException {
         ResultSet resultSet =  stmt.executeQuery();
 
         List<Point> outline = new ArrayList<>();
@@ -85,10 +109,75 @@ public class DAOPoint {
             point.setLat(resultSet.getDouble("glat"));
             outline.add(point);
         }
-        stmt.close();
         resultSet.close();
         return new Outline(outline);
     }
+
+
+
+    /*
+    prende il punto del segmente con numero progressivo più alto.
+     */
+
+    public static Point takeVertexUpper(int idFil, String nameStr) throws SQLException {  //torna i vertici del filamento
+        PreparedStatement stmt;
+        DAO.Connection connection = DAO.Connection.getIstance();
+        java.sql.Connection conn = connection.getConn();
+
+        Point pointNMax = new Point();
+
+        String sql = connection.getSqlString(queryVertexUpper);
+
+        stmt = conn.prepareStatement(sql);
+        stmt.setInt(1, idFil);
+        stmt.setString(2, nameStr);
+        ResultSet rs = stmt.executeQuery();
+        if(!rs.next()) {
+            return null;
+        }
+
+        pointNMax.setGlon(rs.getDouble("glon"));
+        pointNMax.setLat(rs.getDouble("glat"));
+
+        connection.closeConn(conn);
+        stmt.close();
+        rs.close();
+        return pointNMax;
+
+    }
+
+    /*
+    prende il punto del segmento del filamento considerato con il numero progressivo più basso
+     */
+
+    public static Point takeVertexLower(int idFil, String nameStr) throws SQLException {
+        PreparedStatement stmt;
+        DAO.Connection connection = DAO.Connection.getIstance();
+        java.sql.Connection conn = connection.getConn();
+
+        Point pointNMin = new Point();
+
+        String sql = connection.getSqlString(queryVertexLower);
+
+        stmt = conn.prepareStatement(sql);
+        stmt.setInt(1, idFil);
+        stmt.setString(2, nameStr);
+        ResultSet rs = stmt.executeQuery();
+        if(!rs.next()) {
+            return null;
+        }
+
+        pointNMin.setGlon(rs.getDouble("glon"));
+        pointNMin.setLat(rs.getDouble("glat"));
+
+        connection.closeConn(conn);
+        stmt.close();
+        rs.close();
+        return pointNMin;
+
+    }
+
+
 }
 
 

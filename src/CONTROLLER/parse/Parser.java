@@ -398,7 +398,7 @@ public class Parser implements Parser2DB {
         //nb all files togeter size ~
 
         long inizio = System.currentTimeMillis();
-        parser.readCSV(SPITZER,"IRAC");
+        parser.readCSV(HERSCHEL,null);
         long fine = System.currentTimeMillis();
         System.out.println((fine-inizio)/60000.0);
         //parser.parseBlock("CSV/scheletro_filamenti_Herschel.csv",Parser2DB.SKELETONPOINT);

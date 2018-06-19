@@ -1,5 +1,9 @@
 package feauture1.Bean;
 
+/*
+per il requisito 7, contiene l'intervallo del numero di segmenti inserito dall'utente
+ */
+
 public class rangeNSeg {
 
     private int nSegMin;

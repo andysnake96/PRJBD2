@@ -90,6 +90,7 @@ public class StarFilament {
                 updateMap(star);
                // bindStar(this.stars.get(s), this.filament);  //bind filament (only 1 in this metod) -> star
                 starsInFilament.add(star);
+
             }
         }
         BeanRF9 beanRF9 = new BeanRF9(this.counters, starsInFilament);

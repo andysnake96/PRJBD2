@@ -121,6 +121,24 @@ public class Filament {
     public void setInstrument(Instrument instrument) {
         this.instrument = instrument;
     }
+
+    @Override
+    public String toString() {
+        return "Filament{" +
+                "outline=" + outline +
+                ", pointSkeletonBranch=" + pointSkeletonBranch +
+                ", pointSkeletonSpine=" + pointSkeletonSpine +
+                ", id=" + id +
+                ", name='" + name + '\'' +
+                ", ellipticity=" + ellipticity +
+                ", contrast=" + contrast +
+                ", fluxTot=" + fluxTot +
+                ", tempAvg=" + tempAvg +
+                ", densAvg=" + densAvg +
+                ", nSeg=" + nSeg +
+                ", instrument=" + instrument +
+                '}';
+    }
 }
 
 /*

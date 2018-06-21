@@ -2,7 +2,9 @@ package DAO;
 
 
 
-import CONTROLLER.parse.Parser2DB;
+import CONTROLLER.parse.Import2DB;
+import org.postgresql.PGConnection;
+import org.postgresql.jdbc.PgStatement;
 
 import java.io.FileInputStream;
 import java.sql.Connection;
@@ -11,7 +13,6 @@ import java.util.List;
 import java.util.Properties;
 public class Parser2DBDAO {
     /*
-
     insert strings loaded from confis/insert.properties and completed with records passed
     initFromCSV public method witch wrap write calls
     DB write line per line... called from parser class, not passed all records to no wast too mem
@@ -39,21 +40,21 @@ public class Parser2DBDAO {
        !!!!NB NOT ADDED TERMINATOR !!!
        write (value1,value2,...)
        */
-      String outputFields=new String();
-      outputFields+="(";
-      for (int x=0;x<record.size();x++){
-          String field=record.get(x);
-          if(field==null)
-              continue;
-          outputFields+=field;
-          if (x!=record.size()-1)
-              outputFields+=",";
+        String outputFields=new String();
+        outputFields+="(";
+        for (int x=0;x<record.size();x++){
+            String field=record.get(x);
+            if(field==null)
+                continue;
+            outputFields+=field;
+            if (x!=record.size()-1)
+                outputFields+=",";
 
-      }
-      if(nameStr!=null)
-          outputFields+=","+nameStr;
-      outputFields+=")";
-      return outputFields;
+        }
+        if(nameStr!=null)
+            outputFields+=","+nameStr;
+        outputFields+=")";
+        return outputFields;
     }
 
     private String sqlString4Block(List<List<String>> records,String nameStr) {
@@ -134,6 +135,7 @@ public class Parser2DBDAO {
         //this.checkOutline(records, nameStr);
         String sql = insertProp.getProperty("insertOutlineP");
         PreparedStatement prepS = this.conn.prepareStatement(sql);
+
         List<String> record=null;
         for (int x = 0; x < records.size(); x++) {
             //(idfil,glon,glat,namestr)
@@ -150,7 +152,7 @@ public class Parser2DBDAO {
             if(out[i]<0)
                 System.err.println("errore nell esecuzione del batch posizione "+i);
         }
-       // this.checkOutline(nameStr);
+        // this.checkOutline(nameStr);
         //prepS.executeLargeBatch()
     }
 
@@ -158,19 +160,19 @@ public class Parser2DBDAO {
         DAO.Connection connection = DAO.Connection.getIstance();
         String sql = connection.getSqlString("queryconstraintoutline");
         PreparedStatement stmt =  this.conn.prepareStatement(sql);
-            for(int i = 0; i < records.size(); i++) {
+        for(int i = 0; i < records.size(); i++) {
 
-                    stmt.setInt(1, Integer.parseInt(records.get(i).get(0)));  //idFil
-                    stmt.setString(2, nameStr);
-                    stmt.setDouble(3, Double.parseDouble(records.get(i).get(2))); //glat
-                    stmt.setDouble(4, Double.parseDouble(records.get(i).get(1))); //glon
-                    ResultSet rs = stmt.executeQuery();
-                    if(rs.next())
-                        throw new MyException();
+            stmt.setInt(1, Integer.parseInt(records.get(i).get(0)));  //idFil
+            stmt.setString(2, nameStr);
+            stmt.setDouble(3, Double.parseDouble(records.get(i).get(2))); //glat
+            stmt.setDouble(4, Double.parseDouble(records.get(i).get(1))); //glon
+            ResultSet rs = stmt.executeQuery();
+            if(rs.next())
+                throw new MyException();
 
-                }
+        }
         System.out.println("block finisher");
-            }
+    }
 
     private void checkOutline( String nameStr) throws SQLException, MyException {
         DAO.Connection connection = DAO.Connection.getIstance();
@@ -263,19 +265,19 @@ public class Parser2DBDAO {
     public void initDBFromCSVBlock(String name,List<List<String>>records,String nameStr,String nameSat) throws SQLException, MyException {
         // wrap write in db based on the kind of the CSV parsed in records...
         //nameStr for the added column... only filament &Star accept nameStr==null
-        if (name.equals(Parser2DB.OUTLINE) && nameStr!=null) {
+        if (name.equals(Import2DB.OUTLINE) && nameStr!=null) {
             this.writeOutline(records,nameStr);
 
-            }
-         else if (name.equals(Parser2DB.FILAMENT)){
-             //this.writeFilamentBlockOnTheFly(records);        //to check diff of performace...
+        }
+        else if (name.equals(Import2DB.FILAMENT)){
+            //this.writeFilamentBlockOnTheFly(records);        //to check diff of performace...
             this.writeFilament(records);
-            }
-        else if (name.equals(Parser2DB.SKELETONPOINT) && nameStr!=null){
+        }
+        else if (name.equals(Import2DB.SKELETONPOINT) && nameStr!=null){
             this.writeSkeleton(records,nameStr);
 
         }
-        else if (name.equals(Parser2DB.STAR)){
+        else if (name.equals(Import2DB.STAR)){
             this.writeStar(records,nameSat);
         }
         else
@@ -298,14 +300,18 @@ public class Parser2DBDAO {
         PreparedStatement stmt =  this.conn.prepareStatement(sql);
         stmt.setString(1, nameStr);
         ResultSet rs = stmt.executeQuery();
-        if(rs.next()) {
+        rs.next();
+        if(rs.getInt("tot")>0)  {           //TODO WORK WITH PREPARED STATEMENT
+            System.err.println("VIOLATION OF BUISNESS RULE outline overlap skeleton");
             throw new MyException();
         }
         String sql2 = connection.getSqlString("queryconstraintskeleton");
-        PreparedStatement stmt2 = this.conn.prepareStatement(sql2);
-        ResultSet rs2 = stmt2.executeQuery();
-        if(rs2.next()) {
-            throw new MyException();
+        Statement stmt2 = this.conn.createStatement();
+        ResultSet rs2 = stmt2.executeQuery(sql2);
+        rs2.next();
+        if(rs2.getInt("tot")>0)  {
+            System.err.println("VIOLATION OF BUISNESS RULE ! skeletons overlaps");
+            //throw new MyException(); TODO DEBUG
         }
 
     }
@@ -336,7 +342,7 @@ public class Parser2DBDAO {
 //        statement.execute(sql);
 //        //TODO ONTHE FLY FOR NOT CONVERT TO-FROM LOCAL DATE...simpler code
 
-        }
+    }
 
 
 

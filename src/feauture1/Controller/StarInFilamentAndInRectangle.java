@@ -21,50 +21,51 @@ import java.util.Set;
 public class StarInFilamentAndInRectangle {
     private List<Filament> filaments;  //tutti i filamenti contenuti nel database
     private StarAndType starsInRectangle;
-    private  HashMap<String, Integer> counters;  // per ogni tipo il numero di stelle nel filamento
+    private HashMap<String, Integer> counters;  // per ogni tipo il numero di stelle nel filamento
     private static final String takeOutline = "takeoutline";
 
     public StarInFilamentAndInRectangle() {
         this.counters = new HashMap<>();
     }
 
-    public InfoStarInFilamentAndRectangle execute(Rectangle rectangle)  {
-       try {
-           this.filaments = DAOFilament.takeAllFilaments();
+    public InfoStarInFilamentAndRectangle execute(Rectangle rectangle) {
+        try {
 
-           this.starsInRectangle = takeStarInRectangle(rectangle);
-           //Instauro una connessione con il database per ottenere i contorni dei filamenti.
-           DAO.Connection connection = DAO.Connection.getIstance();
-           java.sql.Connection conn = connection.getConn();
-           String sql = connection.getSqlString(takeOutline);
-           PreparedStatement stmt = conn.prepareStatement(sql);
+
+            this.takeStarAndFilamentInRectangle(rectangle);
+            //Instauro una connessione con il database per ottenere i contorni dei filamenti.
+            DAO.Connection connection = DAO.Connection.getIstance();
+            java.sql.Connection conn = connection.getConn();
+            String sql = connection.getSqlString(takeOutline);
+            PreparedStatement stmt = conn.prepareStatement(sql);
             /*
             Vedo le stelle che sono sono all'nterno dei filamenti utilizzando la classe starFilament.
              */
 
-           for (Filament f : this.filaments) {
-               stmt.setInt(1, f.getId());
-               stmt.setString(2, f.getInstrument().getName());
-               f.setOutline(DAOPoint.takeOutline(stmt));
-               //f.setOutline(DAOPoint.takeOutline(f.getId(),f.getInstrument().getName()));  //prendo il contorno dei filamenti
+            for (Filament f : this.filaments) {
+                stmt.setInt(1, f.getId());
+                stmt.setString(2, f.getInstrument().getName());
+                f.setOutline(DAOPoint.takeOutline(stmt));
+                //f.setOutline(DAOPoint.takeOutline(f.getId(),f.getInstrument().getName()));  //prendo il contorno dei filamenti
 
-               StarFilament starFilament = new StarFilament(this.starsInRectangle.getStars(), f);
-               BeanRF9 beanRF9 = starFilament.starsInFilament();
-               updateCounters(beanRF9);
+                StarFilament starFilament = new StarFilament(this.starsInRectangle.getStars(), f);
+                BeanRF9 beanRF9 = starFilament.starsInFilament();
+                updateCounters(beanRF9);
                /*
                le stelle che già sono state trovate all'interno di un filamento vengono scartate, se tutte le stelle sono
                all'interno di un filamento posso uscire dal ciclo.
                 */
-               this.starsInRectangle.removeStars(beanRF9.getStarsInFilament());
-               if (this.starsInRectangle.getStars().isEmpty()) {
-                   break;
-               }
-           }
-           connection.closeConn(conn);
-           stmt.close();
-       } catch (SQLException e) {
-           return new InfoStarInFilamentAndRectangle("database fault");
-       }
+                this.starsInRectangle.removeStars(beanRF9.getStarsInFilament());
+                if (this.starsInRectangle.getStars().isEmpty()) {
+                    break;
+                }
+            }
+            connection.closeConn(conn);
+            stmt.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return new InfoStarInFilamentAndRectangle("database fault");
+        }
         return makeInfo();
 
     }
@@ -93,10 +94,10 @@ public class StarInFilamentAndInRectangle {
         HashMap<String, Integer> nStarInRectangle = this.starsInRectangle.getCounters();
         Set list = nStarInRectangle.keySet();
         Iterator<String> iter = list.iterator();
-        while(iter.hasNext()) {
+        while (iter.hasNext()) {
             String type = iter.next();
             Integer value;
-            if(this.counters.containsKey(type))
+            if (this.counters.containsKey(type))
                 value = nStarInRectangle.get(type) - this.counters.get(type);
             else
                 value = nStarInRectangle.get(type);
@@ -116,11 +117,11 @@ public class StarInFilamentAndInRectangle {
         HashMap<String, Integer> c = beanRF9.getCounters();
         Set list = c.keySet();
         Iterator<String> iter = list.iterator();
-        while(iter.hasNext()) {
+        while (iter.hasNext()) {
             String key = iter.next();
             Integer value = c.get(key);
             if (this.counters.containsKey(key))
-                this.counters.put(key, this.counters.get(key) +value);//increment counter
+                this.counters.put(key, this.counters.get(key) + value);//increment counter
             else
                 this.counters.put(key, value);
         }
@@ -132,24 +133,26 @@ public class StarInFilamentAndInRectangle {
     deve essere distante dal centroide più della metà del lato del rettangolo.
      */
 
-    private StarAndType takeStarInRectangle(Rectangle rectangle) throws SQLException {
+    private void takeStarAndFilamentInRectangle(Rectangle rectangle) throws SQLException {
         double h = rectangle.getH();
         double l = rectangle.getL();
         double cLat = rectangle.getGlat();
         double cLon = rectangle.getGlon();
-        double glonLeft = cLon - l/2;
-        double glonRight = cLon + l/2;
-        double glatDown = cLat - h/2;
-        double glatUp = cLat + h/2;
-        return DAOStar.takeStarInRectangle(glonLeft,glonRight,glatDown, glatUp);
-        }
+        double glonLeft = cLon - l / 2;
+        double glonRight = cLon + l / 2;
+        double glatDown = cLat - h / 2;
+        double glatUp = cLat + h / 2;
+        this.starsInRectangle = DAOStar.takeStarInRectangle(glonLeft, glonRight, glatDown, glatUp);
+        this.filaments = DAOFilament.takeFilamentsInRectangle(glonLeft, glonRight, glatDown, glatUp);
+    }
+
 
     public static void main(String args[]) {
         Rectangle r = new Rectangle();
-        r.setGlat(-3000);
-        r.setGlon(-3000);
-        r.setH(10000);
-        r.setL(10000);
+        r.setGlat(0);
+        r.setGlon(0);
+        r.setH(2);
+        r.setL(20);
         StarInFilamentAndInRectangle s = new StarInFilamentAndInRectangle();
         InfoStarInFilamentAndRectangle i = s.execute(r);
         System.out.println(i);

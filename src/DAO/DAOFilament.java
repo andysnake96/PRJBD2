@@ -15,7 +15,7 @@ public class DAOFilament {
     private static final String searchFilamentByName = "searchfilamentbyname";
     private static final String searchFilamentById = "searchfilamentbyid";
     private static final String searchFilamentByRangeNSeg = "searchfilamentbyrangenseg";
-    private static final String takeFilaments = "takefilaments";
+    private static final String takeFilamentsInRectangle = "takefilamentsinrectangle";
 
     public static Filament searchFilamentByName(String name) throws SQLException {
         DAO.Connection connection = DAO.Connection.getIstance();
@@ -96,7 +96,7 @@ public class DAOFilament {
     /*
     questa funzione esegue una query che restituisce tutti i filamenti.
      */
-
+/*
     public static List<Filament> takeAllFilaments() throws SQLException {
         DAO.Connection connection = DAO.Connection.getIstance();
         java.sql.Connection conn = connection.getConn();
@@ -119,6 +119,44 @@ public class DAOFilament {
             filament.setFluxTot(rs.getDouble("fluxtot"));
             filaments.add(filament);
         }
+        stmt.close();
+        connection.closeConn(conn);
+        rs.close();
+        return filaments;
+    }
+    */
+
+    /*
+    in questa funzione prendo i filamnti che hanno almeno un punto contorno all'interno di una regione rettangolare
+     */
+
+    public static List<Filament> takeFilamentsInRectangle(double glonLeft, double glonRight, double glatDown, double glatUp) throws SQLException {
+        DAO.Connection connection = DAO.Connection.getIstance();
+        java.sql.Connection conn = connection.getConn();
+        String sql = connection.getSqlString(takeFilamentsInRectangle);
+        PreparedStatement stmt = conn.prepareStatement(sql);
+        stmt.setDouble(1, glonLeft);
+        stmt.setDouble(2, glonRight);
+        stmt.setDouble(3, glatDown);
+        stmt.setDouble(4, glatUp);
+
+        ResultSet rs = stmt.executeQuery();
+
+        List<Filament> filaments = new ArrayList<>();
+        while (rs.next()) {
+            Filament filament = new Filament();
+            filament.setName(rs.getString("name"));
+            filament.setId(rs.getInt("id"));
+            filament.setInstrument(new Instrument(rs.getString("nameStr")));
+            filament.setnSeg(rs.getInt("nseg"));
+            filament.setContrast(rs.getDouble("contrast"));
+            filament.setDensAvg(rs.getDouble("densavg"));
+            filament.setTempAvg(rs.getDouble("tempavg"));
+            filament.setEllipticity(rs.getDouble("ellipticty"));
+            filament.setFluxTot(rs.getDouble("fluxtot"));
+            filaments.add(filament);
+        }
+
         stmt.close();
         connection.closeConn(conn);
         rs.close();

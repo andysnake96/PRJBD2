@@ -40,4 +40,12 @@ public class StarAndType {
     public void removeStars(List<Star> stars) {
         this.stars.removeAll(stars);
     }
+
+    @Override
+    public String toString() {
+        return "StarAndType{" +
+                "stars=" + stars +
+                ", counters=" + counters +
+                '}';
+    }
 }

@@ -94,7 +94,7 @@ public class ComputeFilament {
 
     public static void main(String args[]) {
         ComputeFilament f = new ComputeFilament();
-        computeFilamentBean bean = new computeFilamentBean(15636, "IRAC");
+        computeFilamentBean bean = new computeFilamentBean(45, "SPIRE");
         System.out.println(f.computeFilament(bean));
     }
 }

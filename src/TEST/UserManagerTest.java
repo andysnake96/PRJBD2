@@ -1,6 +1,6 @@
 package TEST;
 
-/* test per i rquesiti 2 e 3
+/* test per i rquesiti 1, 2 e 3
 
  */
 
@@ -11,6 +11,7 @@ import ENTITY.User;
 import feauture1.Bean.InstrumentBean;
 import feauture1.Bean.SatelliteBean;
 import feauture1.Bean.UserBean;
+import feauture1.Controller.LoginManager;
 import feauture1.Controller.UserManager;
 import org.junit.jupiter.api.Test;
 
@@ -21,7 +22,7 @@ import java.util.List;
 
 public class UserManagerTest {
 
-
+    private static final String TYPE = "Administrator";
     private static final String DELETEUSER = "delete from usersistem where username = ?";
     private static final String DELETSATELLITE = "delete from satellite where name = ?";
     private static final String DELETEINSTRUMENT = "delete from instrument where name = ?";
@@ -31,7 +32,7 @@ public class UserManagerTest {
     private final String SEARCHSATELLITE = "select * from satellite left join partecipation on (name = satellite)  where name = ?  ";
     private final String SEARCHINSTRUMENT = "select * from instrument where name = ? ";
     @Test
-    void inserUserCorrect() {
+    void inserUserCorrecteLogin() {
         UserBean dataUser = null;
         User user = null;
         String msx = null;
@@ -50,6 +51,10 @@ public class UserManagerTest {
             user = findUser(dataUser);
             System.out.println(user + " " + msx);
             assert user != null;
+            System.out.println("Prova di login");
+            LoginManager login = LoginManager.getIstance();
+            String type = login.login(USERID, PASSWORD);
+            assert TYPE.equals(type); // controllo se il login restituisce il tipo giusto.
             System.out.println("inserimento dello stesso utente quindi con stesso username: ");
             msx = userManager.addUser(dataUser);
         }
@@ -74,7 +79,7 @@ public class UserManagerTest {
         User user = null;
         String password = "pass";
         String username = "user";
-        UserBean dataUser = new UserBean(NAME, SURNAME, username, password, null, "Administrator");
+        UserBean dataUser = new UserBean(NAME, SURNAME, username, password, null, TYPE);
         System.out.println("inserimento con questi dati: "+ dataUser);
         UserManager userManager = new UserManager();
         String msx = userManager.addUser(dataUser);
@@ -102,6 +107,10 @@ public class UserManagerTest {
             e.printStackTrace();
         }
         System.out.println(msx + " user: "+user);
+        System.out.println("tentativo di login: ");
+        LoginManager loginManager = LoginManager.getIstance();
+        String type = loginManager.login(username, password);
+        assert type == null; //login non riuscito.
 
 
     }

@@ -151,8 +151,13 @@ public class StarInFilamentAndInRectangle {
         Rectangle r = new Rectangle();
         r.setGlat(0);
         r.setGlon(0);
-        r.setH(2);
-        r.setL(20);
+        try {
+            r.setH(2);
+            r.setL(20);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         StarInFilamentAndInRectangle s = new StarInFilamentAndInRectangle();
         InfoStarInFilamentAndRectangle i = s.execute(r);
         System.out.println(i);

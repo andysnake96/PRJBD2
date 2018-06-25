@@ -3,7 +3,7 @@ package TEST;
 import DAO.DAOFilament;
 import ENTITY.Filament;
 import feauture1.Bean.InfoFilament;
-import feauture1.Bean.rangeNSeg;
+import feauture1.Bean.RangeNSeg;
 import feauture1.Controller.searchFilamentByNSeg;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -33,7 +33,7 @@ public class searchFilamentByNSegTest {
     @Test
     void testFilamentinList() {
         int nSeg = this.filament.getnSeg();
-        rangeNSeg bean = new rangeNSeg(nSeg-1, nSeg+1);
+        RangeNSeg bean = new RangeNSeg(nSeg-1, nSeg+1);
         searchFilamentByNSeg s = new searchFilamentByNSeg();
         List<InfoFilament> beans;
         beans = s.executeSearch(bean);
@@ -46,7 +46,7 @@ public class searchFilamentByNSegTest {
         }
 
         assert c ==1;
-        bean = new rangeNSeg(nSeg+1, nSeg+3);
+        bean = new RangeNSeg(nSeg+1, nSeg+3);
         beans = s.executeSearch(bean);
         System.out.println(beans.size());
          c = 0;

@@ -34,8 +34,13 @@ public class StarInFilamentAndInRectangleTest {
         this.r = new Rectangle();
         r.setGlat(CENTROIDELAT);
         r.setGlon(CENTROIDELON);
-        r.setH(H);
-        r.setL(L);
+
+        try {
+            r.setH(H);
+            r.setL(L);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         double h = r.getH();
         double l = r.getL();
         double cLat = r.getGlat();

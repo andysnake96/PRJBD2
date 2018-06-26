@@ -357,7 +357,6 @@ public class Parser implements Import2DB {
                 String path=pathTuple[1];
                 String kindOfCSV = pathTuple[0];
                 this.parseBlock(path,kindOfCSV);
-                this.parseBlock(starPath[1],starPath[0]);
 
 
             }
@@ -407,7 +406,7 @@ public class Parser implements Import2DB {
         ParserTest parserTest= new ParserTest();
         parserTest.cleanDBWrap();
         long inizio = System.currentTimeMillis();
-        parser.readCSV(SPITZER,null);
+        parser.readCSV(HERSCHEL,null);
         long fine = System.currentTimeMillis();
         System.out.println((fine-inizio)/60000.0);
         //parser.parseBlock("CSV/scheletro_filamenti_Herschel.csv",Import2DB.SKELETONPOINT);

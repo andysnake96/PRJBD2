@@ -8,6 +8,8 @@ import java.util.List;
 
 public class UserRecorded {
 
+
+    //TODO levare attributi controllers
     private ComputeDistance computeDistance;
     private ComputeFilament computeFilament;
     private searchFilamentByNSeg searchFilamentByNSeg;

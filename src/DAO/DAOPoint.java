@@ -32,7 +32,7 @@ public class DAOPoint {
         stmt.setInt(1, idFil);
         stmt.setString(2, nameStr);
         ResultSet rs = stmt.executeQuery();
-        if(rs.next()) {
+        if(!rs.next()) {
             return null;
         }
         centroide.setLat(rs.getDouble(1));
@@ -62,7 +62,7 @@ public class DAOPoint {
         stmt.setInt(1, idFil);
         stmt.setString(2, nameStr);
         ResultSet rs = stmt.executeQuery();
-        if(rs.next()) {
+        if(!rs.next()) {
             return null;
         }
 

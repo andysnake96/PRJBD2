@@ -78,7 +78,7 @@ public class ComputeDistance {  //classe per il requisito n.11
     }
 
     /*
-    funzione che cerca il filamento in base al nome o all'id e o lo strumente in corrispondenza ai dati inseriti
+    funzione che cerca il filamento in base al nome o all'id e  lo strumento in corrispondenza ai dati inseriti
     dall'utente
      */
 

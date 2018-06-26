@@ -10,15 +10,23 @@ public class Rectangle {
         return l;
     }
 
-    public void setL(double l) {
+    public void setL(double l) throws Exception {
+        if(l <= 0) {
+            throw new Exception();
+        }
         this.l = l;
     }
 
-    public double getH() {
+    public double getH()  {
+
+
         return h;
     }
 
-    public void setH(double h) {
+    public void setH(double h) throws Exception {
+        if(h <= 0) {
+            throw new Exception();
+        }
         this.h = h;
     }
 

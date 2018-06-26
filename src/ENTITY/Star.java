@@ -9,6 +9,18 @@ public class Star {
     private String type;
     private Satellite satellite;
 
+    public Star() {}
+
+    public Star(int id, String name, double glon, double glat, double flux, String type, Satellite satellite) {
+        this.id = id;
+        this.name = name;
+        this.glon = glon;
+        this.glat = glat;
+        this.flux = flux;
+        this.type = type;
+        this.satellite = satellite;
+    }
+
     public int getId() {
         return id;
     }
@@ -64,4 +76,22 @@ public class Star {
     public void setSatellite(Satellite satellite) {
         this.satellite = satellite;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Star star = (Star) o;
+
+        if (id != star.id) return false;
+        if (Double.compare(star.glon, glon) != 0) return false;
+        if (Double.compare(star.glat, glat) != 0) return false;
+        if (Double.compare(star.flux, flux) != 0) return false;
+        if (name != null ? !name.equals(star.name) : star.name != null) return false;
+        if (type != null ? !type.equals(star.type) : star.type != null) return false;
+        return satellite != null ? satellite.equals(star.satellite) : star.satellite == null;
+    }
+
+
 }

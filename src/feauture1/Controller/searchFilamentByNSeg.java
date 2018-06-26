@@ -2,7 +2,7 @@ package feauture1.Controller;
 
 import ENTITY.Filament;
 import feauture1.Bean.InfoFilament;
-import feauture1.Bean.rangeNSeg;
+import feauture1.Bean.RangeNSeg;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -22,7 +22,7 @@ public class searchFilamentByNSeg {
     */
 
 
-    public List<InfoFilament> executeSearch(rangeNSeg range) {
+    public List<InfoFilament> executeSearch(RangeNSeg range) {
         List<InfoFilament> beans = new ArrayList<>();
         try {
             this.filaments =  DAO.DAOFilament.searchByRangeNSeg(range.getnSegMin(), range.getnSegMax());
@@ -52,7 +52,7 @@ public class searchFilamentByNSeg {
     }
 
     public static void main(String args[]) {
-       rangeNSeg bean = new rangeNSeg(2, 2);
+       RangeNSeg bean = new RangeNSeg(2, 2);
        searchFilamentByNSeg s = new searchFilamentByNSeg();
        List<InfoFilament> beans;
        beans = s.executeSearch(bean);

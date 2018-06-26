@@ -37,7 +37,7 @@ public class UserDao {
                 return null;
             }
 
-            String name = rs.getString("name");  // non se perhcè mastrofini riprendeva username, password se già lo sappiamo
+            String name = rs.getString("name");
             String uname = rs.getString("username");
             String pword = rs.getString("password");
             String type = rs.getString("type");
@@ -47,6 +47,7 @@ public class UserDao {
 
             user = new User(name, sname, uname, pword, email, type);
 
+            rs.close();
             connection.closeConn(conn);
             stmt.close();
         } catch (SQLException se2) {

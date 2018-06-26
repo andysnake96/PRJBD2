@@ -13,7 +13,6 @@ import java.util.List;
 import java.util.Properties;
 public class Parser2DBDAO {
     /*
-
     insert strings loaded from confis/insert.properties and completed with records passed
     initFromCSV public method witch wrap write calls
     DB write line per line... called from parser class, not passed all records to no wast too mem
@@ -41,21 +40,21 @@ public class Parser2DBDAO {
        !!!!NB NOT ADDED TERMINATOR !!!
        write (value1,value2,...)
        */
-      String outputFields=new String();
-      outputFields+="(";
-      for (int x=0;x<record.size();x++){
-          String field=record.get(x);
-          if(field==null)
-              continue;
-          outputFields+=field;
-          if (x!=record.size()-1)
-              outputFields+=",";
+        String outputFields=new String();
+        outputFields+="(";
+        for (int x=0;x<record.size();x++){
+            String field=record.get(x);
+            if(field==null)
+                continue;
+            outputFields+=field;
+            if (x!=record.size()-1)
+                outputFields+=",";
 
-      }
-      if(nameStr!=null)
-          outputFields+=","+nameStr;
-      outputFields+=")";
-      return outputFields;
+        }
+        if(nameStr!=null)
+            outputFields+=","+nameStr;
+        outputFields+=")";
+        return outputFields;
     }
 
     private String sqlString4Block(List<List<String>> records,String nameStr) {
@@ -153,7 +152,7 @@ public class Parser2DBDAO {
             if(out[i]<0)
                 System.err.println("errore nell esecuzione del batch posizione "+i);
         }
-       // this.checkOutline(nameStr);
+        // this.checkOutline(nameStr);
         //prepS.executeLargeBatch()
     }
 
@@ -161,19 +160,19 @@ public class Parser2DBDAO {
         DAO.Connection connection = DAO.Connection.getIstance();
         String sql = connection.getSqlString("queryconstraintoutline");
         PreparedStatement stmt =  this.conn.prepareStatement(sql);
-            for(int i = 0; i < records.size(); i++) {
+        for(int i = 0; i < records.size(); i++) {
 
-                    stmt.setInt(1, Integer.parseInt(records.get(i).get(0)));  //idFil
-                    stmt.setString(2, nameStr);
-                    stmt.setDouble(3, Double.parseDouble(records.get(i).get(2))); //glat
-                    stmt.setDouble(4, Double.parseDouble(records.get(i).get(1))); //glon
-                    ResultSet rs = stmt.executeQuery();
-                    if(rs.next())
-                        throw new MyException();
+            stmt.setInt(1, Integer.parseInt(records.get(i).get(0)));  //idFil
+            stmt.setString(2, nameStr);
+            stmt.setDouble(3, Double.parseDouble(records.get(i).get(2))); //glat
+            stmt.setDouble(4, Double.parseDouble(records.get(i).get(1))); //glon
+            ResultSet rs = stmt.executeQuery();
+            if(rs.next())
+                throw new MyException();
 
-                }
+        }
         System.out.println("block finisher");
-            }
+    }
 
     private void checkOutline( String nameStr) throws SQLException, MyException {
         DAO.Connection connection = DAO.Connection.getIstance();
@@ -269,11 +268,11 @@ public class Parser2DBDAO {
         if (name.equals(Import2DB.OUTLINE) && nameStr!=null) {
             this.writeOutline(records,nameStr);
 
-            }
-         else if (name.equals(Import2DB.FILAMENT)){
-             //this.writeFilamentBlockOnTheFly(records);        //to check diff of performace...
+        }
+        else if (name.equals(Import2DB.FILAMENT)){
+            //this.writeFilamentBlockOnTheFly(records);        //to check diff of performace...
             this.writeFilament(records);
-            }
+        }
         else if (name.equals(Import2DB.SKELETONPOINT) && nameStr!=null){
             this.writeSkeleton(records,nameStr);
 
@@ -343,7 +342,7 @@ public class Parser2DBDAO {
 //        statement.execute(sql);
 //        //TODO ONTHE FLY FOR NOT CONVERT TO-FROM LOCAL DATE...simpler code
 
-        }
+    }
 
 
 

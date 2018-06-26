@@ -60,7 +60,7 @@ public class UserManager {  //relativo al requisito 3, può farlo solo l'amminis
     /*
     funzione per inserire un nuovo strumento nel DB
      */
-    private String addInstrument(InstrumentBean ib) {
+    public String addInstrument(InstrumentBean ib) {
         String msx = InstrumentDao.addInstrument(ib);
         return msx;
     }

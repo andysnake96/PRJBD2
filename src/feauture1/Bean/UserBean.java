@@ -8,6 +8,18 @@ public class UserBean {
     private String email;
     private String type;
 
+    public UserBean() {
+    }
+
+    public UserBean(String name, String surname, String username, String password, String email, String type) {
+        this.name = name;
+        this.surname = surname;
+        this.username = username;
+        this.password = password;
+        this.email = email;
+        this.type = type;
+    }
+
     public void setName(String name) {
         this.name = name;
     }
@@ -29,9 +41,6 @@ public class UserBean {
     }
 
     public void setType(String type) {
-        if(!(type.equals("User") || type.equals("Administrator"))) {
-            System.err.println("error");
-        }
 
         this.type = type;
     }
@@ -58,5 +67,17 @@ public class UserBean {
 
     public String getType() {
         return type;
+    }
+
+    @Override
+    public String toString() {
+        return "UserBean{" +
+                "name='" + name + '\'' +
+                ", surname='" + surname + '\'' +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", email='" + email + '\'' +
+                ", type='" + type + '\'' +
+                '}';
     }
 }

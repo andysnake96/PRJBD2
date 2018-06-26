@@ -4,10 +4,21 @@ package feauture1.Bean;
 classe bean utilizzata per trasportare le informazioni di un nuovo strumento da inserire nel DB
  */
 
+import java.util.Arrays;
+
 public class InstrumentBean {
     private String name;
     private double[] band;
     private String satellite;
+
+    public InstrumentBean() {
+    }
+
+    public InstrumentBean(String name, double[] band, String satellite) {
+        this.name = name;
+        this.band = band;
+        this.satellite = satellite;
+    }
 
     public String getName() {
         return name;
@@ -41,5 +52,14 @@ public class InstrumentBean {
         }
         band += this.band[i] +"}";
         return band;
+    }
+
+    @Override
+    public String toString() {
+        return "InstrumentBean{" +
+                "name='" + name + '\'' +
+                ", band=" + Arrays.toString(band) +
+                ", satellite='" + satellite + '\'' +
+                '}';
     }
 }

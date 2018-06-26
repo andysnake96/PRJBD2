@@ -3,7 +3,6 @@ package CONTROLLER.parse;
 public interface Import2DB {
     /*
     interface whitch wrap RF4 (= Import CSV)in Parser Class (Engineered to be efficient and low memory consumer!!)
-
      */
     // DB table name for DAO callings
     //usage in parser for eatch line

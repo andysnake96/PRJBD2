@@ -125,7 +125,7 @@ public class StarFilament {
     }
 
     public static void main(String args[]) {
-        computeFilamentBean bean = new computeFilamentBean("HiGALFil005.0050+0.1499");
+        computeFilamentBean bean = new computeFilamentBean(45, "SPIRE");
         StarFilament starFilament  = new StarFilament(bean);
         BeanRF9 beanRF9 =  starFilament.starsInFilament();
         System.out.println(beanRF9);

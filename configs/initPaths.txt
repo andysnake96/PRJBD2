@@ -6,4 +6,4 @@ skeletonpoint,CSV/scheletro_filamenti_Herschel.csv
 #S
 filament,CSV/filamenti_Spitzer.csv
 outline,CSV/contorni_filamenti_Spitzer.csv
-skeletonpoint,CSV/scheletro_filamenti_Spitzer_CORRETTO.csv
+skeletonpoint,CSV/scheletro_filamenti_Spitzer.csv

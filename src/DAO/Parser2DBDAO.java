@@ -3,6 +3,7 @@ package DAO;
 
 
 import CONTROLLER.parse.Import2DB;
+import ENTITY.Outline;
 import org.postgresql.PGConnection;
 import org.postgresql.jdbc.PgStatement;
 
@@ -152,39 +153,11 @@ public class Parser2DBDAO {
             if(out[i]<0)
                 System.err.println("errore nell esecuzione del batch posizione "+i);
         }
-        // this.checkOutline(nameStr);
         //prepS.executeLargeBatch()
     }
 
-    private void checkOutline(List<List<String>> records, String nameStr) throws SQLException, MyException {
-        DAO.Connection connection = DAO.Connection.getIstance();
-        String sql = connection.getSqlString("queryconstraintoutline");
-        PreparedStatement stmt =  this.conn.prepareStatement(sql);
-        for(int i = 0; i < records.size(); i++) {
 
-            stmt.setInt(1, Integer.parseInt(records.get(i).get(0)));  //idFil
-            stmt.setString(2, nameStr);
-            stmt.setDouble(3, Double.parseDouble(records.get(i).get(2))); //glat
-            stmt.setDouble(4, Double.parseDouble(records.get(i).get(1))); //glon
-            ResultSet rs = stmt.executeQuery();
-            if(rs.next())
-                throw new MyException();
 
-        }
-        System.out.println("block finisher");
-    }
-
-    private void checkOutline( String nameStr) throws SQLException, MyException {
-        DAO.Connection connection = DAO.Connection.getIstance();
-        String sql = connection.getSqlString("queryconstraintoutlinebis");
-        PreparedStatement stmt =  this.conn.prepareStatement(sql);
-        stmt.setString(1, nameStr);
-        ResultSet rs = stmt.executeQuery();
-        if(rs.next()) {
-            throw new MyException();
-        }
-        System.out.println("block finisher");
-    }
 
     private void writeFilament(List<List<String>> records) throws SQLException {
         String sql = insertProp.getProperty("insertFilament");
@@ -294,29 +267,52 @@ public class Parser2DBDAO {
         stmt.executeUpdate();
     }
 
-    public void checkConstraints(String nameStr) throws MyException, SQLException {
+    public void checkConstraints(String nameStr,String kindContraint) throws MyException, SQLException {
+        /*
+        to check buissnes rules:
+            if outline overlap costraint violated => rollback
+            if skeleton overlap costraint violated => delete cascade filament related to overlapped sk. points
+            (NB in file founded skeleton point overlapped
+         roll back will affect only wrong csv table ...
+         */
+        if(kindContraint.equals(Import2DB.OUTLINE))
+            this.checkOutline(nameStr);
+        else if(kindContraint.equals(Import2DB.SKELETONPOINT))
+            this.checkSkeleton();
+
+
+    }
+
+
+    private void checkSkeleton() throws SQLException, MyException {
+
         DAO.Connection connection = DAO.Connection.getIstance();
-        String sql = connection.getSqlString("queryconstraintoutlinebis");
-        PreparedStatement stmt =  this.conn.prepareStatement(sql);
-        stmt.setString(1, nameStr);
-        ResultSet rs = stmt.executeQuery();
-        rs.next();
-        if(rs.getInt("tot")>0)  {           //TODO WORK WITH PREPARED STATEMENT
-            System.err.println("VIOLATION OF BUISNESS RULE outline overlap skeleton");
-            throw new MyException();
-        }
         String sql2 = connection.getSqlString("queryconstraintskeleton");
         Statement stmt2 = this.conn.createStatement();
         ResultSet rs2 = stmt2.executeQuery(sql2);
         rs2.next();
         if(rs2.getInt("tot")>0)  {
             System.err.println("VIOLATION OF BUISNESS RULE ! skeletons overlaps");
-            //throw new MyException(); TODO DEBUG
+            String sqlSolveConflict= connection.getSqlString("solveConflictsSkeleton");
+            stmt2 = this.conn.createStatement();
+            //stmt2.executeUpdate(sqlSolveConflict);        //deletted corrupted filaments all data
+            throw new MyException(Import2DB.SKELETONPOINT);
+
         }
-
     }
+    private void checkOutline( String nameStr) throws SQLException, MyException {
 
-
+        DAO.Connection connection = DAO.Connection.getIstance();
+        String sql = connection.getSqlString("queryconstraintoutlinebis");
+        PreparedStatement stmt =  this.conn.prepareStatement(sql);
+        stmt.setString(1, nameStr);
+        ResultSet rs = stmt.executeQuery();
+        rs.next();
+        if(rs.getInt("tot")>0)  {
+            System.err.println("VIOLATION OF BUISNESS RULE outline overlap skeleton");
+            throw new MyException(Import2DB.OUTLINE);
+        }
+    }
     public void insertSatellite(List<List<String>> records) throws Exception {
 
         String sql=insertProp.getProperty("insertSatellitePrp");

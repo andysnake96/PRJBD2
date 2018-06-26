@@ -144,12 +144,12 @@ class ParserTest {
             dbRowsNumAfter = countInTableWrap();
             assertCorrectInserted(dbRowsNumBefore,dbRowsNumAfter,Import2DB.HERSCHEL); //TODO DEBUG ONLY HERSHEL FULL WORK!
             //checked first group
-            /*if(random.nextInt()%96==0 || true)         //little probability of clean all db before next insert
+            if(random.nextInt()%96==0 || true)         //little probability of clean all db before next insert
                 cleanDBWrap();
             dbRowsNumBefore = countInTableWrap();
             wrapParseExternFile(importWrap, pathSpitzer, spitzerDefaultInstrument);
             dbRowsNumAfter = countInTableWrap();
-            assertCorrectInserted(dbRowsNumBefore,dbRowsNumAfter,Import2DB.SPITZER);*/
+            assertCorrectInserted(dbRowsNumBefore,dbRowsNumAfter,Import2DB.SPITZER);
 
         } else { //reverse order of insert groups...
             System.out.println("order:= spitzer,hershel");

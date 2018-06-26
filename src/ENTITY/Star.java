@@ -93,5 +93,11 @@ public class Star {
         return satellite != null ? satellite.equals(star.satellite) : star.satellite == null;
     }
 
-
+    @Override
+    public String toString() {
+        return "Star{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                '}';
+    }
 }

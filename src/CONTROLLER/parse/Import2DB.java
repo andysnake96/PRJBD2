@@ -27,5 +27,5 @@ public interface Import2DB {
     public void readCSV(String name, String nameInstrument) throws Exception;
     public void parseSatelliteInfo(String path) throws Exception;
     //RF4
-    public String parseExternFile(String path, String kindCSV, String nameStr) throws Exception;
+    public String parseExternFile(String path, String kindCSV, String nameStr,String nameSat) throws Exception;
 }

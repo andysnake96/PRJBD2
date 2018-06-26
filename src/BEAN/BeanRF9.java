@@ -36,6 +36,8 @@ public class BeanRF9 {
     public String toString() {
         return "BeanRF9{" +
                 "counters=" + counters +
+                ", errorMessage='" + errorMessage + '\'' +
+                ", starsInFilament=" + starsInFilament +
                 '}';
     }
 }

@@ -44,7 +44,7 @@ public class StarFilamentTest {
             e.printStackTrace();
         }
         this.starNotInFilament = new Star(23813, "HIGALPS005.0014+0.0856", 5.000437, 0.084881, 36.8936, "PROTOSTELLAR", null);
-        this.starInFilament = new Star(29197, "HIGALPS006.1557+1.2523", 6.156491, 1.251963, 7.60607, "PRESTELLAR", null);
+        this.starInFilament = new Star(58996, "HIGALPS013.0230+0.1313", 13.023134, 0.131209, 11.8908, "PRESTELLAR", null);
         computeFilamentBean bean = new computeFilamentBean(IDFIL, NAMESTR);
         StarFilament starFilament  = new StarFilament(bean);
         this.beanRF9 =  starFilament.starsInFilament();
@@ -56,8 +56,9 @@ public class StarFilamentTest {
 
         double sum = execute(this.starInFilament);
         System.out.println("risultato del calcolo di una stella nel filamento:  "+sum);
-        assertEqualsResult();
-
+        List<Star> starsInFilament = this.beanRF9.getStarsInFilament();
+        System.out.println("stella contenuta nel filamento?: "+ starsInFilament.contains(this.starInFilament));
+        assert starsInFilament.contains(this.starInFilament);
 
     }
 
@@ -86,27 +87,18 @@ public class StarFilamentTest {
         return sum;
     }
 
-    private void assertEqualsResult() {
-
-        List<Star> starsInFilament = this.beanRF9.getStarsInFilament();
-        System.out.println("stella contenuta nel filamento?: "+ starsInFilament.contains(this.starInFilament));
-        assert starsInFilament.contains(this.starInFilament);
-    }
 
     @Test
     void starNotInFilament() {
         double sum = execute(starNotInFilament);
         System.out.println("risultato di una stella non nel filamento: "  + sum);
-        assertEqualsResult2();
-
-
-    }
-
-    private void assertEqualsResult2() {
-
         List<Star> starsInFilament = this.beanRF9.getStarsInFilament();
         System.out.println("stella contenuta nel filamento?: "+ starsInFilament.contains(this.starNotInFilament));
         assert !starsInFilament.contains(this.starNotInFilament);
+
+
     }
+
+
 
 }

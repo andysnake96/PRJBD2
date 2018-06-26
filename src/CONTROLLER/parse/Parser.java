@@ -72,6 +72,8 @@ public class Parser implements Import2DB {
         compulsory namestr (Instrument in CSV) for every kind except star
         */
 
+        //this.satelliteInUse= this.takeSatelliteFromInstrument(nameStr);
+
         if (kindCSV.equals(FILAMENT)) {
             return parseBlock(path, kindCSV);
 
@@ -214,7 +216,7 @@ public class Parser implements Import2DB {
         if (blockOfRecords.size() > 0)
             parser2DBDAO.initDBFromCSVBlock(kindCSV, blockOfRecords, this.instrumentInUse,this.satelliteInUse);    //empty the block( case CSV #LINES%BLOCKSIZE!=0
         try {
-            parser2DBDAO.checkConstraints(instrumentInUse); //TODO not work with spitzer... :(
+            parser2DBDAO.checkConstraints(instrumentInUse,kindCSV);
             parser2DBDAO.updatenSeg(); //TODO move in controller class
             connection.commit();
             connection.setAutoCommit(true);
@@ -222,7 +224,8 @@ public class Parser implements Import2DB {
             fileReader.close();
         } catch (MyException e) {
             result="BUISNESS RULE VIOLATION! CORRECTED ELIMINATING FILAMENTS UNCOMPLETE ";
-            connection.rollback();
+            if (e.getMessage().equals(OUTLINE))
+                connection.rollback();
             e.printStackTrace();
             connection.setAutoCommit(true);
             connClint.closeConn(connection);
@@ -230,92 +233,7 @@ public class Parser implements Import2DB {
         }
         return result;
     }
-    //old parser... write 1 line for time...
-    @Deprecated
-    public void parseStandard(String path, String kindCSV) throws Exception {
 
-        /* to NO WAST TOO MEMORY ACHIVED BY iterating among lines
-            lines ( or block of lines will be written to DB with a call named //TODO CALL
-            HP CSV file in path has  at least header line
-            ==>parsed records will be written in DB with
-         */
-        //TODO BOUNDARY HAS TO CHECK WITH EXCEPT TROWN IF FILE NOT EXIST AND WITH KINDLIST IN INTERFACE IF
-        //KIND IS CORRECT...
-        java.sql.Connection connection = Connection.getIstance().getConn();
-        //getted connection to send write call for eatch line to DB...
-        Parser2DBDAO parser2DBDAO = new Parser2DBDAO(connection);
-        //retrived DAOWRITE istance
-        //List<String[]> lines= new ArrayList<>(); // DEBUG TODO REMOVE
-        BufferedReader bufferedReader= new BufferedReader(new FileReader(path));
-        String line ;
-
-        line= bufferedReader.readLine(); // HEADER IN FIRST LINE...
-        String[] CSVColumns= line.split(this.SPLIT_CHAR);   //header csv
-        int i=1;
-        //RETRIVING STRING INDEX IN RECORDS IN CSV, matching kindOfCsv to indexes in interface.
-        int[] strIndx;
-        //filament has to ignore 1 column...
-        if(kindCSV.equals(FILAMENT)) {
-            strIndx = filamentStrIndx;
-
-        }
-        else if (kindCSV.equals(STAR))
-            strIndx= starStrIndx;
-        else
-            strIndx=null;   //other CSV not contains strings...
-        do {
-            //NB
-            line=bufferedReader.readLine();
-            if(line != null) {                  //MAYBE CSV FILE WITH NO RECORDS...
-                String[] fieldsParsed = line.split(this.SPLIT_CHAR);
-                List<String> fields=Arrays.asList(fieldsParsed);
-                if (fieldsParsed.length!=CSVColumns.length){
-                    //TODO FLIPPED LINE ==> SKIPPED
-                    //flipped line check= wrong # of items..
-
-                    System.err.println("error in file\t:" + path+
-                            "\nwrong Number of fields in line :"+i+
-                            "fields...\t"+
-                            Arrays.toString(fieldsParsed)+
-                            "but header size is: "+CSVColumns.length+
-                            "with columns:\t"+Arrays.toString(CSVColumns));   //WRONG LINE NUM
-                    continue;
-                }
-                else{
-                    if (strIndx!=null) { //(only some)CSV in parsing has strings to be quoted
-                        for (int x=0;x<strIndx.length;x++){
-                            String quotedField=this.quoteField(fields.get(strIndx[x]));
-                            fields.set(strIndx[x],quotedField);
-                            //quoting strings fields..
-                            //todo check
-                        }
-                        if (kindCSV.equals(FILAMENT)) {
-                            int delCol=filamentDelColIndx[0];
-                            fields.set(delCol,null);  //db does not need a column in filament CSV
-                        }
-                        //lines.add(fieldsParsed);      //TODO DEBUG THIS WAST A LOT OF MEM...
-
-                    }
-                    //!! deletted
-                    //parser2DBDAO.initDBFromCSV(kindCSV,fields,this.instrumentInUse); //write line to DB !!!!!!!!!!!!
-
-                }
-
-                i++;    //  may write in blocks...
-            }
-
-        }
-        while (line != null);
-        try {
-            connection.close(); //TODO HANDLE BETTER ?
-        } catch (SQLException e) {
-            e.printStackTrace();
-
-        }
-        //return lines;   //todo remove only for debbuging
-
-
-    }
 
     public void readCSV(String name, String nameInstrument) throws Exception {
         //TODO return List<List<String[]>> only for debbuging...
@@ -334,8 +252,8 @@ public class Parser implements Import2DB {
             deflt=true;             //if instrument not passed used default interpretation of hershel&Spitzer in CSVs
         //TODO LIVIO check passed instrument is in DB.instruments
         if (name.equals(Import2DB.HERSCHEL)) {
-            this.parseBlock(starPath[1],starPath[0]);
             this.satelliteInUse="Herschel";
+            this.parseBlock(starPath[1],starPath[0]);
             for (int j = 0; j < this.hershelPaths.size(); j++) {
                 if (deflt)
                     this.instrumentInUse="SPIRE";
@@ -349,6 +267,7 @@ public class Parser implements Import2DB {
 
             }
         } else if (name.equals(Import2DB.SPITZER)){
+            this.satelliteInUse="Spitzer";
             this.parseBlock(starPath[1],starPath[0]);
             for (int j = 0; j < this.spitzerPaths.size(); j++) {
                 if (deflt)
@@ -362,7 +281,8 @@ public class Parser implements Import2DB {
                 this.parseBlock(path,kindOfCSV);
 
             }
-        } else if (name.equals(Import2DB.STAR)){
+        } /*else if (name.equals(Import2DB.STAR)){
+            this.satelliteInUse="Hershel";
             String[] pathTuple = this.starPath;
             String path=pathTuple[1];
             String kindOfCSV = pathTuple[0];
@@ -370,7 +290,7 @@ public class Parser implements Import2DB {
 
             //output.add (this.parseStandard(path,kindOfCSV));
 
-        }
+        }*/
         else
             throw new IllegalArgumentException("invalid (set of) files to parse...\n called with" + name);
         //caller may catch this exeption and retry with other name of set of csv files to load...
@@ -379,7 +299,7 @@ public class Parser implements Import2DB {
     }
 
     public static void main(String[] args) throws Exception {
-
+    //TODO RIGA 144 0,4,B,272.07536,-20.36854,21,0.53455965 ELIMINATA PERCHE NON C'È ID IN FILAMENT...
         Parser parser = new Parser();
 //        parser.readCSV(Import2DB.HERSCHEL);
 

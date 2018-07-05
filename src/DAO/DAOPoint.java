@@ -1,7 +1,9 @@
 package DAO;
 
+import ENTITY.Filament;
 import ENTITY.Outline;
 import ENTITY.Point;
+import ENTITY.PointSkeleton;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -177,6 +179,32 @@ public class DAOPoint {
 
     }
 
+    public static List<PointSkeleton> takeFilamentSpine(int idFil,String nameStr) throws SQLException {
+        List<PointSkeleton> out = new ArrayList<>();
+        Filament filament = DAOFilament.searchFilamentById(idFil, nameStr);
+        Connection connection = Connection.getIstance();
+        String sql = connection.getSqlString("takeSkeletonPointsFilament");
+        PreparedStatement stmt = connection.getConn().prepareStatement(sql);
+        stmt.setInt(1, idFil);
+        stmt.setString(2, nameStr);
+        ResultSet resultSet = stmt.executeQuery();
+        if (!resultSet.next()) {
+            System.out.println("empty result.. no spine point for (?) filament");
+            return null;
+        }
+        do {
+            out.add(new PointSkeleton(
+                    new Point(resultSet.getDouble("glat"), resultSet.getDouble("glon")),
+                            resultSet.getInt("idseg"),
+                            resultSet.getInt("n"),
+                            resultSet.getDouble("flux"),
+                            resultSet.getString("type")));
+        }
+        while (resultSet.next());
+
+        return out;
+
+    }
 
 }
 

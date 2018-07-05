@@ -1,5 +1,7 @@
 package ENTITY;
 
+import java.util.List;
+
 public class Star {
     private int id;
     private String name;
@@ -98,6 +100,11 @@ public class Star {
         return "Star{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
+                ", glon=" + glon +
+                ", glat=" + glat +
+                ", flux=" + flux +
+                ", type='" + type + '\'' +
                 '}';
     }
+
 }

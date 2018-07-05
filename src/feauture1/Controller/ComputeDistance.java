@@ -6,7 +6,7 @@ import ENTITY.Filament;
 
 import ENTITY.Point;
 import feauture1.Bean.InfoFilament;
-import feauture1.Bean.computeFilamentBean;
+import feauture1.Bean.ComputeFilamentBean;
 
 import java.sql.SQLException;
 
@@ -17,7 +17,7 @@ public class ComputeDistance {  //classe per il requisito n.11
     private Point PointNMin;  //punto del segmento con numero progressivo minimo
 
 
-    public InfoFilament distanceFromVertex(computeFilamentBean bean) {
+    public InfoFilament distanceFromVertex(ComputeFilamentBean bean) {
         InfoFilament infoFilament = new InfoFilament();
 
         try {
@@ -82,7 +82,7 @@ public class ComputeDistance {  //classe per il requisito n.11
     dall'utente
      */
 
-    private Filament searchFilament(computeFilamentBean bean) throws SQLException {
+    private Filament searchFilament(ComputeFilamentBean bean) throws SQLException {
         if (bean.getType() == 0)
                 return DAOFilament.searchFilamentByName(bean.getName());
             else
@@ -94,7 +94,7 @@ public class ComputeDistance {  //classe per il requisito n.11
 
     public static void main(String args[]) {
         ComputeDistance c = new ComputeDistance();
-        computeFilamentBean bean = new computeFilamentBean(59, "SPIRE");
+        ComputeFilamentBean bean = new ComputeFilamentBean(59, "SPIRE");
         System.out.println(c.distanceFromVertex(bean));
     }
 

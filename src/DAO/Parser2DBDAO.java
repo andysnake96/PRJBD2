@@ -295,8 +295,8 @@ public class Parser2DBDAO {
             System.err.println("VIOLATION OF BUISNESS RULE ! skeletons overlaps");
             String sqlSolveConflict= connection.getSqlString("solveConflictsSkeleton");
             stmt2 = this.conn.createStatement();
-            //stmt2.executeUpdate(sqlSolveConflict);        //deletted corrupted filaments all data
-            throw new MyException(Import2DB.SKELETONPOINT);
+            stmt2.executeUpdate(sqlSolveConflict);        //deletted corrupted filaments all data
+            //throw new MyException(Import2DB.SKELETONPOINT);
 
         }
     }

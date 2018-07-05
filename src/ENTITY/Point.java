@@ -4,6 +4,13 @@ public class Point {
     private double lat;
     private double glon;
 
+    public Point(){};
+
+    public Point(double lat, double glon) {
+        this.lat = lat;
+        this.glon = glon;
+    }
+
     public double getLat() {
         return lat;
     }

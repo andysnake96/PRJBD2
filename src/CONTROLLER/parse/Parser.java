@@ -3,12 +3,12 @@ package CONTROLLER.parse;
 import DAO.Connection;
 import DAO.MyException;
 import DAO.Parser2DBDAO;
+import TEST.*;
 
 import java.io.*;
 
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -217,7 +217,8 @@ public class Parser implements Import2DB {
             parser2DBDAO.initDBFromCSVBlock(kindCSV, blockOfRecords, this.instrumentInUse,this.satelliteInUse);    //empty the block( case CSV #LINES%BLOCKSIZE!=0
         try {
             parser2DBDAO.checkConstraints(instrumentInUse,kindCSV);
-            parser2DBDAO.updatenSeg(); //TODO move in controller class
+            if( kindCSV.equals(SKELETONPOINT))
+                parser2DBDAO.updatenSeg();
             connection.commit();
             connection.setAutoCommit(true);
             connClint.closeConn(connection);
@@ -311,9 +312,10 @@ public class Parser implements Import2DB {
 
         // TODO end remove..
         //nb all files togeter size ~
-        ParserTest parserTest= new ParserTest();
-        parserTest.cleanDBWrap();
+        ParserTest.cleanDBWrap();
         long inizio = System.currentTimeMillis();
+        parser.readCSV(SPITZER,null);
+        System.out.println("doneSpitzer");
         parser.readCSV(HERSCHEL,null);
         long fine = System.currentTimeMillis();
         System.out.println((fine-inizio)/60000.0);

@@ -5,7 +5,7 @@ import DAO.DAOPoint;
 import ENTITY.Filament;
 import ENTITY.Point;
 import feauture1.Bean.InfoFilament;
-import feauture1.Bean.computeFilamentBean;
+import feauture1.Bean.ComputeFilamentBean;
 import feauture1.Controller.ComputeFilament;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -33,7 +33,7 @@ public class ComputeFilamentTest {
         }
 
         ComputeFilament f = new ComputeFilament();
-        computeFilamentBean bean = new computeFilamentBean(idFil, nameStr);
+        ComputeFilamentBean bean = new ComputeFilamentBean(idFil, nameStr);
         infoFilament =  f.computeFilament(bean);
     }
 

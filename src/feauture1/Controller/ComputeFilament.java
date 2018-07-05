@@ -5,7 +5,7 @@ import ENTITY.Filament;
 import ENTITY.Point;
 import DAO.DAOPoint;
 import feauture1.Bean.InfoFilament;
-import feauture1.Bean.computeFilamentBean;
+import feauture1.Bean.ComputeFilamentBean;
 
 import java.sql.SQLException;
 
@@ -24,7 +24,7 @@ public class ComputeFilament {
     ottengo tutte le informazioni richieste e l'inserisco nel bean infofilament per riportarle alla grafica
      */
 
-    public  InfoFilament computeFilament(computeFilamentBean bean) {
+    public  InfoFilament computeFilament(ComputeFilamentBean bean) {
         InfoFilament infoFilament = new InfoFilament();
         try {
             this.filament = searchFilament(bean);
@@ -82,7 +82,7 @@ public class ComputeFilament {
      */
 
 
-    private Filament searchFilament(computeFilamentBean bean) throws SQLException {
+    private Filament searchFilament(ComputeFilamentBean bean) throws SQLException {
         if (bean.getType() == 0)
             return DAOFilament.searchFilamentByName(bean.getName());
         else
@@ -94,7 +94,7 @@ public class ComputeFilament {
 
     public static void main(String args[]) {
         ComputeFilament f = new ComputeFilament();
-        computeFilamentBean bean = new computeFilamentBean(45, "SPIRE");
+        ComputeFilamentBean bean = new ComputeFilamentBean(45, "SPIRE");
         System.out.println(f.computeFilament(bean));
     }
 }

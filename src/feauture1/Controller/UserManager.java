@@ -1,11 +1,15 @@
 package feauture1.Controller;
 
+import CONTROLLER.parse.Import2DB;
+import CONTROLLER.parse.Parser;
 import DAO.InstrumentDao;
 import DAO.SatelliteDao;
 import DAO.UserDao;
 import feauture1.Bean.InstrumentBean;
 import feauture1.Bean.SatelliteBean;
 import feauture1.Bean.UserBean;
+
+import java.io.IOException;
 
 public class UserManager {  //relativo al requisito 3, può farlo solo l'amministartore
 
@@ -64,6 +68,5 @@ public class UserManager {  //relativo al requisito 3, può farlo solo l'amminis
         String msx = InstrumentDao.addInstrument(ib);
         return msx;
     }
-
 
 }

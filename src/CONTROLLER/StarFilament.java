@@ -8,7 +8,7 @@ import ENTITY.Filament;
 import ENTITY.Outline;
 import ENTITY.Point;
 import ENTITY.Star;
-import feauture1.Bean.computeFilamentBean;
+import feauture1.Bean.ComputeFilamentBean;
 
 import java.lang.Math;
 
@@ -26,7 +26,7 @@ public class StarFilament {
     private final double INPAR = 0.01;
     private String messageError;
 
-    public StarFilament(computeFilamentBean bean) {
+    public StarFilament(ComputeFilamentBean bean) {
 
         this.counters = new HashMap<>();
         this.bindings = new HashMap<>();
@@ -40,7 +40,7 @@ public class StarFilament {
         this.bindings = new HashMap<>();
     }
 
-    private String takeStarFilament(computeFilamentBean bean)  {
+    private String takeStarFilament(ComputeFilamentBean bean)  {
 
         try {
             this.stars = DAOStar.takeAllStars();
@@ -94,7 +94,7 @@ public class StarFilament {
             }
         }
         BeanRF9 beanRF9 = new BeanRF9(this.counters, starsInFilament);
-
+        beanRF9.setFilament(this.filament);
         return beanRF9;
 
     }
@@ -115,7 +115,7 @@ public class StarFilament {
     }
 
 
-    private Filament searchFilament(computeFilamentBean bean) throws SQLException {
+    private Filament searchFilament(ComputeFilamentBean bean) throws SQLException {
         if (bean.getType() == 0)
             return DAOFilament.searchFilamentByName(bean.getName());
         else
@@ -125,7 +125,7 @@ public class StarFilament {
     }
 
     public static void main(String args[]) {
-        computeFilamentBean bean = new computeFilamentBean(45, "SPIRE");
+        ComputeFilamentBean bean = new ComputeFilamentBean(45, "SPIRE");
         StarFilament starFilament  = new StarFilament(bean);
         BeanRF9 beanRF9 =  starFilament.starsInFilament();
         System.out.println(beanRF9);

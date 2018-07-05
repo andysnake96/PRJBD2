@@ -1,5 +1,6 @@
 package BEAN;
 
+import ENTITY.Filament;
 import ENTITY.Star;
 
 import java.util.HashMap;
@@ -9,6 +10,11 @@ public class BeanRF9 {
     private HashMap<String,Integer> counters;
     private String errorMessage;
     private List<Star> starsInFilament;
+    private Filament filament;
+
+    public void setFilament(Filament filament) {
+        this.filament = filament;
+    }
 
     public BeanRF9(HashMap<String, Integer> counters, List<Star> starsInFilament) {
 

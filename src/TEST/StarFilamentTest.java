@@ -7,14 +7,10 @@ import DAO.DAOPoint;
 import ENTITY.Filament;
 import ENTITY.Point;
 import ENTITY.Star;
-import com.sun.xml.internal.bind.v2.runtime.Name;
-import feauture1.Bean.computeFilamentBean;
-import org.junit.jupiter.api.BeforeAll;
+import feauture1.Bean.ComputeFilamentBean;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 /* test per il requisito 9. preso un filamento specifico, ho due stelle nel database, una che è all'interno del contorno
@@ -45,7 +41,7 @@ public class StarFilamentTest {
         }
         this.starNotInFilament = new Star(23813, "HIGALPS005.0014+0.0856", 5.000437, 0.084881, 36.8936, "PROTOSTELLAR", null);
         this.starInFilament = new Star(58996, "HIGALPS013.0230+0.1313", 13.023134, 0.131209, 11.8908, "PRESTELLAR", null);
-        computeFilamentBean bean = new computeFilamentBean(IDFIL, NAMESTR);
+        ComputeFilamentBean bean = new ComputeFilamentBean(IDFIL, NAMESTR);
         StarFilament starFilament  = new StarFilament(bean);
         this.beanRF9 =  starFilament.starsInFilament();
 

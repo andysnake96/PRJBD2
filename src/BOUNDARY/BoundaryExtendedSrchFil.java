@@ -1,6 +1,7 @@
 package BOUNDARY;
 
 import CONTROLLER.ExtendedSearchFilamentDAO;
+import ENTITY.Filament;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -10,7 +11,7 @@ public class BoundaryExtendedSrchFil {
     public final double MAXELLIPTICITY = 10;
     //RF6
 
-    public List<List<String>> searchFilamentByBrightnessAndEllipticity
+    public List<Filament> searchFilamentByBrightnessAndEllipticity
             (double brightness, double[] ellipticityRange) throws SQLException {
         String errorMSg = null;
         if (brightness < 0)
@@ -30,26 +31,19 @@ public class BoundaryExtendedSrchFil {
     }
 
     //RF8 -CIRCLE
-    public List<List<String>> searchFilamentByCircle(double glat, double glon, double radius) throws SQLException {
+    public List<Filament> searchFilamentByCircle(double glat, double glon, double radius) throws SQLException {
         if (radius < 0)
             throw new IllegalArgumentException("invalid radius for region...");
         return ExtendedSearchFilamentDAO.searchFilamentByCircle(glat, glon, radius);
     }
 
     //RF8 -SQUARE
-    public List<List<String>> searchFilamentBySquare(double glat, double glon, double side)
+    public List<Filament> searchFilamentBySquare(double glat, double glon, double side)
             throws SQLException {
         if (side < 0)
             throw new IllegalArgumentException("invalid side value");
         return ExtendedSearchFilamentDAO.searchFilamentByRectangle(glat, glon, side, side);
     }
 
-    public static void main(String[] args) throws SQLException {
-        BoundaryExtendedSrchFil boundary = new BoundaryExtendedSrchFil();
-        List<List<String>> out0= boundary.searchFilamentByBrightnessAndEllipticity(0.1,new double[] {1.1,5.3});
-        List<List<String>> out1= boundary.searchFilamentBySquare(-0.00288061079447486,5,2);
 
-        List<List<String>> out2= boundary.searchFilamentByCircle(-0.00288061079447486,5,2);
-        System.err.println("ciaoGalli");
-    }
 }

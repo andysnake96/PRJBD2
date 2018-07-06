@@ -7,6 +7,10 @@ public class PointSkeleton {
     private Double flux;
     private String type;
 
+    public Point getPoint() {
+        return point;
+    }
+
 
     public PointSkeleton(Point point, int idSeg, int n, Double flux, String type) {
         this.point = point;

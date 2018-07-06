@@ -4,6 +4,7 @@ package CONTROLLER;
 import DAO.Connection;
 import DAO.DAOFilament;
 import ENTITY.Filament;
+import ENTITY.Instrument;
 import feauture1.Bean.Rectangle;
 
 import java.sql.PreparedStatement;
@@ -21,13 +22,13 @@ public class ExtendedSearchFilamentDAO {
     public final static String CIRCLE = "CIRCLE";
 
     //RF6
-    public static List<List<String>> searchFilamentByBrightnessAndEllipticity
+    public static List<Filament> searchFilamentByBrightnessAndEllipticity
     (double brightness, double[] ellipticityRange) throws SQLException {
 
         /*search filaments by Contrast(Brightness on extern boundary >(1-Contrast)%
               and by ellitpicity in range  */
 
-        List<List<String>> out = new ArrayList<>();
+        List<Filament> out = new ArrayList<>();
         Connection connection = Connection.getIstance();
         java.sql.Connection conn = connection.getConn();
         String sqlQuery = connection.getSqlString("filamentByContrastAndEllptcy");
@@ -49,38 +50,39 @@ public class ExtendedSearchFilamentDAO {
  HiGALFil349.1335+0.1059 | 1020476 | 5.2336e+25 |    2.17391 |   2.1209 | 1.0775e+22 |  19.676 | SPIRE   |    5
 
              */
-            List<String> queryRowOutput = new ArrayList<>();
+            Filament filament= new Filament();
 
-            queryRowOutput.add(resultSet.getString("name"));
-            queryRowOutput.add(String.valueOf(resultSet.getInt("id")));
-            queryRowOutput.add(resultSet.getString("namestr"));
-            queryRowOutput.add(String.valueOf(resultSet.getInt("nseg")));
-            queryRowOutput.add(String.valueOf(resultSet.getDouble("fluxtot")));
-            queryRowOutput.add(String.valueOf(resultSet.getDouble("ellipticty")));
-            queryRowOutput.add(String.valueOf(resultSet.getDouble("contrast")));
-            queryRowOutput.add(String.valueOf(resultSet.getDouble("densavg")));
-            queryRowOutput.add(String.valueOf(resultSet.getDouble("tempavg")));
+            filament.setName(resultSet.getString("name"));
+            filament.setId(resultSet.getInt("id"));
+            filament.setInstrument(new Instrument(resultSet.getString("namestr")));
+            filament.setnSeg(resultSet.getInt("nseg"));
+            filament.setFluxTot(resultSet.getDouble("fluxtot"));
+            filament.setEllipticity(resultSet.getDouble("ellipticty"));
+            filament.setContrast(resultSet.getDouble("contrast"));
+            filament.setDensAvg(resultSet.getDouble("densavg"));
+            filament.setTempAvg(resultSet.getDouble("tempavg"));
 
-            out.add(queryRowOutput);
+            out.add(filament);
 
         }
         while (resultSet.next());
-
+        resultSet.close();
+        connection.closeConn(conn);
+        stmt.close();
         return out;
     }
 
     //RF8 -CIRCLE
-    public static List<List<String>> searchFilamentByCircle(double glat, double glon, double radius) throws SQLException {
+    public static List<Filament> searchFilamentByCircle(double glat, double glon, double radius) throws SQLException {
 
-        List<List<String>> out = new ArrayList<>();
+        List<Filament> out = new ArrayList<>();
         Connection connection = Connection.getIstance();
         java.sql.Connection conn = connection.getConn();
         String sqlQuery = connection.getSqlString("filamentByCircle");
         PreparedStatement stmt = conn.prepareStatement(sqlQuery);
         stmt.setDouble(1, glat);
-        stmt.setDouble(2, radius);
-        stmt.setDouble(3, glon);
-        stmt.setDouble(4, radius);
+        stmt.setDouble(2, glon);
+        stmt.setDouble(3, radius);
 
         ResultSet resultSet = stmt.executeQuery();
         if (!resultSet.next()) {
@@ -89,49 +91,33 @@ public class ExtendedSearchFilamentDAO {
         }
 
         do {
-            List<String> queryRowOutput = new ArrayList<>();
+            Filament filament= new Filament();
+            filament.setFluxTot(resultSet.getDouble("fluxtot"));
+            filament.setEllipticity(resultSet.getDouble("ellipticty"));
+            filament.setContrast(resultSet.getDouble("contrast"));
+            filament.setDensAvg(resultSet.getDouble("densavg"));
+            filament.setName(resultSet.getString("name"));
+            filament.setId(resultSet.getInt("id"));
+            filament.setInstrument(new Instrument(resultSet.getString("namestr")));
+            filament.setnSeg(resultSet.getInt("nseg"));
 
-            queryRowOutput.add(String.valueOf(resultSet.getInt("id")));
-            queryRowOutput.add(resultSet.getString("namestr"));
-            queryRowOutput.add(resultSet.getString("name"));
-            queryRowOutput.add(String.valueOf(resultSet.getInt("nseg")));
-            queryRowOutput.add(String.valueOf(resultSet.getDouble("fluxtot")));
-            queryRowOutput.add(String.valueOf(resultSet.getDouble("ellipticty")));
-            queryRowOutput.add(String.valueOf(resultSet.getDouble("densavg")));
-            queryRowOutput.add(String.valueOf(resultSet.getDouble("tempavg")));
-            queryRowOutput.add(String.valueOf(resultSet.getDouble("contrast")));
+            filament.setTempAvg(resultSet.getDouble("tempavg"));
 
-            out.add(queryRowOutput);
+            out.add(filament);
 
         }
         while (resultSet.next());
+        resultSet.close();
+        connection.closeConn(conn);
+        stmt.close();
         return out;
     }
 
-    public static List<List<String>> searchFilamentBySquare(double glat, double glon, double side) throws Exception {
 
-        List<List<String>> out= new ArrayList<>();
+    //RF8 -RECTANGLE
 
-        Rectangle r = new Rectangle();
-        r.setGlat(glat);
-        r.setGlon(glon);
-        r.setH(side);
-        r.setL(side);
-        List<Filament> filaments = DAOFilament.takeFilamentsInRectangle(glon - side, glon + side, glat - side, glat + side);
-        Iterator<Filament> it = filaments.iterator();
-        while (it.hasNext()) {
-            List<String> filamentFields= new ArrayList<>();
-            Filament filament= it.next();
-            //TODO ADD MAPPING
-            out.add(filamentFields);
-        }
-        return out;
-    }
-
-        //RF8 -RECTANGLE
-
-    public static List<List<String>> searchFilamentByRectangle(double glat, double glon, double height, double width) throws SQLException {
-        List<List<String>> out = new ArrayList<>();
+    public static List<Filament> searchFilamentByRectangle(double glat, double glon, double height, double width) throws SQLException {
+        List<Filament> out = new ArrayList<>();
         Connection connection = Connection.getIstance();
         java.sql.Connection conn = connection.getConn();
         String sqlQuery = connection.getSqlString("filamentByRectangle");
@@ -148,25 +134,36 @@ public class ExtendedSearchFilamentDAO {
         }
         do {
 
-            List<String> queryRowOutput = new ArrayList<>();
+            Filament filament= new Filament();
 
-            queryRowOutput.add(String.valueOf(resultSet.getInt("id")));
-            queryRowOutput.add(resultSet.getString("namestr"));
-            queryRowOutput.add(resultSet.getString("name"));
-            queryRowOutput.add(String.valueOf(resultSet.getInt("nseg")));
-            queryRowOutput.add(String.valueOf(resultSet.getDouble("fluxtot")));
-            queryRowOutput.add(String.valueOf(resultSet.getDouble("ellipticty")));
-            queryRowOutput.add(String.valueOf(resultSet.getDouble("contrast")));
-            queryRowOutput.add(String.valueOf(resultSet.getDouble("densavg")));
-            queryRowOutput.add(String.valueOf(resultSet.getDouble("tempavg")));
+            filament.setName(resultSet.getString("name"));
 
-            out.add(queryRowOutput);
+            filament.setEllipticity(resultSet.getDouble("ellipticty"));
+            filament.setContrast(resultSet.getDouble("contrast"));
+            filament.setDensAvg(resultSet.getDouble("densavg"));
+            filament.setTempAvg(resultSet.getDouble("tempavg"));
+            filament.setId(resultSet.getInt("id"));
+            filament.setInstrument(new Instrument(resultSet.getString("namestr")));
+            filament.setnSeg(resultSet.getInt("nseg"));
+            filament.setFluxTot(resultSet.getDouble("fluxtot"));
+
+            out.add(filament);
 
 
         }
 
         while (resultSet.next());
+        connection.closeConn(conn);
+        resultSet.close();
+        stmt.close();
         return out;
     }
 
+    public static void main(String[] args) throws SQLException {
+        List<Filament> out0 = ExtendedSearchFilamentDAO.searchFilamentByBrightnessAndEllipticity(0.2, new double[]{1.1, 3});
+        List<Filament> out1 = ExtendedSearchFilamentDAO.searchFilamentByRectangle(-0.00288061079447488, 11, 2, 2);
+
+        List<Filament> out2 = ExtendedSearchFilamentDAO.searchFilamentByCircle(-0.00288061079447486, 11, 2);
+        System.err.println("ciaoGalli");
+    }
 }

@@ -29,6 +29,24 @@ public class Filament {
     public Outline getOutline() {
         return outline;
     }
+    public Filament(){};
+
+    public Filament(int id, String nameInstrument) {
+        this.id = id;
+        this.instrument = new Instrument(nameInstrument);
+    }
+
+    public Filament(int id, String name, Double ellipticity, Double contrast, Double fluxTot, Double tempAvg, Double densAvg, int nSeg, String instrumentName) {
+        this.id = id;
+        this.name = name;
+        this.ellipticity = ellipticity;
+        this.contrast = contrast;
+        this.fluxTot = fluxTot;
+        this.tempAvg = tempAvg;
+        this.densAvg = densAvg;
+        this.nSeg = nSeg;
+        this.instrument = new Instrument(instrumentName);
+    }
 
     public void setOutline(Outline outline) {
         this.outline = outline;

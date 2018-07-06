@@ -1,9 +1,11 @@
 package BOUNDARY;
 
 import BEAN.BeanRF9;
+import CONTROLLER.BeanRF12;
 import CONTROLLER.DistanceMinStarFilSpine;
 import CONTROLLER.ExtendedSearchFilamentDAO;
 import CONTROLLER.StarFilament;
+import ENTITY.Filament;
 import feauture1.Bean.*;
 import feauture1.Controller.*;
 
@@ -68,11 +70,11 @@ public class UserRecorded {
 
     //as rf
     //rf12
-    public List<List<String>> allStarInFilMinDist(int idFil,String nameStr) throws SQLException {
+    public List<BeanRF12> allStarInFilMinDist(int idFil, String nameStr) throws SQLException {
         DistanceMinStarFilSpine controller= new DistanceMinStarFilSpine(idFil,nameStr);
         return controller.allStarMinDist();
     }
-    public List<List<String>> allStarInFilMinDist(String nameFil) throws SQLException {
+    public List<BeanRF12> allStarInFilMinDist(String nameFil) throws SQLException {
         DistanceMinStarFilSpine controller = new DistanceMinStarFilSpine(nameFil);
         return controller.allStarMinDist();
     }
@@ -82,7 +84,7 @@ public class UserRecorded {
     public final double MAXELLIPTICITY = 10;
 
 
-    public List<List<String>> searchFilamentByBrightnessAndEllipticity
+    public List<Filament> searchFilamentByBrightnessAndEllipticity
             (double brightness, double[] ellipticityRange) throws SQLException {
         String errorMSg = null;
         if (brightness < 0)
@@ -102,14 +104,14 @@ public class UserRecorded {
     }
 
     //RF8 -CIRCLE
-    public List<List<String>> searchFilamentByCircle(double glat, double glon, double radius) throws SQLException {
+    public List<Filament> searchFilamentByCircle(double glat, double glon, double radius) throws SQLException {
         if (radius < 0)
             throw new IllegalArgumentException("invalid radius for region...");
         return ExtendedSearchFilamentDAO.searchFilamentByCircle(glat, glon, radius);
     }
 
     //RF8 -SQUARE
-    public List<List<String>> searchFilamentBySquare(double glat, double glon, double side)
+    public List<Filament> searchFilamentBySquare(double glat, double glon, double side)
             throws SQLException {
         if (side < 0)
             throw new IllegalArgumentException("invalid side value");

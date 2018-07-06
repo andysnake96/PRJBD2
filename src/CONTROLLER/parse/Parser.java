@@ -314,8 +314,7 @@ public class Parser implements Import2DB {
         //nb all files togeter size ~
         ParserTest.cleanDBWrap();
         long inizio = System.currentTimeMillis();
-        parser.readCSV(SPITZER,null);
-        System.out.println("doneSpitzer");
+
         parser.readCSV(HERSCHEL,null);
         long fine = System.currentTimeMillis();
         System.out.println((fine-inizio)/60000.0);

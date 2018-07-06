@@ -184,7 +184,8 @@ public class DAOPoint {
         Filament filament = DAOFilament.searchFilamentById(idFil, nameStr);
         Connection connection = Connection.getIstance();
         String sql = connection.getSqlString("takeSkeletonPointsFilament");
-        PreparedStatement stmt = connection.getConn().prepareStatement(sql);
+        java.sql.Connection conn= connection.getConn();
+        PreparedStatement stmt = conn.prepareStatement(sql);
         stmt.setInt(1, idFil);
         stmt.setString(2, nameStr);
         ResultSet resultSet = stmt.executeQuery();
@@ -201,7 +202,9 @@ public class DAOPoint {
                             resultSet.getString("type")));
         }
         while (resultSet.next());
-
+        resultSet.close();
+        conn.close();
+        stmt.close();
         return out;
 
     }

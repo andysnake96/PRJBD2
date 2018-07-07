@@ -1,12 +1,12 @@
 package GUI;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import BOUNDARY.*;
-import java.awt.event.ActionEvent;
 
 public class LogController {
 
@@ -17,6 +17,7 @@ public class LogController {
     @FXML
     private Text textArea;
 
+    protected static UserLogin userLogin;
     //@FXML
     //private ComboBox<String> combo;
     @FXML
@@ -52,12 +53,16 @@ public class LogController {
         String paswoordEntered = (String) this.paswoord.getCharacters().toString();
         this.paswoord.clear();                                              //clear entered characters
         System.out.println("entered..." + usernameEntered + "\t\t" + paswoordEntered);
-        //todo aggiungi alla grafica scelta tipo
-        
-        if(true){}
+
+        LogController.userLogin = new UserLogin(usernameEntered,paswoordEntered);
+        if(userLogin.loggin()){
+            //logged=>menu
+            ViewSwap.getIstance().swap(event,ViewSwap.MENU);
+        }
          else {
             this.textArea.setText("LOGGIN ERRATO \n RIPROVARE...");
         }
+        //TODO ADD NOT FOUND USER...=>CALL WEAP DISPLAYNOTFO
     }
 
     private void displayNotFoundUser() {

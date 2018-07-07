@@ -9,15 +9,17 @@ public class UserLogin {
     private String paswoord;
     private String type;
     private boolean isLog;
-    private static String TYPEONE = "Administrator";
-    private static String TYPETWO = "User";
+    public static String TYPEADMIN = "Administrator";
+    public static String TYPEUSER = "User";
 
     public UserLogin(String username, String paswoord) {
         this.username = username;
         this.paswoord = paswoord;
     }
 
-
+    public String getType() {
+        return type;
+    }
 
     public boolean loggin() {
         if ((this.type = LoginManager.getIstance().login(this.username, this.paswoord)) != null) {
@@ -36,7 +38,7 @@ public class UserLogin {
     }
 
     public UserAdministrator getUserAdministrator() throws Exception {
-        if(!this.isLog || !this.type.equals(TYPEONE))
+        if(!this.isLog || !this.type.equals(TYPEADMIN))
             throw new Exception();
         else
             return new UserAdministrator();
@@ -44,7 +46,7 @@ public class UserLogin {
     }
 
     public UserRecorded getUserRecorded() throws Exception {
-        if(!this.isLog || !this.type.equals(TYPETWO))
+        if(!this.isLog || !this.type.equals(TYPEUSER))
             throw new Exception();
         else
             return new UserRecorded();

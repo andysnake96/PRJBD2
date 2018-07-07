@@ -39,7 +39,7 @@ public class UserManager {  //relativo al requisito 3, può farlo solo l'amminis
         else {
             return null;
         }
-        
+
     }
 
     /*

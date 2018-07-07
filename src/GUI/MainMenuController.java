@@ -1,5 +1,6 @@
 package GUI;
 
+import BOUNDARY.UserLogin;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -34,14 +35,15 @@ public class MainMenuController {
         //todo destroy possible boundaries
         //...
         //swap view (fxml)
-
+        LogController.userLogin.loggout();
         ViewSwap.getIstance().swap(event, ViewSwap.LOGGIN);
     }
 
     @FXML
     protected void PrenotazioneConId(ActionEvent event) throws Exception {
         //todo GOTO PRENOTAZIONE CON ID CONTROLLER.... SUBTIPE OF SPECIFICACARAULACONTROLLER?
-            text.setText("AZIONE NON CONSENTITA ALL'UTENTE NORMALE");
+            if(LogController.userLogin.getType().equals(UserLogin.TYPEADMIN))
+                text.setText("AZIONE NON CONSENTITA ALL'UTENTE NORMALE");
 
     }
 

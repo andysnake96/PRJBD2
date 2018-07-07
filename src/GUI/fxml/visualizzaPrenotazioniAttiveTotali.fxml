@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?scenebuilder-stylesheet vista.css?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ButtonBar?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="521.0" prefWidth="683.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.InputVisualizzaPrenotazioniTotA">
+   <children>
+      <Button fx:id="ok" layoutX="616.0" layoutY="354.0" mnemonicParsing="false" onAction="#startSearch" text="OK" />
+      <AnchorPane fx:id="prenotazioniSuTipoAula" disable="true" layoutX="13.199999809265137" layoutY="71.0">
+         <children>
+            <Label layoutX="4.800000190734863" prefHeight="18.0" prefWidth="299.0" text="Inserisci i caratteristiche per le aule" />
+            <ButtonBar layoutX="0.8000001907348633" layoutY="119.0" prefHeight="46.0" prefWidth="571.0">
+               <buttons>
+                  <CheckBox fx:id="proiettoreFlag" mnemonicParsing="false" text="Proiettore" />
+                  <CheckBox fx:id="micFlag" mnemonicParsing="false" text="microfono" />
+                  <CheckBox fx:id="lavagnaFlag" mnemonicParsing="false" text="Lavagna" />
+                  <CheckBox fx:id="lavagnaInterFlag" mnemonicParsing="false" text="Lavagna Interattiva" />
+                  <CheckBox fx:id="preseFlag" mnemonicParsing="false" prefHeight="18.0" prefWidth="251.0" text="Prese corrente" />
+                  <CheckBox fx:id="ethernetFlag" minWidth="4.0" mnemonicParsing="false" prefHeight="18.0" text="ethernet" />
+               </buttons>
+            </ButtonBar>
+            <Label layoutX="1.8000001907348633" layoutY="101.0" prefHeight="18.0" prefWidth="185.0" text="Specifiche Opzionali" />
+            <Label layoutX="5.800000190734863" layoutY="27.0" text="numero minimo posti" />
+            <TextField fx:id="numeroPosti" layoutX="4.800000190734863" layoutY="53.0" prefHeight="26.0" prefWidth="156.0" text="1" />
+         </children>
+      </AnchorPane>
+      <TextArea fx:id="negativeTextArea" disable="true" editable="false" layoutX="17.0" layoutY="340.0" prefHeight="173.0" prefWidth="405.0" />
+      <Label fx:id="rispostaNegativa" disable="true" layoutX="17.0" layoutY="313.0" text="negativeTextArea" />
+      <Button fx:id="backToMenu" layoutX="607.0" layoutY="459.0" mnemonicParsing="false" onAction="#backToMenu" text="MENU" />
+      <Label layoutX="193.0" layoutY="14.0" prefHeight="35.0" prefWidth="475.0" text="VISUALIZZA PRENOTAZIONI ATTIVE TOTALI">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Label>
+      <CheckBox fx:id="triggerPrenotazioniTipoAula" layoutX="400.0" layoutY="98.0" mnemonicParsing="false" onAction="#setTriggerPrenotazioniTipoAula" text="visualizza Prenotazioni in base a tipo di Aule" />
+      <CheckBox fx:id="triggerPrenotazioniTipoEvento" layoutX="388.0" layoutY="284.0" mnemonicParsing="false" onAction="#setTriggerPrenotazioniTipoEvento" text="visualizza Prenotazioni in base a tipo di Evento" />
+      <AnchorPane fx:id="prenotazioniSuTipoEvento" disable="true" layoutX="14.0" layoutY="261.0">
+         <children>
+            <Label prefHeight="18.0" prefWidth="299.0" text="Inserisci tipo Evento " />
+            <ComboBox fx:id="tipoEvento" layoutY="17.0" prefWidth="150.0" />
+         </children>
+      </AnchorPane>
+   </children>
+</AnchorPane>

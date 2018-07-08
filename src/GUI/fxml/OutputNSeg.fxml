@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Pagination?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+
+<AnchorPane xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" >
+    <children>
+        <Pagination fx:id="pag" layoutX="8.0" layoutY="8.0" prefHeight="563.0" prefWidth="720.0" />
+        <TableView fx:id="tableViewPagination" layoutX="-6.0" layoutY="22.0" prefHeight="487.0" prefWidth="736.0">
+            <columns>
+                <TableColumn fx:id="id" prefWidth="75.0" text="id" />
+                <TableColumn fx:id="name" prefWidth="75.0" text="name" />
+                <TableColumn fx:id="ell" prefWidth="75.0" text="Ellipticity" />
+                <TableColumn fx:id="con" prefWidth="75.0" text="Contrast" />
+                <TableColumn fx:id="flux" prefWidth="75.0" text="Flusso " />
+                <TableColumn fx:id="temp" prefWidth="114.0" text="temperatura media" />
+                <TableColumn fx:id="dens" minWidth="0.0" prefWidth="69.0" text="densità media" />
+                <TableColumn fx:id="nSeg" text="n Segmenti" />
+                <TableColumn fx:id="nameStr" prefWidth="97.0" text="nome Strumento" />
+            </columns>
+        </TableView>
+    </children>
+</AnchorPane>
+

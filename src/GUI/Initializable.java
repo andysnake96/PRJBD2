@@ -1,6 +1,8 @@
 package GUI;
 
-public interface Initializable {
+public interface
+
+Initializable {
     /*
     interfaccia per GUI controllers che hanno necessita di inizializzare qualche campo
     prima di essere caricati

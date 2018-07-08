@@ -40,41 +40,60 @@ public class MainMenuController {
     }
 
     @FXML
-    protected void PrenotazioneConId(ActionEvent event) throws Exception {
+    protected void recordUser(ActionEvent event) throws Exception {
         //todo GOTO PRENOTAZIONE CON ID CONTROLLER.... SUBTIPE OF SPECIFICACARAULACONTROLLER?
-            if(LogController.userLogin.getType().equals(UserLogin.TYPEADMIN))
+            if(LogController.userLogin.getType().equals(UserLogin.TYPEUSER))
                 text.setText("AZIONE NON CONSENTITA ALL'UTENTE NORMALE");
-
+            else {
+                ViewSwap.getIstance().swap(event, ViewSwap.RECORDUSER);
+            }
     }
 
 
     @FXML
-    protected void prenotazioneConCaratteristiche(ActionEvent event) throws Exception {
+    protected void addSatellite(ActionEvent event) throws Exception {
+        if(LogController.userLogin.getType().equals(UserLogin.TYPEUSER))
+            text.setText("AZIONE NON CONSENTITA ALL'UTENTE NORMALE");
+        else {
+            ViewSwap.getIstance().swap(event, ViewSwap.ADDSATELLITE);
         }
+    }
+
 
     @FXML
-    protected void visualizzaDisponibilita(ActionEvent event) throws Exception {
+    protected void starInRectangle(ActionEvent event) throws Exception {
+        ViewSwap.getIstance().swap(event, ViewSwap.STARINRECTANGLE);
     }
 
     @FXML
-    protected void visualizzaPrenotazioniAttiveToT(ActionEvent event) throws Exception {
+    protected void addInstrument(ActionEvent event) throws Exception {
+        if(LogController.userLogin.getType().equals(UserLogin.TYPEUSER))
+            text.setText("AZIONE NON CONSENTITA ALL'UTENTE NORMALE");
+        else {
+            ViewSwap.getIstance().swap(event, ViewSwap.ADDINSTRUMENT);
+        }
     }
 
+
+
     @FXML
-    protected void visualizzaPrenotazioniAttive(ActionEvent event) throws Exception {
+    protected void retrayInfoFilament(ActionEvent event) throws Exception {
+        ViewSwap.getIstance().swap(event, ViewSwap.COMPUTEFILAMENT);
     }
 
     @FXML
     protected void apriUnAnnoAccademico(ActionEvent event) throws Exception {
         }
 
-    @FXML
-    protected void visualizzaStorico(ActionEvent event) throws Exception {
-    }
+
 
     @FXML
-    protected void definisciSessione(ActionEvent event) throws Exception {
+    protected void distByOutline(ActionEvent event) throws Exception {
+        ViewSwap.getIstance().swap(event, ViewSwap.DISTBYOUTLINE);
     }
 
 
+    public void searchFilamentByNSeg(ActionEvent event) throws Exception {
+        ViewSwap.getIstance().swap(event, ViewSwap.SEARCHFILAMENTBYNSEG);
+    }
 }

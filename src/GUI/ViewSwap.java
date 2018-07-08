@@ -9,21 +9,27 @@ import javafx.stage.Stage;
 
 
 public class ViewSwap {
+    public static final String COMPUTEFILAMENT = "/GUI/fxml/InputFilament.fxml";
+    public static final String STARINRECTANGLE = "/GUI/fxml/InputRectangle.fxml";
+    public static final String DISTBYOUTLINE = "/GUI/fxml/InputFilament2.fxml";
+    public static final String SEARCHFILAMENTBYNSEG = "/GUI/fxml/InputNSeg.fxml";
+    public static final String OUTPUTNSEG = "/GUI/fxml/OutputNSeg.fxml";
     //RESPONSABILITY OF SWAP SCENE IN THE ONLY STAGE
     //singleton instance because getClass cannot be used from static context
     protected static String LOGGIN = "/GUI/fxml/loggin.fxml";
-    protected static String INPUTCONFERENZA = "/GUI/fxml/SpecificaCarAulaConf.fxml";
+    protected static String RECORDUSER = "/GUI/fxml/RecordUser.fxml";
     protected static String RISPOSTA = "/GUI/fxml/Risposta.fxml";
     protected static String MENU = "/GUI/fxml/Menu.fxml";
     protected static String RISPOSTAPRENOTAZIONEATTIVE = "/GUI/fxml/PrenotazioniAttiveRisposta.fxml";
     protected static String APERTUREANNOACCADEMICO = "/GUI/fxml/InputAnnoAccademico.fxml";
     protected static String INPUTID = "/GUI/fxml/SpecificaIdAulaConf.fxml";
     protected static String VERIFICADISPONIBILITA = "/GUI/fxml/verificaDisponibilita.fxml";
-    protected static String VISUALIZZAPRENATTIVETOT = "/GUI/fxml/visualizzaPrenotazioniAttiveTotali.fxml";
+    protected static String ADDINSTRUMENT = "/GUI/fxml/DataInstrument.fxml";
     protected static String DEFINIZIONESESSIONE = "/GUI/fxml/DefinizioneSessione.fxml";
     protected static String STORICOPRENOTAZIONIPROF = "/GUI/fxml/RicercaPrenotazioniProf.fxml";
     protected static String STORICOPRENOTAZIONISEGR = "/GUI/fxml/RicercaPrenotazioniSegr.fxml";
-
+    protected static String ADDSATELLITE = "/GUI/fxml/DataSatellite.fxml";
+    protected static String ANSWERCOMPUTEFILAMENT = "/GUI/fxml/AnswerComputeFilament.fxml";
 
     protected static ViewSwap viewSwap;
 

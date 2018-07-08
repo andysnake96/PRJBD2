@@ -18,6 +18,7 @@ public class LogController {
     private Text textArea;
 
     protected static UserLogin userLogin;
+
     //@FXML
     //private ComboBox<String> combo;
     @FXML

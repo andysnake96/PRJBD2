@@ -1,5 +1,7 @@
 package feauture1.Bean;
 
+import ENTITY.Satellite;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,11 +24,17 @@ public class SatelliteBean {
     }
 
 
-    public SatelliteBean(String name, LocalDate startDate, LocalDate endDate) {
+    public SatelliteBean(String name, LocalDate startDate, LocalDate endDate, List<String> agencies) {
         this.name = name;
         this.startDate = startDate;
         this.endDate = endDate;
-        agencies = new ArrayList<>();
+        this.agencies = agencies;
+    }
+
+    public SatelliteBean(String nameSatellite, LocalDate startDate, LocalDate endDate) {
+        this.name = nameSatellite;
+        this.startDate = startDate;
+        this.endDate = endDate;
     }
 
     public String getName() {

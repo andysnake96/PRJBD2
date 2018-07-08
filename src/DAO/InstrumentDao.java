@@ -33,6 +33,24 @@ public class InstrumentDao {
 
     }
 
+
+    public static String takeSatelliteFromInstrument(String nameStr) throws Exception {
+        DAO.Connection connection = DAO.Connection.getIstance();
+        java.sql.Connection conn = connection.getConn();
+        String sql = connection.getSqlString("takesatellitefrominstrument");
+        PreparedStatement stmt =  conn.prepareStatement(sql);
+        stmt.setString(1, nameStr);
+        ResultSet rs = stmt.executeQuery();
+        if(!rs.next()) {
+            throw new Exception();
+        }
+        String nameSatellite = rs.getString("satellite");
+        stmt.close();
+        connection.closeConn(conn);
+        rs.close();
+        return nameSatellite;
+
+    }
     }
 
 

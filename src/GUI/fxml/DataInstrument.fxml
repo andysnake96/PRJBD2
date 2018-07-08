@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.AddInstrument">
+   <children>
+      <Text layoutX="27.0" layoutY="27.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Inserire i dati dello Strumento" wrappingWidth="174.52392578125">
+         <font>
+            <Font size="17.0" />
+         </font>
+      </Text>
+      <Text layoutX="27.0" layoutY="90.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Nome" wrappingWidth="120.13673186302185">
+         <font>
+            <Font size="17.0" />
+         </font>
+      </Text>
+      <TextField fx:id="name" layoutX="176.0" layoutY="72.0" prefHeight="26.0" prefWidth="326.0" />
+      <Text layoutX="27.0" layoutY="152.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Bande di osservazione" wrappingWidth="120.13672828674316">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Text>
+      <TextArea fx:id="bands" layoutX="176.0" layoutY="169.0" prefHeight="126.0" prefWidth="326.0" promptText="Bande di osservazione aggiunte" />
+      <TextField fx:id="band" layoutX="176.0" layoutY="143.0" prefHeight="26.0" prefWidth="326.0" promptText="Premere aggiungi per inserire questa banda" />
+      <Button fx:id="add" layoutX="502.0" layoutY="143.0" mnemonicParsing="false" onAction="#addBand" text="Aggiungi" />
+      <Text fx:id="info" layoutX="27.0" layoutY="325.0" strokeType="OUTSIDE" strokeWidth="0.0" />
+      <Button layoutX="440.0" layoutY="343.0" mnemonicParsing="false" onAction="#backToMenu" text="Menu" />
+      <Button layoutX="509.0" layoutY="343.0" mnemonicParsing="false" onAction="#addInstrument" text="Ok" />
+      <Text layoutX="27.0" layoutY="123.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Satellite" wrappingWidth="120.13673186302185">
+         <font>
+            <Font size="17.0" />
+         </font>
+      </Text>
+      <TextField fx:id="satellite" layoutX="176.0" layoutY="104.0" prefHeight="26.0" prefWidth="326.0" />
+   </children>
+</AnchorPane>

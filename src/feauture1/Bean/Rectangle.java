@@ -6,6 +6,8 @@ public class Rectangle {
     private double glat; //posizione del centroide
     private double glon;
 
+
+
     public double getL() {
         return l;
     }

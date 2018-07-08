@@ -18,6 +18,7 @@ public class UserAdministrator extends UserRecorded {
         this.userManager = new UserManager();
     }
 
+
     public String recordUser(UserBean bean) {
         String msx = this.userManager.addUser(bean);
         return msx;

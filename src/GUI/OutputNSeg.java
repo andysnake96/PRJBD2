@@ -61,7 +61,7 @@ public class OutputNSeg implements Initializable{
     }
 
     private Node createPage(Integer pageIndex) {
-        System.out.println(pageIndex);
+
         from = pageIndex*itemPerPage;
         to = itemPerPage*(pageIndex+1)
         ;
@@ -71,17 +71,17 @@ public class OutputNSeg implements Initializable{
 
     private List<TableValue> getTableValue() {
     List<TableValue> tableValues = new ArrayList<>();
-    System.out.println("Sono qui");
+
     for(int index = from; index < to; index++) {
+            if(index == infoFilaments.size())
+                break;
             InfoFilament i = infoFilaments.get(index);
-            if(i == null) {
-                System.out.println("qkkdfccccccc");
-            }
+
             String nSeg = String.valueOf(i.getnSeg());
-            //System.out.println(nSeg);
+
             TableValue tableValue = new TableValue(String.valueOf(i.getId()), i.getName(), i.getEllipticity().toString(),i.getContrast().toString()
                                                     , i.getFluxTot().toString(), i.getTempAvg().toString(), i.getDensAvg().toString()
-                                                        , String.valueOf(i.getnSeg()), i.getNameStr());
+                                                        , nSeg, i.getNameStr());
             tableValues.add(tableValue);
     }
     return tableValues;

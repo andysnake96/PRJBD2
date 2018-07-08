@@ -312,7 +312,7 @@ public class Parser implements Import2DB {
 
         // TODO end remove..
         //nb all files togeter size ~
-        ParserTest.cleanDBWrap();
+        //ParserTest.cleanDBWrap();
         long inizio = System.currentTimeMillis();
 
         parser.readCSV(HERSCHEL,null);

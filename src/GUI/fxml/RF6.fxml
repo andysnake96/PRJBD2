@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.scene.layout.*?>
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="494.0" prefWidth="1325.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.RF6">
+   <children>
+      <Label layoutX="131.0" layoutY="14.0" prefHeight="15.0" prefWidth="422.0" text="Cerca filamenti tramite ellitticità e brillanza rispetto al contorno" />
+      <Button fx:id="buttonBK" layoutY="3.0" mnemonicParsing="false" onAction="#back" prefHeight="36.0" prefWidth="70.0" text="BACK">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Button>
+      <Pagination fx:id="pagination" cacheHint="SPEED" layoutX="13.0" layoutY="95.0" prefHeight="282.0" prefWidth="575.0" AnchorPane.bottomAnchor="23.0" AnchorPane.leftAnchor="13.0" AnchorPane.rightAnchor="12.0" AnchorPane.topAnchor="95.0" />
+      <TextField editable="false" layoutX="2.0" layoutY="39.0" prefHeight="21.0" prefWidth="148.0" text="RANGE ELLITTICITA'" />
+      <TextField fx:id="ellipticitymin" layoutX="147.0" layoutY="39.0" prefHeight="25.0" prefWidth="79.0" promptText="min" />
+      <TextField fx:id="brightness" layoutX="145.0" layoutY="64.0" prefHeight="21.0" prefWidth="148.0" />
+      <TextField editable="false" layoutY="64.0" prefHeight="21.0" prefWidth="148.0" text="BRILLANZA" />
+      <Label fx:id="info" layoutX="367.0" layoutY="39.0" prefHeight="54.0" prefWidth="281.0" />
+      <TextField fx:id="ellipticitymax" layoutX="225.0" layoutY="39.0" prefHeight="25.0" prefWidth="70.0" promptText="MAX" />
+      <Button layoutX="293.0" layoutY="39.0" mnemonicParsing="false" onAction="#search" prefHeight="54.0" prefWidth="70.0" text="CERCA" />
+   </children>
+</AnchorPane>

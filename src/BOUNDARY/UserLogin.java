@@ -46,7 +46,7 @@ public class UserLogin {
     }
 
     public UserRecorded getUserRecorded() throws Exception {
-        if(!this.isLog || !this.type.equals(TYPEUSER))
+        if(!this.isLog )
             throw new Exception();
         else
             return new UserRecorded();

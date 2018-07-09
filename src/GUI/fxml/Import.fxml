@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+
+<fx:root maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" type="AnchorPane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.Import">
+   <children>
+      <TextField fx:id="path" layoutX="14.0" layoutY="43.0" prefHeight="32.0" prefWidth="129.0" promptText="PATH" />
+      <Button fx:id="take" layoutX="400.0" layoutY="125.0" mnemonicParsing="false" onAction="#importGroup" prefHeight="32.0" prefWidth="107.0" text="Import" />
+      <TextField fx:id="nameStr" layoutX="271.0" layoutY="43.0" prefHeight="32.0" prefWidth="129.0" promptText="nome strumento" />
+      <Button fx:id="takeExt" layoutX="400.0" layoutY="43.0" mnemonicParsing="false" onAction="#importExt" prefHeight="32.0" prefWidth="107.0" text="Import" />
+      <Text layoutX="14.0" layoutY="26.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Importa singolo CSV da file esterno" wrappingWidth="311.7294921875" />
+      <Text layoutX="24.0" layoutY="112.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Importa set di CSV da demo files" wrappingWidth="311.7294921875" />
+      <ComboBox fx:id="kindCSV" layoutX="143.0" layoutY="40.0" prefHeight="39.0" prefWidth="129.0" promptText="tipoCSV" />
+      <ComboBox fx:id="group" layoutX="24.0" layoutY="125.0" prefHeight="39.0" prefWidth="155.0" promptText="gruppo CSV" />
+      <TextField fx:id="info" layoutX="195.0" layoutY="175.0" prefHeight="88.0" prefWidth="312.0" />
+   </children>
+</fx:root>

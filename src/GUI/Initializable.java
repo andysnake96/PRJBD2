@@ -1,6 +1,8 @@
 package GUI;
 
-public interface Initializable {
+public interface
+
+Initializable {
     /*
     interface for all gui controller that need reference passing
      */

@@ -5,18 +5,18 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.MainMenuController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.MainMenuController">
     <children>
-        <Button fx:id="PrenotazioneConCaratteristiche" layoutX="16.0" layoutY="41.0" mnemonicParsing="false" onAction="#prenotazioneConCaratteristiche" prefHeight="26.0" prefWidth="348.0" text="PrenotazioneConCaratteristiche" />
-        <Button fx:id="PrenotazioneConId" layoutX="16.0" layoutY="67.0" mnemonicParsing="false" onAction="#PrenotazioneConId" prefHeight="26.0" prefWidth="348.0" text="PrenotazioneConId" />
+        <Button fx:id="addSatellite" layoutX="16.0" layoutY="41.0" mnemonicParsing="false" onAction="#addSatellite" prefHeight="26.0" prefWidth="348.0" text="Aggiungi informazioni su un satellite (amministratore)" />
+        <Button fx:id="recordUser" layoutX="16.0" layoutY="67.0" mnemonicParsing="false" onAction="#recordUser" prefHeight="26.0" prefWidth="348.0" text="Registra un nuovo Utente (Amministratore)" />
         <Label layoutX="14.0" layoutY="19.0" prefHeight="18.0" prefWidth="333.0" text="MAIN MENU" />
         <Button fx:id="loggout" layoutX="14.0" layoutY="347.0" mnemonicParsing="false" onAction="#loggout" prefHeight="26.0" prefWidth="135.0" text="loggout" />
-        <Button fx:id="visualizzaPrenotazioniAttive" layoutX="16.0" layoutY="171.0" mnemonicParsing="false" onAction="#visualizzaPrenotazioniAttive" prefHeight="26.0" prefWidth="348.0" text="Visualizza Prenotazioni Attive" />
+        <Button fx:id="RetrayInfo" layoutX="16.0" layoutY="171.0" mnemonicParsing="false" onAction="#retrayInfoFilament" prefHeight="26.0" prefWidth="348.0" text="Recupera informazioni da filamento" />
         <Text fx:id="text" layoutX="420.0" layoutY="365.0" strokeType="OUTSIDE" strokeWidth="0.0" />
         <Button layoutX="16.0" layoutY="145.0" mnemonicParsing="false" onAction="#apriUnAnnoAccademico" prefHeight="26.0" prefWidth="348.0" text="Apri o modifica un Anno Accademico" />
-      <Button fx:id="visualizzaDisponibilita" layoutX="16.0" layoutY="119.0" mnemonicParsing="false" onAction="#visualizzaDisponibilita" prefHeight="26.0" prefWidth="348.0" text="Visualizza Disponibilita Aule" />
-      <Button fx:id="visualizzaPrenotazioniAttiveTot" layoutX="16.0" layoutY="93.0" mnemonicParsing="false" onAction="#visualizzaPrenotazioniAttiveToT" prefHeight="26.0" prefWidth="348.0" text="Visualizza Prenotazioni Attive Tot" />
-      <Button fx:id="definizioneSessione" layoutX="16.0" layoutY="197.0" mnemonicParsing="false" onAction="#definisciSessione" prefHeight="26.0" prefWidth="348.0" text="Definizione Sessione " />
-      <Button fx:id="storicoPrenotazioni" layoutX="16.0" layoutY="223.0" mnemonicParsing="false" onAction="#visualizzaStorico" prefHeight="26.0" prefWidth="348.0" text="Visualizza Storico Prenotazioni" />
+      <Button layoutX="16.0" layoutY="119.0" mnemonicParsing="false" onAction="#starInRectangle" prefHeight="26.0" prefWidth="348.0" text="Formazioni di stelle all'interno di una regione" />
+      <Button layoutX="16.0" layoutY="93.0" mnemonicParsing="false" onAction="#addInstrument" prefHeight="26.0" prefWidth="348.0" text="Inserire un nuovo strumento (Amministatore)" />
+      <Button  layoutX="16.0" layoutY="197.0" mnemonicParsing="false" onAction="#distByOutline" prefHeight="26.0" prefWidth="348.0" text="Distanza	dei	vertici	di	un	segmento	dal	contorno " />
+      <Button  layoutX="16.0" layoutY="223.0" mnemonicParsing="false" onAction="#searchFilamentByNSeg" prefHeight="26.0" prefWidth="348.0" text="Cerca filamenti per numero di segmenti" />
     </children>
 </AnchorPane>

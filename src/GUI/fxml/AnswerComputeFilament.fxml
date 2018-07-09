@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <VBox layoutX="24.0" layoutY="41.0" prefHeight="305.0" prefWidth="545.0">
+         <children>
+            <HBox prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Posizione del Centroide:" wrappingWidth="233.7294921875">
+                     <font>
+                        <Font size="19.0" />
+                     </font>
+                  </Text>
+                  <Text fx:id="centroide" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="359.7294921875">
+                     <font>
+                        <Font size="19.0" />
+                     </font>
+                  </Text>
+               </children>
+            </HBox>
+            <HBox prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Enstensione longitudinale:" wrappingWidth="260.7294921875">
+                     <font>
+                        <Font size="19.0" />
+                     </font>
+                  </Text>
+                  <Text fx:id="estLon" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="359.7294921875">
+                     <font>
+                        <Font size="19.0" />
+                     </font>
+                  </Text>
+               </children>
+            </HBox>
+            <HBox prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Enstensione latitudinale:" wrappingWidth="246.7294921875">
+                     <font>
+                        <Font size="19.0" />
+                     </font>
+                  </Text>
+                  <Text fx:id="estLat" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="359.7294921875">
+                     <font>
+                        <Font size="19.0" />
+                     </font>
+                  </Text>
+               </children>
+            </HBox>
+            <HBox prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Numero segmenti:" wrappingWidth="233.7294921875">
+                     <font>
+                        <Font size="19.0" />
+                     </font>
+                  </Text>
+                  <Text fx:id="nSeg" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="359.7294921875">
+                     <font>
+                        <Font size="19.0" />
+                     </font>
+                  </Text>
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+      <Text fx:id="info" fill="#b50f0f" layoutX="24.0" layoutY="362.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="509.7294921875">
+         <font>
+            <Font size="19.0" />
+         </font>
+      </Text>
+      <Button layoutX="534.0" layoutY="343.0" mnemonicParsing="false" onAction="#backToMenu" text="Menu" />
+   </children>
+</AnchorPane>

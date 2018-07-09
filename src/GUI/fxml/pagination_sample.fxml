@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.scene.layout.*?>
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Label fx:id="labelRF" layoutX="160.0" layoutY="14.0" prefHeight="15.0" prefWidth="426.0" text="RF HEADER GOES HERE!" />
+      <Button fx:id="buttonBK" layoutY="3.0" mnemonicParsing="false" onAction="#back" prefHeight="36.0" prefWidth="70.0" text="BACK" />
+      <Pagination fx:id="pagination" cacheHint="SPEED" layoutY="39.0" maxPageIndicatorCount="5" prefHeight="362.0" prefWidth="600.0" AnchorPane.bottomAnchor="-1.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="39.0" />
+   </children>
+</AnchorPane>

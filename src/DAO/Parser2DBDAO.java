@@ -313,6 +313,8 @@ public class Parser2DBDAO {
             throw new MyException(Import2DB.OUTLINE);
         }
     }
+
+
     public void insertSatellite(List<List<String>> records) throws Exception {
 
         String sql=insertProp.getProperty("insertSatellitePrp");

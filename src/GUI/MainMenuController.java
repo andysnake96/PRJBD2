@@ -44,6 +44,7 @@ public class MainMenuController {
         //todo GOTO PRENOTAZIONE CON ID CONTROLLER.... SUBTIPE OF SPECIFICACARAULACONTROLLER?
             if(LogController.userLogin.getType().equals(UserLogin.TYPEADMIN))
                 text.setText("AZIONE NON CONSENTITA ALL'UTENTE NORMALE");
+            ViewSwap.getIstance().swap(event,"/GUI/fxml/RF6.fxml");
 
     }
 

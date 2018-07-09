@@ -35,6 +35,7 @@ public class UserAdministrator extends UserRecorded {
 
     // import calls
     public String importExternCSV(String path,String tableDest,String nameStr) {
+        //import extern csv file into db,return err string (or null)
         String result="OK";
         Import2DB importer= null;
         String nameSat = new String();
@@ -51,6 +52,23 @@ public class UserAdministrator extends UserRecorded {
         }
         return result;
     }
-    //    public String insertSatellite(){};
-    //    public String readSetOfCSV(String groupCSV){};
+       public String readSetOfCSV (String groupCSV) throws IllegalArgumentException,Exception {
+        /*
+        read set of csv demo files (hershel or spitzer) and write into db by multiple parseBlock calls
+        groupCSV must match HERSHEL or SPITZER costant string in Import2db interface
+         */
+            String errMsg=null;
+           Import2DB reader = null;
+           try {
+               reader = new Parser();
+               reader.readCSV(groupCSV,null);  //second field for instrument, null=>default instrument of demo files
+
+           } catch (IOException e) {
+               e.printStackTrace();
+               errMsg+=e.getMessage();
+           }
+        return errMsg;
+    };
+
 }
+//    public void parseSatelliteInfo(String path) throws Exception;

@@ -68,7 +68,8 @@ public class UserRecorded {
         return starFilament.starsInFilament();
     }
 
-    //as rf
+    //as rf from here..
+
     //rf12
     public List<BeanRF12> allStarInFilMinDist(int idFil, String nameStr) throws SQLException {
         DistanceMinStarFilSpine controller= new DistanceMinStarFilSpine(idFil,nameStr);

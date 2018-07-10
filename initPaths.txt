@@ -1,9 +1,0 @@
-/media/andysnake/OS/Users/BBOSS/Desktop/UNI/PRJBD/ProgettoDb_TestDati/Esame Basi Dati/stelle_Herschel.csv
-#H
-/media/andysnake/OS/Users/BBOSS/Desktop/UNI/PRJBD/ProgettoDb_TestDati/Esame Basi Dati/contorni_filamenti_Herschel.csv
-/media/andysnake/OS/Users/BBOSS/Desktop/UNI/PRJBD/ProgettoDb_TestDati/Esame Basi Dati/filamenti_Herschel.csv
-/media/andysnake/OS/Users/BBOSS/Desktop/UNI/PRJBD/ProgettoDb_TestDati/Esame Basi Dati/scheletro_filamenti_Herschel.csv
-#S
-/media/andysnake/OS/Users/BBOSS/Desktop/UNI/PRJBD/ProgettoDb_TestDati/Esame Basi Dati/contorni_filamenti_Spitzer.csv
-/media/andysnake/OS/Users/BBOSS/Desktop/UNI/PRJBD/ProgettoDb_TestDati/Esame Basi Dati/filamenti_Spitzer.csv
-/media/andysnake/OS/Users/BBOSS/Desktop/UNI/PRJBD/ProgettoDb_TestDati/Esame Basi Dati/scheletro_filamenti_Spitzer.csv

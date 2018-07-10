@@ -1,1 +1,0 @@
-﻿INSERT INTO filament(name,id,fluxtot,contrast,densavg,tempavg,namestr) values (?,?,?,?,?,?,?);

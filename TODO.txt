@@ -1,6 +1,0 @@
-outline pkey:= glon,glat.... ma necessario anche nameStr... possibili punti di contorno accavalati
-quindi filamenti diversi necessitano di avere il loro set di punti contorno
-se no in insert valori con stessa chiave primaria non saranno inseriti....
-ragionamento esteso a tutti tranne stella e filamento con nuova colonna namestr
-
-scheletro glon e glat devono essere double non int... CHECK DB.. :((((((

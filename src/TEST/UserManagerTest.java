@@ -29,6 +29,8 @@ public class UserManagerTest {
     private final String SEARCHUSER = "select * from usersistem where username = ?";
     private final String SEARCHSATELLITE = "select * from satellite left join partecipation on (name = satellite)  where name = ?  ";
     private final String SEARCHINSTRUMENT = "select * from instrument where name = ? ";
+
+
     @Test
     void inserUserCorrecteLogin() {
         UserBean dataUser = null;
@@ -118,7 +120,9 @@ public class UserManagerTest {
         LocalDate startDate = LocalDate.now();
         LocalDate endDate = LocalDate.now();
         String nameSatellite = "testSatellite";
-        SatelliteBean satelliteBean = new SatelliteBean(nameSatellite, startDate, endDate);
+        List<String> agencies = new ArrayList<>();
+        agencies.add("a");
+        SatelliteBean satelliteBean = new SatelliteBean(nameSatellite, startDate, endDate, agencies);
         System.out.println("dati da inserire: "+ satelliteBean);
         Satellite satellite = searchSatellite(nameSatellite);
         assert satellite == null;

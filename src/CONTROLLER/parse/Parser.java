@@ -292,10 +292,10 @@ public class Parser implements Import2DB {
     //NB RIGA 144 0,4,B,272.07536,-20.36854,21,0.53455965 NON HA UN FILAMNETO CORRISPONDENTE,
         //E' CONFORMATA A ID=380 COME RIGHE PRECEDENTI
         Parser parser = new Parser();
-        ParserTest.cleanDBWrap();
+        //ParserTest.cleanDBWrap();
         long inizio = System.currentTimeMillis();
 
-        parser.readCSV(HERSCHEL,null);
+        parser.readCSV(SPITZER,null);
         long fine = System.currentTimeMillis();
         System.out.println((fine-inizio)/60000.0);
 

@@ -29,6 +29,7 @@ public class InputNSeg {
 
     @FXML
     void execute(ActionEvent event) throws Exception {
+
         String nSegMinText = this.nSegMin.getText();
         String nSegMaxText = this.nSegMax.getText();
         if(nSegMaxText.isEmpty() || nSegMinText.isEmpty()) {
@@ -47,6 +48,7 @@ public class InputNSeg {
         catch (NumberFormatException e) {
             e.printStackTrace();
             this.info.setText("Intervallo non valido, inserire numeri interi positivi con distanza tra loro di almeno tre");
+
         }
 
         RangeNSeg range = new RangeNSeg(nSegMin, nSegMax);

@@ -5,8 +5,11 @@ import BEAN.InfoStarInFilamentAndRectangle;
 import BEAN.Rectangle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
+import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.text.Text;
 
 
 import java.util.*;
@@ -15,6 +18,9 @@ public class InputRectangle {
 
     @FXML // fx:id="centroideLon"
     private TextField centroideLon; // Value injected by FXMLLoader
+
+    @FXML
+    private Button okButton;
 
     @FXML // fx:id="l"
     private TextField l; // Value injected by FXMLLoader
@@ -28,6 +34,10 @@ public class InputRectangle {
     @FXML // fx:id="centroideLat"
     private TextField centroideLat; // Value injected by FXMLLoader
 
+
+
+
+
     private Integer nStarInFilament;
     private Integer nStarNotInFilament;
 
@@ -38,8 +48,7 @@ public class InputRectangle {
 
     @FXML
     void execute(ActionEvent event) throws Exception {
-        this.info.clear();
-
+       this.info.clear();
         this.nStarInFilament=0;
         this.nStarNotInFilament=0;
         String centroideLatText = this.centroideLat.getText();
@@ -47,6 +56,7 @@ public class InputRectangle {
         String lText = this.l.getText();
         String hText = this.h.getText();
         if(centroideLatText.isEmpty() || lText.isEmpty() || hText.isEmpty() || centroideLonText.isEmpty()) {
+
             this.info.setText("Inserire tutte le informazioni per il rettangolo");
             return;
 
@@ -72,11 +82,13 @@ public class InputRectangle {
         rectangle.setL(l);
         InfoStarInFilamentAndRectangle i= userRecorded.starInFormationInRectangle(rectangle);
         if(i.getErrorMessage() != null) {
+
             this.info.setText(i.getErrorMessage());
             return;
         }
         visualizePerTot( i);
         visualizePerForType( i);
+        this.info.setVisible(true);
     }
 
     private void visualizePerForType(InfoStarInFilamentAndRectangle i) {
@@ -127,6 +139,7 @@ public class InputRectangle {
         
         
     }
+
 
 
 

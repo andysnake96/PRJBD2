@@ -167,7 +167,7 @@ public class InfoFilament {  //questa class econtiene tutte le informazioni del 
                 ", tempAvg=" + tempAvg +
                 ", densAvg=" + densAvg +
                 ", nSeg=" + nSeg +
-                ", nameStr='" + nameStr + " "+SEPARATORFIELDS + //TODO ADDED SEPARATOR FOR SPLIT LONG&SHORT TOSTRING
+                ", nameStr='" + nameStr + " "+SEPARATORFIELDS +
                 " distLat=" + distLat +
                 ", distLon=" + distLon +
                 ", glonCentroide=" + glonCentroide +

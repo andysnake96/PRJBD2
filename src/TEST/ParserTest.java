@@ -24,8 +24,6 @@ public class ParserTest {
                     -NUMBER OF LINES IN SOURCE CSV FILE
                     (NB Hershel files:=>removed duplicated lines in outline
 
-                        //TODO UPDATE SPITZER PATH ...>take subset of records 4 (filament -> outline,skeleton?ask galli)
-     TODO test insert satellite and other useless stuff :)
      */
     final String[] pathsALL={"CSV/stelle_Herschel.csv",
             "CSV/filamenti_Herschel.csv","CSV/contorni_filamenti_Herschel.csv",
@@ -138,7 +136,7 @@ public class ParserTest {
             else
                 System.out.println(" \nNOT OK " + group + "_" + keyTable+"  INSERTED:"+inserted+"\tEXPECTED:"+fileLenght);
             //assertEquals(fileLenght,inserted,
-            // "group:\t"+group+" in "+keyTable+"\nEXPECTED:"+fileLenght+"\tbut inserted:"+inserted); //TODO ADD WITH SUBSET OF FILES FOR CONSTRAINT VIOLATION :(
+            // "group:\t"+group+" in "+keyTable+"\nEXPECTED:"+fileLenght+"\tbut inserted:"+inserted);
 
         }
     }

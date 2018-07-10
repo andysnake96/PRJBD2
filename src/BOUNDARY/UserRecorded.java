@@ -12,7 +12,7 @@ import java.util.List;
 public class UserRecorded {
 
 
-    //TODO levare attributi controllers
+
     private ComputeDistance computeDistance;
     private ComputeFilament computeFilament;
     private CONTROLLER.searchFilamentByNSeg searchFilamentByNSeg;
@@ -96,7 +96,7 @@ public class UserRecorded {
         if (ellipticityRange[0] < 1 || ellipticityRange[1] > 10)
             errorMSg = "VALORI NON AMMISSIMIBILI PER ELLITTICITA \n (POSSIBILI VALORI IN (0,10))"; //nb orderd asserted before
         if (errorMSg != null) //some input wrong..
-            throw new IllegalArgumentException(errorMSg);   //todo gui catch!
+            throw new IllegalArgumentException(errorMSg);
 
         return ExtendedSearchFilamentDAO.searchFilamentByBrightnessAndEllipticity(brightness, ellipticityRange);
     }

@@ -5,7 +5,7 @@ package BEAN;
 classe bean che utilizzo per trasportare infromazioni del filamento che l'utente ha scelto. L'utente può scegliere
 il nome o l'id con il relativo strumento.
  */
-public class ComputeFilamentBean { //only uppercased class name todo
+public class ComputeFilamentBean {
     private String name;
     private int id;
     private String nameStr;

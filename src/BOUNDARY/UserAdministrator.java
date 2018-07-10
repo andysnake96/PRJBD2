@@ -38,7 +38,8 @@ public class UserAdministrator extends UserRecorded {
         String result="";
         Import2DB importer= null;
         String nameSat = new String();
-        //TODO nameSat <--- query satellite table in db...
+
+
         try {
             importer = new Parser();
         } catch (Exception e) {

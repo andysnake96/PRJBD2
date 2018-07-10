@@ -63,7 +63,7 @@ public class LogController {
          else {
             this.textArea.setText("LOGGIN ERRATO \n RIPROVARE...");
         }
-        //TODO ADD NOT FOUND USER...=>CALL WEAP DISPLAYNOTFO
+
     }
 
     private void displayNotFoundUser() {

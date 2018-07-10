@@ -103,10 +103,7 @@ public class StarFilament {
 
     }
 
-    private void bindStar(Star star, Filament filament) {  //TODO per ora lo tolto ma potrebbe servire
-        List<Star> starsOfFilament = this.bindings.get(filament);
-        starsOfFilament.add(star);
-    }
+
 
     private void updateMap(Star star) {
         String starType = star.getType();

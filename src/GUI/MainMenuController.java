@@ -26,7 +26,7 @@ public class MainMenuController {
 
     @FXML
     protected void recordUser(ActionEvent event) throws Exception {
-        //todo GOTO PRENOTAZIONE CON ID CONTROLLER.... SUBTIPE OF SPECIFICACARAULACONTROLLER?
+
         if(LogController.userLogin.getType().equals(UserLogin.TYPEUSER))
             text.setText("AZIONE NON CONSENTITA ALL'UTENTE NORMALE");
         else {
@@ -78,9 +78,7 @@ public class MainMenuController {
 
     @FXML
     protected void loggout(ActionEvent event) throws Exception {
-        //todo destroy possible boundaries
-        //...
-        //swap view (fxml)
+
         LogController.userLogin.loggout();
         ViewSwap.getIstance().swap(event, ViewSwap.LOGGIN);
     }

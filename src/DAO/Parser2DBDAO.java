@@ -19,7 +19,7 @@ public class Parser2DBDAO {
     DB write line per line... called from parser class, not passed all records to no wast too mem
      */
     private java.sql.Connection conn;
-    private String insertPropertiesPath="configs/insert_prepared.properties"; //todo diff performance filamentonthefly
+    private String insertPropertiesPath="configs/insert_prepared.properties";
     //private String insertPropertiesPath="configs/insert_prepared.properties";
     private Properties insertProp;
 
@@ -103,7 +103,7 @@ public class Parser2DBDAO {
     @Deprecated
     public void writeFilamentBlockOnTheFly(List<List<String>> records){
         /* NB ::>write same block of records but using sql string generated on the fly...
-                 .>>TODO DIFF PERFORMANCE... RB CHANGE insert_prepared.properties00>insert.properties
+
         same writeFilament, but optimizing writing a block of records
         records:=list of records(list of string)
         sql string created on the fly iterating among fields in list records...
@@ -121,7 +121,7 @@ public class Parser2DBDAO {
         String recordsToInsert = sqlString4Block(records,null); // create on the fly sql string...
         //rb nameStr has to be null only for filament and star
         sql+=recordsToInsert;
-        sql+=this.insertProp.getProperty("conflictFilament")+";";           //todo properties swap
+        sql+=this.insertProp.getProperty("conflictFilament")+";";
         try {
             stmtt.execute(sql);
         } catch (SQLException e) {
@@ -132,7 +132,7 @@ public class Parser2DBDAO {
     }
 
     private void writeOutline(List<List<String>> records,String nameStr) throws SQLException, MyException {
-        //TODO LIVIO BEFORE WRITE CHECK BUISNESS RULE... QUERY_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_--_---_----___----__-___-
+
         //this.checkOutline(records, nameStr);
         String sql = insertProp.getProperty("insertOutlineP");
         PreparedStatement prepS = this.conn.prepareStatement(sql);
@@ -181,10 +181,10 @@ public class Parser2DBDAO {
             if(out[i]<0)
                 System.err.println("errore nell esecuzione del batch posizione "+i);
         }
-        //prepS.executeLargeBatch()         //TODO EVALUTATE EFFICIENTY DIFFERENCES
+
     }
     private void writeSkeleton(List<List<String>> records,String nameStr) throws SQLException {
-        //TODO LIVIO BEFORE WRITE CHECK BUISNESS RULE... QUERY_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_--_---_----___----__-___-
+
 
         String sql = insertProp.getProperty("insertSkeletonP");
         PreparedStatement prepS = this.conn.prepareStatement(sql);
@@ -331,14 +331,11 @@ public class Parser2DBDAO {
 
         }
         int[] out= preparedStatement.executeBatch();
-        //TODO check out all values >=0
-        //on the fly version...
-//        Statement statement=conn.createStatement();
-//        String sql = insertProp.getProperty("insertSatellite");
-//        sql+=this.sqlString4Block(records,null);
-//        sql+=insertProp.getProperty("conflictSatellite")+";";
-//        statement.execute(sql);
-//        //TODO ONTHE FLY FOR NOT CONVERT TO-FROM LOCAL DATE...simpler code
+        for(int i=0;i<out.length;i++){
+            if(out[i]<0)
+                throw new MyException("import error dbms");
+        }
+
 
     }
 

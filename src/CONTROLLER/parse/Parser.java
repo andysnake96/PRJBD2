@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-//TODO STATIC CONSTANT FIELDS MOVED TO INTERFACE IMPLEMENTED... ACCESIBLE FROM OUT AND INNERITED AS ATTRIBUTES
+
 public class Parser implements Import2DB {
     /*
     parse set of CSVs files...
@@ -241,7 +241,7 @@ public class Parser implements Import2DB {
             deflt=true;             //if instrument not passed used default interpretation of hershel&Spitzer in CSVs
 
 
-        //TODO LIVIO check passed instrument is in DB.instruments
+
         if (name.equals(Import2DB.HERSCHEL)) {
             this.satelliteInUse="Herschel";
             this.parseBlock(starPath[1],starPath[0]);
@@ -289,26 +289,16 @@ public class Parser implements Import2DB {
     }
 
     public static void main(String[] args) throws Exception {
-    //TODO RIGA 144 0,4,B,272.07536,-20.36854,21,0.53455965 ELIMINATA PERCHE NON C'È ID IN FILAMENT...
+    //NB RIGA 144 0,4,B,272.07536,-20.36854,21,0.53455965 NON HA UN FILAMNETO CORRISPONDENTE,
+        //E' CONFORMATA A ID=380 COME RIGHE PRECEDENTI
         Parser parser = new Parser();
-//        parser.readCSV(Import2DB.HERSCHEL);
-
-        //TODO remove these dubug lists... wast a lot of mem
-//        List<List<String[]>> listHershel = parser.readCSV(Import2DB.HERSCHEL);
-//        List<List<String[]>> listSpitzer = parser.readCSV(Import2DB.SPITZER);
-//        List<List<String[]>> listStars = parser.readCSV(Import2DB.STAR);
-//        System.out.println(listHershel.size()+listSpitzer.size()+listStars.size());
-
-        // TODO end remove..
-        //nb all files togeter size ~
-        //ParserTest.cleanDBWrap();
+        ParserTest.cleanDBWrap();
         long inizio = System.currentTimeMillis();
 
         parser.readCSV(HERSCHEL,null);
         long fine = System.currentTimeMillis();
         System.out.println((fine-inizio)/60000.0);
-        //parser.parseBlock("CSV/scheletro_filamenti_Herschel.csv",Import2DB.SKELETONPOINT);
-        //TODO IMPORT TEST CASE... LINE IN DB==LINE IN CSV... 11451-1( the header one);
-        //parser.parseSatelliteInfo("configs/satellite.txt");
+
+
     }
 }

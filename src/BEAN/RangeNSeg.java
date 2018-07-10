@@ -12,7 +12,7 @@ public class RangeNSeg {
     public RangeNSeg(int nSegMin, int nSegMax) {
         this.nSegMin = nSegMin;
         this.nSegMax = nSegMax;
-        //TODO controllora se i dati sono giusti o farlo nella grafica
+
     }
 
     public int getnSegMin() {

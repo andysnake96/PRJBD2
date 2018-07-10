@@ -48,7 +48,7 @@ class ExtendedSearchFilamentDAOTest {
         brightnesNEllipticityUnContainedCheck= new Filament(318,"SPIRE");
         filamentInCircle = new Filament( 1091,"SPIRE");
         filamentInSquare= new Filament(3362,"SPIRE");
-        //TODO UNCONTAINED FOR OTHER ?
+
         Import2DB parser = new Parser();
 
         parser.readCSV(HERSCHEL,"SPIRE"); //MAKE SURE HERSHEL'S CSV IMPORTED IN DB

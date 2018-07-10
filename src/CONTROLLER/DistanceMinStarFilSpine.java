@@ -97,7 +97,7 @@ public class DistanceMinStarFilSpine {
 
     public List<BeanRF12> allStarMinDist() throws SQLException,IllegalArgumentException {
         //for all star(in a fil) evalutate min distance to filament spine and return infos
-        List<BeanRF12> out= new ArrayList<>();  //TODO ROW:= NAME,ID,FLUX,minDIST;
+        List<BeanRF12> out= new ArrayList<>();
         StarFilament getStarContainedController= new StarFilament(
                 new ComputeFilamentBean(filament.getId(),filament.getInstrument().getName()));
         BeanRF9 beanRF9= getStarContainedController.starsInFilament();

@@ -2,14 +2,13 @@
 package GUI;
 
 import BOUNDARY.UserRecorded;
-import feauture1.Bean.InfoFilament;
-import feauture1.Bean.RangeNSeg;
+import BEAN.InfoFilament;
+import BEAN.RangeNSeg;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
 
-import java.awt.font.NumericShaper;
 import java.util.List;
 
 public class InputNSeg {

@@ -1,5 +1,7 @@
 package CONTROLLER.parse;
 
+import DAO.MyException;
+
 public interface Import2DB {
     /*
     interface witch  wrap RF4 (= Import CSV) in Parser Class (engineered to be efficient and low memory consumer )
@@ -21,7 +23,7 @@ public interface Import2DB {
     public static final String SPITZER = "spitzer";
 
     //read a set of file (demo db CSV )associated to name
-    public void readCSV(String name, String nameInstrument) throws Exception;
+    public void readCSV(String name, String nameInstrument) throws  Exception;
 
     public void parseSatelliteInfo(String path) throws Exception;
     //RF4

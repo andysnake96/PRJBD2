@@ -1,11 +1,11 @@
-package feauture1.Bean;
+package BEAN;
 /*
 questa class contiene tutte le informazioni del filamento per l'utente.
 
  */
 
 public class InfoFilament {  //questa class econtiene tutte le informazioni del filamente per l'utente
-
+    public static String SEPARATORFIELDS=",,";
     private int id;    //informazioni del filamento
     private String name;
     private Double ellipticity;
@@ -167,8 +167,8 @@ public class InfoFilament {  //questa class econtiene tutte le informazioni del 
                 ", tempAvg=" + tempAvg +
                 ", densAvg=" + densAvg +
                 ", nSeg=" + nSeg +
-                ", nameStr='" + nameStr + '\'' +
-                ", distLat=" + distLat +
+                ", nameStr='" + nameStr + " "+SEPARATORFIELDS + //TODO ADDED SEPARATOR FOR SPLIT LONG&SHORT TOSTRING
+                " distLat=" + distLat +
                 ", distLon=" + distLon +
                 ", glonCentroide=" + glonCentroide +
                 ", glatCentroide=" + glatCentroide +
@@ -176,6 +176,18 @@ public class InfoFilament {  //questa class econtiene tutte le informazioni del 
                 ", distVertxLower=" + distVertxLower +
                 ", errorMessage='" + errorMessage + '\'' +
                 '}';
+    }
+    public String toString(int i) {
+        return "InfoFilament{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", ellipticity=" + ellipticity +
+                ", contrast=" + contrast +
+                ", fluxTot=" + fluxTot +
+                ", tempAvg=" + tempAvg +
+                ", densAvg=" + densAvg +
+                ", nSeg=" + nSeg +
+                ", nameStr='" + nameStr + '\'' ;
     }
 }
 

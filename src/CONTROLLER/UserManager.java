@@ -1,15 +1,11 @@
-package feauture1.Controller;
+package CONTROLLER;
 
-import CONTROLLER.parse.Import2DB;
-import CONTROLLER.parse.Parser;
 import DAO.InstrumentDao;
 import DAO.SatelliteDao;
 import DAO.UserDao;
-import feauture1.Bean.InstrumentBean;
-import feauture1.Bean.SatelliteBean;
-import feauture1.Bean.UserBean;
-
-import java.io.IOException;
+import BEAN.InstrumentBean;
+import BEAN.SatelliteBean;
+import BEAN.UserBean;
 
 public class UserManager {  //relativo al requisito 3, può farlo solo l'amministartore
 

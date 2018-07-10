@@ -1,10 +1,10 @@
 package TEST;
 
 import DAO.DAOStar;
-import feauture1.Bean.InfoStarInFilamentAndRectangle;
-import feauture1.Bean.Rectangle;
-import feauture1.Controller.StarInFilamentAndInRectangle;
-import feauture1.StarAndType;
+import BEAN.InfoStarInFilamentAndRectangle;
+import BEAN.Rectangle;
+import CONTROLLER.StarInFilamentAndInRectangle;
+import BEAN.StarAndType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

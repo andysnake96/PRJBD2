@@ -1,13 +1,9 @@
 package BOUNDARY;
 
-import BEAN.BeanRF9;
-import CONTROLLER.BeanRF12;
-import CONTROLLER.DistanceMinStarFilSpine;
-import CONTROLLER.ExtendedSearchFilamentDAO;
-import CONTROLLER.StarFilament;
-import ENTITY.Filament;
-import feauture1.Bean.*;
-import feauture1.Controller.*;
+import BEAN.*;
+import BEAN.BeanRF12;
+import CONTROLLER.*;
+import CONTROLLER.ComputeFilament;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -19,7 +15,7 @@ public class UserRecorded {
     //TODO levare attributi controllers
     private ComputeDistance computeDistance;
     private ComputeFilament computeFilament;
-    private searchFilamentByNSeg searchFilamentByNSeg;
+    private CONTROLLER.searchFilamentByNSeg searchFilamentByNSeg;
     private StarInFilamentAndInRectangle starInFilamentAndInRectangle;
     private final int DIMRANGE = 3;
 
@@ -65,17 +61,18 @@ public class UserRecorded {
     //rf9
     public BeanRF9 starsInFilament(ComputeFilamentBean computeFilamentBean) {
         StarFilament starFilament = new StarFilament(computeFilamentBean);
+
         return starFilament.starsInFilament();
     }
 
     //as rf from here..
 
     //rf12
-    public List<BeanRF12> allStarInFilMinDist(int idFil, String nameStr) throws SQLException {
+    public List<BeanRF12> allStarInFilMinDist(int idFil, String nameStr) throws SQLException,IllegalArgumentException  {
         DistanceMinStarFilSpine controller= new DistanceMinStarFilSpine(idFil,nameStr);
         return controller.allStarMinDist();
     }
-    public List<BeanRF12> allStarInFilMinDist(String nameFil) throws SQLException {
+    public List<BeanRF12> allStarInFilMinDist(String nameFil) throws SQLException,IllegalArgumentException  {
         DistanceMinStarFilSpine controller = new DistanceMinStarFilSpine(nameFil);
         return controller.allStarMinDist();
     }
@@ -85,19 +82,19 @@ public class UserRecorded {
     public final double MAXELLIPTICITY = 10;
 
 
-    public List<Filament> searchFilamentByBrightnessAndEllipticity
-            (double brightness, double[] ellipticityRange) throws SQLException {
+    public List<InfoFilament> searchFilamentByBrightnessAndEllipticity
+            (double brightness, double[] ellipticityRange) throws SQLException,IllegalArgumentException {
         String errorMSg = null;
         if (brightness < 0)
-            errorMSg = " invalid brightness";
+            errorMSg = " BRILLANZA NON VALIDA";
         if (ellipticityRange[0] > ellipticityRange[1]) {
-            System.err.println("invalid range order...swapping values");
+            System.err.println("ORDINE DI ESTREMI RANGE NON VALIDO ,\n INVERSIONE ESTREMI...");
             double a = ellipticityRange[0];
             ellipticityRange[0] = ellipticityRange[1];
             ellipticityRange[1] = a;
         }
         if (ellipticityRange[0] < 1 || ellipticityRange[1] > 10)
-            errorMSg = "outOfEllipticityrange values"; //nb orderd asserted before
+            errorMSg = "VALORI NON AMMISSIMIBILI PER ELLITTICITA \n (POSSIBILI VALORI IN (0,10))"; //nb orderd asserted before
         if (errorMSg != null) //some input wrong..
             throw new IllegalArgumentException(errorMSg);   //todo gui catch!
 
@@ -105,17 +102,17 @@ public class UserRecorded {
     }
 
     //RF8 -CIRCLE
-    public List<Filament> searchFilamentByCircle(double glat, double glon, double radius) throws SQLException {
+    public List<InfoFilament> searchFilamentByCircle(double glat, double glon, double radius) throws SQLException {
         if (radius < 0)
-            throw new IllegalArgumentException("invalid radius for region...");
+            throw new IllegalArgumentException("RAGGIO NON VALIDO...");
         return ExtendedSearchFilamentDAO.searchFilamentByCircle(glat, glon, radius);
     }
 
     //RF8 -SQUARE
-    public List<Filament> searchFilamentBySquare(double glat, double glon, double side)
+    public List<InfoFilament> searchFilamentBySquare(double glat, double glon, double side)
             throws SQLException {
         if (side < 0)
-            throw new IllegalArgumentException("invalid side value");
+            throw new IllegalArgumentException("LATO NON VALIDO");
         return ExtendedSearchFilamentDAO.searchFilamentByRectangle(glat, glon, side, side);
     }
 }

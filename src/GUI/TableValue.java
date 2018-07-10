@@ -1,7 +1,7 @@
 package GUI;
 
 public class TableValue {
-    String id, name, ell, con, flux, temp, dens ,nSeg, nameStr;
+    private String id, name, ell, con, flux, temp, dens ,nSeg, nameStr;
 
     public TableValue(String id, String name, String ell, String con, String flux, String temp, String dens, String nSeg, String nameStr) {
         this.id = id;
@@ -71,7 +71,7 @@ public class TableValue {
         this.dens = dens;
     }
 
-    public String getnSeg() {
+    public String getNSeg() {
         return nSeg;
     }
 

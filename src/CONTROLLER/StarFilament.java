@@ -8,7 +8,7 @@ import ENTITY.Filament;
 import ENTITY.Outline;
 import ENTITY.Point;
 import ENTITY.Star;
-import feauture1.Bean.ComputeFilamentBean;
+import BEAN.ComputeFilamentBean;
 
 import java.lang.Math;
 
@@ -62,7 +62,11 @@ public class StarFilament {
 
 
     public BeanRF9 starsInFilament() {
-        //String message = takeStarFilament(bean);
+        if(this.messageError != null) {
+            BeanRF9 beanRF9 = new BeanRF9();
+            beanRF9.setErrorMessage(this.messageError);
+            return beanRF9;
+        }
         List<Point> ps = this.filament.getOutline().getPoints();
         List<Star> starsInFilament = new ArrayList<>();
         if(this.messageError != null) {

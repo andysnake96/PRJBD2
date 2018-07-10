@@ -1,4 +1,4 @@
-package feauture1.Bean;
+package BEAN;
 
 /*
 per il requisito 7, contiene l'intervallo del numero di segmenti inserito dall'utente

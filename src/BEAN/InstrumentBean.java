@@ -1,4 +1,4 @@
-package feauture1.Bean;
+package BEAN;
 
 /*
 classe bean utilizzata per trasportare le informazioni di un nuovo strumento da inserire nel DB

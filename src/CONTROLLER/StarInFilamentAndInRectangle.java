@@ -1,15 +1,13 @@
-package feauture1.Controller;
+package CONTROLLER;
 
 import BEAN.BeanRF9;
-import CONTROLLER.StarFilament;
 import DAO.DAOFilament;
 import DAO.DAOPoint;
 import DAO.DAOStar;
 import ENTITY.Filament;
-import ENTITY.Star;
-import feauture1.Bean.InfoStarInFilamentAndRectangle;
-import feauture1.Bean.Rectangle;
-import feauture1.StarAndType;
+import BEAN.InfoStarInFilamentAndRectangle;
+import BEAN.Rectangle;
+import BEAN.StarAndType;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;

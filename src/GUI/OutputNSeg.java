@@ -1,10 +1,7 @@
 package GUI;
 
-import BOUNDARY.UserRecorded;
-import feauture1.Bean.InfoFilament;
+import BEAN.InfoFilament;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableArray;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -13,11 +10,8 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 
-import javax.sound.sampled.Line;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
-import java.util.ResourceBundle;
 
 public class OutputNSeg implements Initializable{
 

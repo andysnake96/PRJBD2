@@ -1,15 +1,21 @@
 package GUI;
 
+import BEAN.BeanRF9;
 import BOUNDARY.UserRecorded;
 import BEAN.ComputeFilamentBean;
-import BEAN.InfoFilament;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.scene.text.Text;
 
-public class InputFilament2 {
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Set;
+
+public class RF9 {
+
 
     @FXML // fx:id="button"
     private Button button; // Value injected by FXMLLoader
@@ -18,16 +24,13 @@ public class InputFilament2 {
     private TextField name; // Value injected by FXMLLoader
 
     @FXML // fx:id="negativeTextArea"
-    private Text negativeTextArea; // Value injected by FXMLLoader
+    private TextArea info; // Value injected by FXMLLoader
 
     @FXML // fx:id="nameStr"
     private TextField nameStr; // Value injected by FXMLLoader
 
     @FXML // fx:id="id"
     private TextField id; // Value injected by FXMLLoader
-
-    @FXML // fx:id="info"
-    private Text info; // Value injected by FXMLLoader
 
     @FXML
     void backToMenu(ActionEvent event) throws Exception {
@@ -36,6 +39,7 @@ public class InputFilament2 {
 
     @FXML
     void searchById(ActionEvent event) throws Exception {
+        this.info.setText("");
         String id = this.id.getText();
         String nameStr = this.nameStr.getText().toUpperCase();
         if(id.isEmpty() || nameStr.isEmpty()) {
@@ -47,7 +51,6 @@ public class InputFilament2 {
             idFil = Integer.parseInt(id);
         }
         catch (NumberFormatException e){
-            e.printStackTrace();
             this.info.setText("L'id del filamento deve essere un numero intero!!");
             return;
         }
@@ -59,20 +62,42 @@ public class InputFilament2 {
             e.printStackTrace();
             this.info.setText("ERRORE");
         }
-        InfoFilament infoFilament =  userRecorded.distanceVertexOutline(bean);
-        displayResult(infoFilament);
-
-    }
-
-    private void displayResult(InfoFilament infoFilament) {
-        if(infoFilament.getErrorMessage() != null) {
-            this.info.setText(infoFilament.getErrorMessage());
-            return;
+        String msgOut=calculateOut(bean,userRecorded);
+            this.info.setText(msgOut);
         }
-        this.info.setText("Distanza  dal vertice superiore: "+ infoFilament.getDistVertxUpper()+"\n"+
-                            "Distanza dal vertice minore: "+ infoFilament.getDistVertxLower());
 
+    private String calculateOut(ComputeFilamentBean bean,UserRecorded boundary) {
+        BeanRF9 beanRF9= boundary.starsInFilament(bean);
+        if(beanRF9.getErrorMessage() != null) {
+            return beanRF9.getErrorMessage();
+        }
+        String out= "Numero stelle contenute"+beanRF9.getStarsInFilament().size();
+        Collection<Integer> valuesInFilament =  beanRF9.getCounters().values();
+        Integer nStarInFilament=0;
+
+        for(Integer t: valuesInFilament) {
+            nStarInFilament += t;
+        }
+
+        System.out.println(nStarInFilament==beanRF9.getStarsInFilament().size());
+        if(nStarInFilament == 0) {
+            return  "Nessuna stella all'interno della regione";
+
+        }
+
+        HashMap<String, Integer> c = beanRF9.getCounters();
+        Set list = c.keySet();
+        Iterator<String> iter = list.iterator();
+        while (iter.hasNext()) {
+            String key = iter.next();
+            Integer value = c.get(key);
+            float perType = value * 100f / (nStarInFilament);
+            out+="Percentuale di stelle di tipo :" + key + "  in un filamento: " + perType + "\n" ;
+        }
+        return out;
     }
+
+
 
     @FXML
     void searchByName(ActionEvent event) throws Exception {
@@ -89,10 +114,9 @@ public class InputFilament2 {
             e.printStackTrace();
             this.info.setText("ERRORE");
         }
-        InfoFilament infoFilament =  userRecorded.distanceVertexOutline(bean);
-        displayResult(infoFilament);
+        String outMsg=this.calculateOut(bean,userRecorded);
+        this.info.setText(outMsg);
 
 
     }
-
 }

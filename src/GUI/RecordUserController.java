@@ -2,9 +2,7 @@ package GUI;
 
 import BOUNDARY.UserAdministrator;
 import BOUNDARY.UserLogin;
-import feauture1.Bean.UserBean;
-import feauture1.Controller.LoginManager;
-import feauture1.Controller.UserManager;
+import BEAN.UserBean;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;

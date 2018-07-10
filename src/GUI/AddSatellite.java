@@ -1,7 +1,7 @@
 package GUI;
 
 import BOUNDARY.UserAdministrator;
-import feauture1.Bean.SatelliteBean;
+import BEAN.SatelliteBean;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;

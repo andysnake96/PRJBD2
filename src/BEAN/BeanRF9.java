@@ -12,6 +12,10 @@ public class BeanRF9 {
     private List<Star> starsInFilament;
     private Filament filament;
 
+    public BeanRF9() {
+
+    }
+
     public void setFilament(Filament filament) {
         this.filament = filament;
     }
@@ -36,6 +40,10 @@ public class BeanRF9 {
 
     public List<Star> getStarsInFilament() {
         return starsInFilament;
+    }
+
+    public void setErrorMessage(String errorMessage) {
+        this.errorMessage = errorMessage;
     }
 
     @Override

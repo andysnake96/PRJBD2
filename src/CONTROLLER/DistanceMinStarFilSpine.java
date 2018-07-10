@@ -1,14 +1,14 @@
 package CONTROLLER;
 
+import BEAN.BeanRF12;
 import BEAN.BeanRF9;
 import DAO.Connection;
 import DAO.DAOFilament;
 import DAO.DAOPoint;
 import ENTITY.Filament;
-import ENTITY.Outline;
 import ENTITY.PointSkeleton;
 import ENTITY.Star;
-import feauture1.Bean.ComputeFilamentBean;
+import BEAN.ComputeFilamentBean;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -33,14 +33,18 @@ public class DistanceMinStarFilSpine {
     private String distanceComputationMode=distanceComputationLocal;  //default mode=local
 
 
-    public DistanceMinStarFilSpine(int idFil, String nameStr) throws SQLException {
+    public DistanceMinStarFilSpine(int idFil, String nameStr) throws SQLException,IllegalArgumentException  {
         this.filament = DAOFilament.searchFilamentById(idFil,nameStr);
+        if(filament==null)
+            throw new IllegalArgumentException("invaild idFil or name instrument");
         List<PointSkeleton> mainSpine= DAOPoint.takeFilamentSpine(filament.getId(),filament.getInstrument().getName());
         //compute min distance star<-> mainSpine just taken
         filament.setPointSkeletonSpine(mainSpine);
     }
-    public DistanceMinStarFilSpine(String nameFil) throws SQLException {
+    public DistanceMinStarFilSpine(String nameFil) throws SQLException,IllegalArgumentException {
         this.filament = DAOFilament.searchFilamentByName(nameFil);
+        if(filament==null)
+            throw new IllegalArgumentException(" Filamento inserito non trovato ");
         List<PointSkeleton> mainSpine= DAOPoint.takeFilamentSpine(filament.getId(),filament.getInstrument().getName());
         //compute min distance star<-> mainSpine just taken
         filament.setPointSkeletonSpine(mainSpine);
@@ -52,7 +56,8 @@ public class DistanceMinStarFilSpine {
         double skGlat= mainSpine.get(0).getPoint().getLat();
         double skGlot= mainSpine.get(0).getPoint().getGlon();
         double minDist= Math.sqrt(Math.pow(Math.abs(star.getGlat()-skGlat),2)
-                + Math.pow(Math.abs(star.getGlon()-skGlot),2));                 //initialized with first evalutation
+                                 + Math.pow(Math.abs(star.getGlon()-skGlot),2));
+                            //initialized with first evalutation
 
         for(int j=1;j<mainSpine.size();j++){
             skGlat= mainSpine.get(j).getPoint().getLat();
@@ -80,8 +85,7 @@ public class DistanceMinStarFilSpine {
         ResultSet resultSet = stmt.executeQuery();
 
         if(!resultSet.next()){
-            System.err.println("invalid filament or invalid point in placeholder\n EMPTY RESULT");
-            throw new RuntimeException("invalid filament or invalid point in placeholder in query");
+            System.err.println("invalid filament   EMPTY RESULT");
         }
         double result= resultSet.getDouble(1);
         stmt.close();
@@ -91,18 +95,21 @@ public class DistanceMinStarFilSpine {
 
     }
 
-    public List<BeanRF12> allStarMinDist() throws SQLException {
-        //for all star evalutate min distance to filament spine and return infos
+    public List<BeanRF12> allStarMinDist() throws SQLException,IllegalArgumentException {
+        //for all star(in a fil) evalutate min distance to filament spine and return infos
         List<BeanRF12> out= new ArrayList<>();  //TODO ROW:= NAME,ID,FLUX,minDIST;
         StarFilament getStarContainedController= new StarFilament(
                 new ComputeFilamentBean(filament.getId(),filament.getInstrument().getName()));
         BeanRF9 beanRF9= getStarContainedController.starsInFilament();
         List<Star> starsInFilament = beanRF9.getStarsInFilament();
+        if(starsInFilament==null || starsInFilament.size()==0)
+            throw new IllegalArgumentException("non ci sono stelle all'interno del filamento");
         System.out.println("stars#="+starsInFilament.size());
         for (int j=0;j<starsInFilament.size();j++){
             Star star= starsInFilament.get(j);
             double dist;
-            if(this.distanceComputationMode.equals(distanceComputationLocal)) //TODO in boudary catch runtime exception for invalid filament|| star
+            //check min distance computation mode
+            if(this.distanceComputationMode.equals(distanceComputationLocal))
                 dist= this.computeMinDistanceStar2SpineLocal(star);
             else
                 dist=this.computeMinDistanceStar2SpineQuery(star);
@@ -113,12 +120,6 @@ public class DistanceMinStarFilSpine {
         return  out;
 
     }
-    public  static  void  main(String[] args) throws SQLException {
-       DistanceMinStarFilSpine controller = new DistanceMinStarFilSpine(45,"SPIRE");
-       List<BeanRF12> out = controller.allStarMinDist();
-       out.sort(Comparator.comparingDouble(BeanRF12::getDistance));
-       out.sort(Comparator.comparingDouble(BeanRF12::getFlux));
-        //TODO SORT MODE REQUIRED
-    }
+
 
 }

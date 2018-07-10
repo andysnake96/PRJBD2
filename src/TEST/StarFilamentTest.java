@@ -7,7 +7,7 @@ import DAO.DAOPoint;
 import ENTITY.Filament;
 import ENTITY.Point;
 import ENTITY.Star;
-import feauture1.Bean.ComputeFilamentBean;
+import BEAN.ComputeFilamentBean;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

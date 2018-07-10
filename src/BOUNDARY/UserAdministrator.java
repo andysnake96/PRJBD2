@@ -2,12 +2,10 @@ package BOUNDARY;
 
 import CONTROLLER.parse.Import2DB;
 import CONTROLLER.parse.Parser;
-import feauture1.Bean.InstrumentBean;
-import feauture1.Bean.SatelliteBean;
-import feauture1.Bean.UserBean;
-import feauture1.Controller.UserManager;
-
-import java.io.IOException;
+import BEAN.InstrumentBean;
+import BEAN.SatelliteBean;
+import BEAN.UserBean;
+import CONTROLLER.UserManager;
 
 public class UserAdministrator extends UserRecorded {
 
@@ -35,40 +33,46 @@ public class UserAdministrator extends UserRecorded {
     }
 
     // import calls
-    public String importExternCSV(String path,String tableDest,String nameStr) {
+    public String importExternCSV(String path,String tableDest,String nameStr)  {
         //import extern csv file into db,return err string (or null)
-        String result="OK";
+        String result="";
         Import2DB importer= null;
         String nameSat = new String();
         //TODO nameSat <--- query satellite table in db...
         try {
             importer = new Parser();
-        } catch (IOException e) {
+        } catch (Exception e) {
             result = e.getMessage();
         }
         try {
             result=importer.parseExternFile(path,tableDest,nameStr);
+            result="OK";        //parse block return null for no problems
         } catch (Exception e) {
             result= e.getMessage();
+
         }
-        return result;
+        finally {
+            return result;
+        }
     }
        public String readSetOfCSV (String groupCSV) throws IllegalArgumentException,Exception {
         /*
         read set of csv demo files (hershel or spitzer) and write into db by multiple parseBlock calls
         groupCSV must match HERSHEL or SPITZER costant string in Import2db interface
          */
-            String errMsg=null;
+            String errMsg="OK";
            Import2DB reader = null;
            try {
                reader = new Parser();
                reader.readCSV(groupCSV,null);  //second field for instrument, null=>default instrument of demo files
 
-           } catch (IOException e) {
+           } catch (Exception e) {
                e.printStackTrace();
-               errMsg+=e.getMessage();
+               errMsg=e.getMessage();
            }
-        return errMsg;
+           finally {
+               return errMsg;
+           }
     };
 
 }

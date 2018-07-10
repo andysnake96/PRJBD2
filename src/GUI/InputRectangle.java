@@ -1,9 +1,8 @@
 package GUI;
 
 import BOUNDARY.UserRecorded;
-import GUI.LogController;
-import feauture1.Bean.InfoStarInFilamentAndRectangle;
-import feauture1.Bean.Rectangle;
+import BEAN.InfoStarInFilamentAndRectangle;
+import BEAN.Rectangle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextArea;
@@ -29,17 +28,20 @@ public class InputRectangle {
     @FXML // fx:id="centroideLat"
     private TextField centroideLat; // Value injected by FXMLLoader
 
-    private Integer nStarInFilament = 0;
-    private Integer nStarNotInFilament = 0;
+    private Integer nStarInFilament;
+    private Integer nStarNotInFilament;
 
     @FXML
-    void BackToMenu(ActionEvent event) {
-
+    void BackToMenu(ActionEvent event) throws Exception {
+        ViewSwap.getIstance().swap(event,ViewSwap.MENU);
     }
 
     @FXML
     void execute(ActionEvent event) throws Exception {
         this.info.clear();
+
+        this.nStarInFilament=0;
+        this.nStarNotInFilament=0;
         String centroideLatText = this.centroideLat.getText();
         String centroideLonText = this.centroideLon.getText();
         String lText = this.l.getText();

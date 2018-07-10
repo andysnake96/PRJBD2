@@ -22,15 +22,14 @@ public class ParserTest {
     CSV IMPORT TESTED BY INSERTING AND MATCHING:
                     -NUMBER OF DIFFERENT INSERTED RECORDS
                     -NUMBER OF LINES IN SOURCE CSV FILE
-                    (NB Hershel files:=>removed duplicated lines
-                        Spitzer files:=>test matching subset of files(correct for buisness rule)
+                    (NB Hershel files:=>removed duplicated lines in outline
+
                         //TODO UPDATE SPITZER PATH ...>take subset of records 4 (filament -> outline,skeleton?ask galli)
      TODO test insert satellite and other useless stuff :)
      */
     final String[] pathsALL={"CSV/stelle_Herschel.csv",
             "CSV/filamenti_Herschel.csv","CSV/contorni_filamenti_Herschel.csv",
-            "CSV/scheletro_filamenti_Herschel.csv","CSV/filamenti_Spitzer.csv","CSV/contorni_filamenti_Spitzer.csv" ,
-            "CSV/scheletro_filamenti_Spitzer_CORRETTO.csv"};
+            "CSV/scheletro_filamenti_Herschel.csv"};
 
     final String[] pathHersel={"star,CSV/stelle_Herschel.csv","filament,CSV/filamenti_Herschel.csv",
             "outline,CSV/contorni_filamenti_Herschel.csv","skeletonpoint,CSV/scheletro_filamenti_Herschel.csv"};
@@ -88,7 +87,7 @@ public class ParserTest {
             String[] rowPath=pathHersel[x].split(",");
             String pathFile=rowPath[1];
             pathFile+=".NOREPETITION"; //added files with concatenated .NOREPETITION to mean files with no repetition
-            //founded a lot of lines repetition in outlines files...
+            //founded a lot of lines repetition in outlines demo files...
             String table=rowPath[0];
             FileReader fileReader = new FileReader(pathFile);
             BufferedReader bufferedReader = new BufferedReader(fileReader);
@@ -100,26 +99,7 @@ public class ParserTest {
             filesNumberOfLinesHershel.put(table,lines-1);   //CSV header not a record!
         }
 
-        for(int x=0;x<pathSpitzer.length;x++) {
-            String[] rowPath=pathSpitzer[x].split(",");
-            String pathFile=rowPath[1];
-            pathFile+=".NOREPETITION"; //added files with concatenated .NOREPETITION to mean files with no repetition
-            String table=rowPath[0];
-            FileReader fileReader = new FileReader(pathFile);
-            BufferedReader bufferedReader = new BufferedReader(fileReader);
-            int lines = 0;
-            while (bufferedReader.readLine() != null) {
-                lines++;
-            }
-            System.out.println("Spitzer:\nreaded from "+pathFile+" lines:\t"+lines);
-            filesNumberOfLinesSpitzer.put(table,lines-1);   //CSV header not a record!
-        }
-
     }
-    @Test
-    void parseSatelliteInfo() {
-    }
-
     @Test
     void parseExternFile() {
         /*
@@ -136,35 +116,10 @@ public class ParserTest {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        Random random = new Random();
-        if (random.nextBoolean() || true) { //random order of imports
-            System.out.println("order:= hersel,spitzer");
-            dbRowsNumBefore = countInTableWrap();
-            wrapParseExternFile(importWrap, pathHersel, hershelDefaultInstrument);
-            dbRowsNumAfter = countInTableWrap();
-            assertCorrectInserted(dbRowsNumBefore,dbRowsNumAfter,Import2DB.HERSCHEL); //TODO DEBUG ONLY HERSHEL FULL WORK!
-            //checked first group
-            if(random.nextInt()%96==0 || true)         //little probability of clean all db before next insert
-                cleanDBWrap();
-            dbRowsNumBefore = countInTableWrap();
-            wrapParseExternFile(importWrap, pathSpitzer, spitzerDefaultInstrument);
-            dbRowsNumAfter = countInTableWrap();
-            assertCorrectInserted(dbRowsNumBefore,dbRowsNumAfter,Import2DB.SPITZER);
-
-        } else { //reverse order of insert groups...
-            System.out.println("order:= spitzer,hershel");
-            dbRowsNumBefore = countInTableWrap();
-            wrapParseExternFile(importWrap,pathSpitzer,spitzerDefaultInstrument);
-            dbRowsNumAfter = countInTableWrap();
-            assertCorrectInserted(dbRowsNumBefore,dbRowsNumAfter,Import2DB.SPITZER);
-            if(random.nextInt()%96==0)         //little probability of clean all db before next insert
-                cleanDBWrap();
-            dbRowsNumBefore = countInTableWrap();
-            wrapParseExternFile(importWrap, pathHersel,hershelDefaultInstrument);
-            dbRowsNumAfter = countInTableWrap();
-            assertCorrectInserted(dbRowsNumBefore,dbRowsNumAfter,Import2DB.HERSCHEL);
-
-        }
+        dbRowsNumBefore = countInTableWrap();
+        wrapParseExternFile(importWrap, pathHersel, hershelDefaultInstrument);
+        dbRowsNumAfter = countInTableWrap();
+        assertCorrectInserted(dbRowsNumBefore,dbRowsNumAfter,Import2DB.HERSCHEL);
     }
 
     private void assertCorrectInserted(HashMap<String, Integer> before ,HashMap<String, Integer> after,String group) {
@@ -194,7 +149,6 @@ public class ParserTest {
             String path=pathRow[1];
             String kind=pathRow[0];
             String satelliteName=new String();
-            //TODO SATELLITE GET NAME BY INSTRUMENT
             try {
                 importWrap.parseExternFile(path,kind,instrument);
             } catch (Exception e) {

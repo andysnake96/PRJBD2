@@ -1,7 +1,7 @@
 package DAO;
 
 import ENTITY.User;
-import feauture1.Bean.UserBean;
+import BEAN.UserBean;
 
 import java.sql.*;
 import java.sql.Connection;

@@ -20,6 +20,12 @@ public class ViewSwap {
     protected static String RECORDUSER = "/GUI/fxml/RecordUser.fxml";
     protected static String RISPOSTA = "/GUI/fxml/Risposta.fxml";
     protected static String MENU = "/GUI/fxml/Menu.fxml";
+    protected static String RF9  ="/GUI/fxml/RF9.fxml";
+    protected static String RF6  ="/GUI/fxml/RF6.fxml";
+    protected static String RF8  ="/GUI/fxml/RF8.fxml";
+    protected static String RF12="/GUI/fxml/RF12.fxml";
+    protected static String IMPORT="/GUI/fxml/Import.fxml";
+
     protected static String RISPOSTAPRENOTAZIONEATTIVE = "/GUI/fxml/PrenotazioniAttiveRisposta.fxml";
     protected static String APERTUREANNOACCADEMICO = "/GUI/fxml/InputAnnoAccademico.fxml";
     protected static String INPUTID = "/GUI/fxml/SpecificaIdAulaConf.fxml";
@@ -29,6 +35,7 @@ public class ViewSwap {
     protected static String STORICOPRENOTAZIONIPROF = "/GUI/fxml/RicercaPrenotazioniProf.fxml";
     protected static String STORICOPRENOTAZIONISEGR = "/GUI/fxml/RicercaPrenotazioniSegr.fxml";
     protected static String ADDSATELLITE = "/GUI/fxml/DataSatellite.fxml";
+
     protected static String ANSWERCOMPUTEFILAMENT = "/GUI/fxml/AnswerComputeFilament.fxml";
 
     protected static ViewSwap viewSwap;

@@ -5,8 +5,7 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-
-<fx:root maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" type="AnchorPane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.Import">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <TextField fx:id="path" layoutX="14.0" layoutY="43.0" prefHeight="32.0" prefWidth="129.0" promptText="PATH" />
       <Button fx:id="take" layoutX="400.0" layoutY="125.0" mnemonicParsing="false" onAction="#importGroup" prefHeight="32.0" prefWidth="107.0" text="Import" />
@@ -17,5 +16,6 @@
       <ComboBox fx:id="kindCSV" layoutX="143.0" layoutY="40.0" prefHeight="39.0" prefWidth="129.0" promptText="tipoCSV" />
       <ComboBox fx:id="group" layoutX="24.0" layoutY="125.0" prefHeight="39.0" prefWidth="155.0" promptText="gruppo CSV" />
       <TextField fx:id="info" layoutX="195.0" layoutY="175.0" prefHeight="88.0" prefWidth="312.0" />
+      <Button layoutX="6.0" layoutY="374.0" mnemonicParsing="false" onAction="#back" text="BACK" />
    </children>
-</fx:root>
+</AnchorPane>

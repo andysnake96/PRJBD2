@@ -1,8 +1,8 @@
 package BOUNDARY;
 
-import feauture1.Bean.InstrumentBean;
-import feauture1.Bean.ComputeFilamentBean;
-import feauture1.Controller.LoginManager;
+import BEAN.InstrumentBean;
+import BEAN.ComputeFilamentBean;
+import CONTROLLER.LoginManager;
 
 public class UserLogin {
     private String username;

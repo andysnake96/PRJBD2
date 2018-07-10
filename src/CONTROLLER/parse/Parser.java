@@ -1,8 +1,10 @@
 package CONTROLLER.parse;
 
 import DAO.Connection;
+import DAO.InstrumentDao;
 import DAO.MyException;
 import DAO.Parser2DBDAO;
+import ENTITY.Instrument;
 import TEST.*;
 
 import java.io.*;
@@ -73,7 +75,7 @@ public class Parser implements Import2DB {
         for identifiability in db
         */
 
-        //this.satelliteInUse= this.takeSatelliteFromInstrument(nameStr);
+        this.satelliteInUse= InstrumentDao.takeSatelliteFromInstrument(nameStr);
 
         if (kindCSV.equals(FILAMENT)) {
             return parseBlock(path, kindCSV);
@@ -108,8 +110,6 @@ public class Parser implements Import2DB {
         //first line star path
         line=fileList.get(0);
         starPath=line.split(SPLIT_CHAR);
-        //TODO LIVIO CHECK PASSED INSTRUMENT , if exist..> set nameSat
-
         String nameSat=null;
         for (int i=1;i< fileList.size();i++){ //first line already passed
             line=fileList.get(i);
@@ -128,10 +128,6 @@ public class Parser implements Import2DB {
 
     }
 
-    public static String quoteField(String strUnquoted){
-        //add single quote to a string witch will be passed to dao witch will write in a simpler way
-        return "'"+strUnquoted+"'";
-    }
     public String parseBlock(String path, String kindCSV) throws Exception {
 
         /*
@@ -243,6 +239,8 @@ public class Parser implements Import2DB {
         boolean deflt=false;
         if(nameInstrument==null)
             deflt=true;             //if instrument not passed used default interpretation of hershel&Spitzer in CSVs
+
+
         //TODO LIVIO check passed instrument is in DB.instruments
         if (name.equals(Import2DB.HERSCHEL)) {
             this.satelliteInUse="Herschel";

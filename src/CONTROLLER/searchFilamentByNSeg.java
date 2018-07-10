@@ -1,8 +1,8 @@
-package feauture1.Controller;
+package CONTROLLER;
 
 import ENTITY.Filament;
-import feauture1.Bean.InfoFilament;
-import feauture1.Bean.RangeNSeg;
+import BEAN.InfoFilament;
+import BEAN.RangeNSeg;
 
 import java.sql.SQLException;
 import java.util.ArrayList;

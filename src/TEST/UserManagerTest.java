@@ -4,15 +4,13 @@ package TEST;
 
  */
 
-import DAO.UserDao;
-import ENTITY.Instrument;
 import ENTITY.Satellite;
 import ENTITY.User;
-import feauture1.Bean.InstrumentBean;
-import feauture1.Bean.SatelliteBean;
-import feauture1.Bean.UserBean;
-import feauture1.Controller.LoginManager;
-import feauture1.Controller.UserManager;
+import BEAN.InstrumentBean;
+import BEAN.SatelliteBean;
+import BEAN.UserBean;
+import CONTROLLER.LoginManager;
+import CONTROLLER.UserManager;
 import org.junit.jupiter.api.Test;
 
 import java.sql.*;

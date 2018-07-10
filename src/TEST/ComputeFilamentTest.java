@@ -4,9 +4,9 @@ import DAO.DAOFilament;
 import DAO.DAOPoint;
 import ENTITY.Filament;
 import ENTITY.Point;
-import feauture1.Bean.InfoFilament;
-import feauture1.Bean.ComputeFilamentBean;
-import feauture1.Controller.ComputeFilament;
+import BEAN.InfoFilament;
+import BEAN.ComputeFilamentBean;
+import CONTROLLER.ComputeFilament;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

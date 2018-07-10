@@ -1,4 +1,4 @@
-package CONTROLLER;
+package BEAN;
 
 import java.util.Collection;
 
@@ -8,6 +8,16 @@ public class BeanRF12 {
     double flux;
     double distance;
     String starName;
+    @Override
+    public String toString( ) {
+        return
+                "glat=" + glat +
+                ", glon=" + glon +
+                ", flux=" + flux +
+                ", distance=" + distance +
+                ", starName='" + starName + '\'' +
+                '}';
+    }
 
     public String getStarName() {
         return starName;

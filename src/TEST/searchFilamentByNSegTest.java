@@ -2,9 +2,9 @@ package TEST;
 
 import DAO.DAOFilament;
 import ENTITY.Filament;
-import feauture1.Bean.InfoFilament;
-import feauture1.Bean.RangeNSeg;
-import feauture1.Controller.searchFilamentByNSeg;
+import BEAN.InfoFilament;
+import BEAN.RangeNSeg;
+import CONTROLLER.searchFilamentByNSeg;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

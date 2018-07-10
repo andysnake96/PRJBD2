@@ -1,4 +1,4 @@
-package feauture1.Bean;
+package BEAN;
 
 import java.util.HashMap;
 

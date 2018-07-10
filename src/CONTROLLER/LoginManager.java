@@ -1,4 +1,4 @@
-package feauture1.Controller;
+package CONTROLLER;
 
 import DAO.UserDao;
 import ENTITY.User;

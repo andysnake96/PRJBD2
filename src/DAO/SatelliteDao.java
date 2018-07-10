@@ -1,6 +1,6 @@
 package DAO;
 
-import feauture1.Bean.SatelliteBean;
+import BEAN.SatelliteBean;
 
 import java.sql.Date;
 import java.sql.PreparedStatement;

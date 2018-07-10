@@ -1,4 +1,4 @@
-package feauture1;
+package BEAN;
 
 /*
 in questa classe ci sono la lista delle stelle in un rettangolo e il numero di stelle per ogni tipo

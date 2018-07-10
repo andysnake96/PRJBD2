@@ -1,8 +1,8 @@
 package TEST;
 
-import feauture1.Bean.InfoFilament;
-import feauture1.Bean.ComputeFilamentBean;
-import feauture1.Controller.ComputeDistance;
+import BEAN.InfoFilament;
+import BEAN.ComputeFilamentBean;
+import CONTROLLER.ComputeDistance;
 import org.junit.jupiter.api.Test;
 
 public class ComputeDistanceTest {

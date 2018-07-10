@@ -1,4 +1,4 @@
-package feauture1.Bean;
+package BEAN;
 
 public class Rectangle {
     private double l; //lato del rettangolo

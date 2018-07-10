@@ -1,6 +1,6 @@
 package DAO;
 
-import feauture1.Bean.InstrumentBean;
+import BEAN.InstrumentBean;
 
 import java.sql.*;
 
@@ -42,7 +42,7 @@ public class InstrumentDao {
         stmt.setString(1, nameStr);
         ResultSet rs = stmt.executeQuery();
         if(!rs.next()) {
-            throw new Exception();
+            throw new IllegalArgumentException("SATELLITE RELATIVO ALLO STRUMENTO NON TROVATO");
         }
         String nameSatellite = rs.getString("satellite");
         stmt.close();

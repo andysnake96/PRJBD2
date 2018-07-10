@@ -1,7 +1,7 @@
 package GUI;
 
 import BOUNDARY.UserAdministrator;
-import feauture1.Bean.InstrumentBean;
+import BEAN.InstrumentBean;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -70,7 +70,7 @@ public class AddInstrument {
             return;
         }
 
-        double[] array = new double[this.insertBands.size()-1];
+        double[] array = new double[this.insertBands.size()];
         int i = 0;
         for(Double b: this.insertBands) {
             array[i] = b.doubleValue();

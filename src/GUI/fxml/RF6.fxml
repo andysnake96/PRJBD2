@@ -5,7 +5,7 @@
 <?import java.lang.*?>
 <?import javafx.scene.control.*?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="494.0" prefWidth="1325.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.RF6">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="599.0" prefWidth="1325.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.RF6">
    <children>
       <Label layoutX="131.0" layoutY="14.0" prefHeight="15.0" prefWidth="422.0" text="Cerca filamenti tramite ellitticità e brillanza rispetto al contorno" />
       <Button fx:id="buttonBK" layoutY="3.0" mnemonicParsing="false" onAction="#back" prefHeight="36.0" prefWidth="70.0" text="BACK">

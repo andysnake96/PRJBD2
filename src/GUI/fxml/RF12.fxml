@@ -5,7 +5,7 @@
 <?import java.lang.*?>
 <?import javafx.scene.control.*?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="494.0" prefWidth="1339.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.RF12">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="640.0" prefWidth="1142.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.RF12">
    <children>
       <Label layoutX="74.0" layoutY="14.0" prefHeight="15.0" prefWidth="526.0" text="Calcola la distanza minima tra stelle e la dorsale del filamento che le contiene" />
       <Button fx:id="buttonBK" layoutY="3.0" mnemonicParsing="false" onAction="#back" prefHeight="36.0" prefWidth="70.0" text="BACK">
@@ -13,16 +13,18 @@
             <Font size="14.0" />
          </font>
       </Button>
-      <Pagination fx:id="pagination" cacheHint="SPEED" layoutX="13.0" layoutY="125.0" maxPageIndicatorCount="5" prefHeight="346.0" prefWidth="2082.0" AnchorPane.bottomAnchor="23.0" AnchorPane.leftAnchor="13.0" AnchorPane.rightAnchor="12.0" AnchorPane.topAnchor="125.0" />
+      <Pagination fx:id="pagination" cacheHint="SPEED" layoutX="13.0" layoutY="139.0" maxPageIndicatorCount="5" prefHeight="478.0" prefWidth="1117.0" AnchorPane.bottomAnchor="23.0" AnchorPane.leftAnchor="13.0" AnchorPane.rightAnchor="12.0" AnchorPane.topAnchor="139.0" />
       <TextField fx:id="filSearchID" layoutX="104.0" layoutY="38.0" prefHeight="25.0" prefWidth="214.0" promptText="45" />
       <TextField fx:id="kindSearchLabel" editable="false" layoutY="38.0" prefHeight="25.0" prefWidth="104.0" text="ID Filamento" />
-      <Label fx:id="info" layoutX="886.0" layoutY="11.0" prefHeight="79.0" prefWidth="422.0" />
-      <Button layoutX="692.0" layoutY="27.0" mnemonicParsing="false" onAction="#search" prefHeight="72.0" prefWidth="76.0" text="CERCA" />
-      <Button fx:id="kindSearch" layoutX="413.0" layoutY="46.0" mnemonicParsing="false" onAction="#changeKindSearch" prefHeight="36.0" prefWidth="104.0" text="ID" />
+      <Label fx:id="info" layoutX="893.0" layoutY="33.0" prefHeight="60.0" prefWidth="235.0" />
+      <Button layoutX="-3.0" layoutY="88.0" mnemonicParsing="false" onAction="#search" prefHeight="15.0" prefWidth="76.0" text="CERCA" />
+      <Button fx:id="kindSearch" layoutX="513.0" layoutY="51.0" mnemonicParsing="false" onAction="#changeKindSearch" prefHeight="36.0" prefWidth="104.0" text="ID" />
       <TextField fx:id="nameStrLabel" editable="false" layoutY="63.0" prefHeight="25.0" prefWidth="104.0" text="nameStr" />
       <TextField fx:id="nameStr" layoutX="104.0" layoutY="63.0" prefHeight="25.0" prefWidth="214.0" promptText="SPIRE" />
-      <Text layoutX="318.0" layoutY="48.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Modalita di selezione Filamento tramite (clicca per cambiare)" wrappingWidth="92.0" />
-      <Text layoutX="517.0" layoutY="46.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Ordina tramite (clicca per cambiare)" wrappingWidth="76.0" />
-      <Button fx:id="kindSort" layoutX="617.0" layoutY="51.0" mnemonicParsing="false" onAction="#changeKindSort" text="Distanza" />
+      <Text layoutX="387.0" layoutY="50.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Modalita di selezione Filamento tramite (clicca per cambiare)" wrappingWidth="126.0" />
+      <Text layoutX="687.0" layoutY="52.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Ordina tramite (clicca per cambiare)" wrappingWidth="85.0" />
+      <Button fx:id="kindSort" layoutX="760.0" layoutY="51.0" mnemonicParsing="false" onAction="#changeKindSort" prefHeight="36.0" prefWidth="76.0" text="Distanza" />
+      <Separator layoutX="626.0" layoutY="19.0" orientation="VERTICAL" prefHeight="88.0" prefWidth="6.0" />
+      <Separator layoutX="852.0" layoutY="19.0" orientation="VERTICAL" prefHeight="88.0" prefWidth="6.0" />
    </children>
 </AnchorPane>

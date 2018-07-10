@@ -43,6 +43,7 @@ public class ParserTest {
 
     @BeforeEach
     void setUp() throws Exception { //clean db first...
+
         cleanDBWrap();
         countLinesOfFiles();    //init maps grupsCSVFiles---># of records :)
     }

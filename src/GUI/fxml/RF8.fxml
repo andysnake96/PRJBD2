@@ -5,7 +5,7 @@
 <?import java.lang.*?>
 <?import javafx.scene.control.*?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="494.0" prefWidth="1330.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.RF8">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="693.0" prefWidth="1316.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.RF8">
    <children>
       <Label layoutX="131.0" layoutY="14.0" prefHeight="15.0" prefWidth="422.0" text="Cerca filamenti in un regione spaziale" />
       <Button fx:id="buttonBK" layoutY="3.0" mnemonicParsing="false" onAction="#back" prefHeight="36.0" prefWidth="70.0" text="BACK">
@@ -18,7 +18,7 @@
       <TextField fx:id="glat" layoutX="169.0" layoutY="39.0" prefHeight="25.0" prefWidth="79.0" promptText="glat" />
       <TextField fx:id="regionDimension" layoutX="148.0" layoutY="64.0" prefHeight="25.0" prefWidth="167.0" />
       <TextField fx:id="regionDimensionLab" editable="false" layoutY="64.0" prefHeight="21.0" prefWidth="148.0" text="Raggio" />
-      <Label fx:id="info" layoutX="553.0" layoutY="11.0" prefHeight="79.0" prefWidth="422.0" />
+      <Label fx:id="info" layoutX="638.0" layoutY="7.0" prefHeight="79.0" prefWidth="422.0" />
       <TextField fx:id="glon" layoutX="247.0" layoutY="39.0" prefHeight="25.0" prefWidth="70.0" promptText="glon" />
       <Button layoutX="315.0" layoutY="39.0" mnemonicParsing="false" onAction="#search" prefHeight="54.0" prefWidth="70.0" text="CERCA" />
       <Button fx:id="kindRegion" layoutX="524.0" layoutY="46.0" mnemonicParsing="false" onAction="#changeKind" prefHeight="36.0" prefWidth="104.0" text="cerchio" />

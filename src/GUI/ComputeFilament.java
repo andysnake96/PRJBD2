@@ -36,6 +36,7 @@ public class ComputeFilament {
 
     @FXML
     void searchById(ActionEvent event) throws Exception {
+
         String id = this.id.getText();
         String nameStr = this.nameStr.getText().toUpperCase();
         if(id.isEmpty() || nameStr.isEmpty()) {
@@ -66,6 +67,7 @@ public class ComputeFilament {
 
     @FXML
     void searchByName(ActionEvent event) throws Exception {
+        this.info.setText("CARICAMENTO");
         String name = this.name.getText();
         if(name.isEmpty()) {
             this.info.setText("Inserire il nome dle filamento");

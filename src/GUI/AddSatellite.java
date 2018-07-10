@@ -76,7 +76,7 @@ public class AddSatellite {
         }
         LocalDate endDate = this.endDate.getValue();
         if(endDate != null) {
-            if(!endDate.isBefore(LocalDate.now())) {
+            if(!endDate.isBefore(LocalDate.now()) || !starDate.isBefore(endDate)) {
                 info.setText("Inserire una data di fine valida");
                 return;
             }
